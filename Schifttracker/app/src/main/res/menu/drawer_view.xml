@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item_shifts_list"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/shiftsScheduleOfPersons" />
+        <item
+            android:id="@+id/nav_item_persons_list"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/persons_list" />
+        <item
+            android:id="@+id/nav_item_about_project"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/about_projektu" />
+        <item
+            android:id="@+id/nav_item_feedback"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/feedback" />
+    </group>
+</menu>

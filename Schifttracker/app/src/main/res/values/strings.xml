@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Schift tracker</string>
+    <string name="app_name">Šichtovník</string>
+    <string name="shiftsScheduleOfPersons">Rozpis směn pracovníků</string>
+    <string name="persons_list">Seznam pracovníků</string>
+    <string name="about_projektu">O projektu</string>
+    <string name="feedback">Zpětná vazba</string>
+    <string name="drawer_open">Otevřít menu</string>
+    <string name="drawer_close">Zavřít menu</string>
+    <string name="project_about">O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník </string>
+    <string name="github_url">https://github.com/thepetas/schift-tracker</string>
+    <string name="github_url_feedback">https://github.com/thepetas/schift-tracker</string>
+    <string name="more_github">Více na GitHub...</string>
+
 </resources>
