@@ -106,10 +106,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
-                    fragmentClass = null;
+                    fragmentClass = PersonListFragment.class;
                     break;
                 case R.id.nav_item_shifts_list:
-                    fragmentClass = null;
+                    fragmentClass = ShiftListFragment.class;
                     break;
                 case R.id.nav_item_about_project:
                     fragmentClass = AboutFragment.class;
