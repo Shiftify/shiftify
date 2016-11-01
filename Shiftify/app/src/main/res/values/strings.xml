@@ -6,7 +6,16 @@
     <string name="feedback">Zpětná vazba</string>
     <string name="drawer_open">Otevřít menu</string>
     <string name="drawer_close">Zavřít menu</string>
-    <string name="project_about">O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník O projektu šichtovník </string>
+    <string name="project_about">Šichtovník je projekt na předmět BI-SP2 na FIT ČVUT.
+Jedná se o android aplikaci, která umožňuje spravovat lidi, jejich šichty a zobrazovat si, kdy má daný člověk volno či je v práci. Dále pak aplikace umí ukázat předhled obsazeností (volno / je v prácí) lidí v daný datum.
+        \n\nAplikace má za cíl zlepšít svolávání týmu dobrovolných hasičů k akci.
+
+
+\nAutoři
+
+\n- Lukáš Komárek
+\n- Vojtěch Mach
+\n- Petr Panský</string>
     <string name="github_url">https://github.com/thepetas/schift-tracker</string>
     <string name="github_url_feedback">https://github.com/thepetas/schift-tracker</string>
     <string name="more_github">Více na GitHub...</string>
