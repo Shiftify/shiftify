@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 
@@ -130,6 +131,15 @@ public class MainActivity extends AppCompatActivity {
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
             mDrawer.closeDrawers();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawers();
+        } else {
+            super.onBackPressed();
         }
     }
 
