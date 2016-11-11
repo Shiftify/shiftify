@@ -10,10 +10,24 @@ import java.util.List;
 public class WorkDay {
     public WorkDay() { }
     public WorkDay(Date date, List<Shift> shifts) {
-        Date = date;
-        Shifts = shifts;
+        this.date = date;
+        this.shifts = shifts;
     }
 
-    public Date Date;
-    public List<Shift> Shifts;
+    protected Date date;
+    protected List<Shift> shifts;
+
+    // getters and setters
+    public Date getDate() {
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
+    }
 }

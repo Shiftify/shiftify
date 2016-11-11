@@ -10,13 +10,39 @@ public class ScheduleType {
         this(name, daysOfScheduleCycle, null);
     }
     public ScheduleType(String name, Integer daysOfScheduleCycle, String description) {
-        Name = name;
-        DaysOfScheduleCycle = daysOfScheduleCycle;
-        Description = description;
+        this.name = name;
+        this.daysOfScheduleCycle = daysOfScheduleCycle;
+        this.description = description;
     }
 
-    public Integer Id;
-    public String Name;
-    public Integer DaysOfScheduleCycle;
-    public String Description;
+    protected Integer id;
+    protected String name;
+    protected Integer daysOfScheduleCycle;
+    protected String description;
+
+    // getters and setters
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Integer getDaysOfScheduleCycle() {
+        return this.daysOfScheduleCycle;
+    }
+    public void setDaysOfScheduleCycle(Integer daysOfScheduleCycle) {
+        this.daysOfScheduleCycle = daysOfScheduleCycle;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
