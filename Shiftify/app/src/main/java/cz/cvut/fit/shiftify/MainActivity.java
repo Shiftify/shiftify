@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
-                    fragmentClass = PersonListFragment.class;
+                    fragmentClass = UserListFragment.class;
                     break;
                 case R.id.nav_item_shifts_list:
                     fragmentClass = ShiftListFragment.class;
