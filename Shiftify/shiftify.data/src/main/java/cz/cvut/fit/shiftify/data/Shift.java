@@ -49,7 +49,7 @@ abstract class Shift {
         this.description = description;
     }
 
-    public boolean PersistsIntoNextDay() throws Exception {
+    public boolean persistsIntoNextDay() throws Exception {
         if (from == null || duration == null)
             throw new Exception("Null attribute (From or Duration or both) in Shift object.");
         return new Time(from.getHours() + duration.getHours(),
