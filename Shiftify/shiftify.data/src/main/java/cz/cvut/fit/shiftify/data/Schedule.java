@@ -8,7 +8,8 @@ import java.util.Date;
 
 public class Schedule {
     public Schedule() { }
-    public Schedule(Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
+    public Schedule(Integer userId, Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
+        setUserId(userId);
         setScheduleTypeId(scheduleTypeId);
         setFrom(from);
         setTo(to);
@@ -16,6 +17,7 @@ public class Schedule {
     }
 
     protected Integer id;
+    protected Integer userId;
     protected Integer scheduleTypeId;
     protected Date from;
     protected Date to;
@@ -27,6 +29,12 @@ public class Schedule {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+    public Integer getUserId() {
+        return this.userId;
+    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
     public Integer getScheduleTypeId() {
         return this.scheduleTypeId;
