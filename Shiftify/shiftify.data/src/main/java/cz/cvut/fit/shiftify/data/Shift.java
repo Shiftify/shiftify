@@ -6,16 +6,16 @@ import java.sql.Time;
  * Created by lukas on 11.11.2016.
  */
 
-abstract class Shift {
+abstract public class Shift {
     public Shift() { }
     public Shift(String name, Time from, Time duration) {
         this(name, from, duration, null);
     }
     public Shift(String name, Time from, Time duration, String description) {
-        this.name = name;
-        this.from = from;
-        this.duration = duration;
-        this.description = description;
+        setName(name);
+        setFrom(from);
+        setDuration(duration);
+        setDescription(description);
     }
 
     protected String name;

@@ -9,10 +9,10 @@ import java.util.Date;
 public class Schedule {
     public Schedule() { }
     public Schedule(Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
-        this.scheduleTypeId = scheduleTypeId;
-        this.from = from;
-        this.to = to;
-        this.startingDayOfScheduleCycle = startingDayOfScheduleCycle;
+        setScheduleTypeId(scheduleTypeId);
+        setFrom(from);
+        setTo(to);
+        setStartingDayOfScheduleCycle(startingDayOfScheduleCycle);
     }
 
     protected Integer id;

@@ -7,8 +7,8 @@ package cz.cvut.fit.shiftify.data;
 public class UserRole {
     public UserRole() { }
     public UserRole(Integer userId, Integer roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
+        setUserId(userId);
+        setRoleId(roleId);
     }
 
     protected Integer id;

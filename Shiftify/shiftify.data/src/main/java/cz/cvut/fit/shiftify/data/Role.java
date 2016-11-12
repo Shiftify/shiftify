@@ -10,8 +10,8 @@ public class Role {
         this(name, null);
     }
     public Role(String name, String description) {
-        this.name = name;
-        this.description = description;
+        setName(name);
+        setDescription(description);
     }
 
     protected Integer id;

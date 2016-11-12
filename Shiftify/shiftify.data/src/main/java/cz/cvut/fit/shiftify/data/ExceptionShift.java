@@ -13,7 +13,7 @@ public class ExceptionShift extends Shift {
     }
     public ExceptionShift(String name, Time from, Time duration, Integer exceptionInScheduleId, String description) {
         super(name, from, duration, description);
-        this.exceptionInScheduleId = exceptionInScheduleId;
+        setExceptionInScheduleId(exceptionInScheduleId);
     }
 
     protected Integer id;

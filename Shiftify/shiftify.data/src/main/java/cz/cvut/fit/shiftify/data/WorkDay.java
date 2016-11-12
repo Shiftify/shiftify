@@ -10,8 +10,8 @@ import java.util.Vector;
 public class WorkDay {
     public WorkDay() { }
     public WorkDay(Date date, Vector<Shift> shifts) {
-        this.date = date;
-        this.shifts = shifts;
+        setDate(date);
+        setShifts(shifts);
     }
 
     protected Date date;

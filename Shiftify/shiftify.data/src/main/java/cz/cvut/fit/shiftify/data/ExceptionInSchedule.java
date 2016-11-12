@@ -12,9 +12,9 @@ public class ExceptionInSchedule {
         this(date, scheduleId, null);
     }
     public ExceptionInSchedule(Date date, Integer scheduleId, String description) {
-        this.date = date;
-        this.scheduleId = scheduleId;
-        this.description = description;
+        setDate(date);
+        setScheduleId(scheduleId);
+        setDescription(description);
     }
 
     protected Integer id;

@@ -13,8 +13,8 @@ public class ScheduleShift extends Shift {
     }
     public ScheduleShift(String name, Time from, Time duration, Integer scheduleTypeId, Integer dayOfScheduleCycle, String description) {
         super(name, from, duration, description);
-        this.scheduleTypeId = scheduleTypeId;
-        this.dayOfScheduleCycle = dayOfScheduleCycle;
+        setScheduleTypeId(scheduleTypeId);
+        setDayOfScheduleCycle(dayOfScheduleCycle);
     }
 
     protected Integer id;

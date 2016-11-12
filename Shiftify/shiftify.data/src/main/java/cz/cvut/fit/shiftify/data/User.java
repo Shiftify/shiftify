@@ -18,11 +18,11 @@ public class User {
         this(firstName, surname, phoneNumber, email, null);
     }
     public User(String firstName, String surname, String phoneNumber, String email, String nickname) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
+        setFirstName(firstName);
+        setSurname(surname);
+        setNickname(nickname);
+        setPhoneNumber(phoneNumber);
+        setEmail(email);
     }
 
     protected Integer id;

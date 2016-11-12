@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Shiftify.iml" filepath="$PROJECT_DIR$/Shiftify.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/shiftify.data/shiftify.data.iml" filepath="$PROJECT_DIR$/shiftify.data/shiftify.data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/shiftify.data/shiftify.data.iml" filepath="$PROJECT_DIR$/shiftify.data/shiftify.data.iml" />
     </modules>
   </component>
 </project>
