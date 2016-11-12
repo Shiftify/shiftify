@@ -19,7 +19,7 @@ public class RoleManager {
     public Role role(int roleId) throws Exception {
         return new Role("admin", null);
     }
-    public Vector<Role> roles() {
+    public Vector<Role> roles() throws Exception {
         Vector<Role> roles = new Vector<Role>();
         Role role = new Role("admin", null);
         role.setId(1);
