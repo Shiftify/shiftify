@@ -12,16 +12,24 @@ public class ScheduleShift extends Shift {
         this(name, from, duration, scheduleTypeId, dayOfScheduleCycle, null);
     }
     public ScheduleShift(String name, Time from, Time duration, Integer scheduleTypeId, Integer dayOfScheduleCycle, String description) {
-        super(name, from, duration, description);
+        super(from, duration, description);
+        setName(name);
         setScheduleTypeId(scheduleTypeId);
         setDayOfScheduleCycle(dayOfScheduleCycle);
     }
 
     protected Integer id;
     protected Integer scheduleTypeId;
+    protected String name;
     protected Integer dayOfScheduleCycle;
 
     // getters and setters
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public Integer getId() {
         return id;
     }

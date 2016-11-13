@@ -23,7 +23,7 @@ public class ScheduleTypeManager {
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 1, 3));
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 5));
         shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 1, 6));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         ScheduleType scheduleType = new ScheduleType("Železárny", 7);
         scheduleType.setId(1);
         scheduleType.setShifts(shifts);
@@ -36,7 +36,7 @@ public class ScheduleTypeManager {
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 1, 3));
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 5, "To se bude blbě vstávat."));
         shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 1, 6));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         ScheduleType scheduleType = new ScheduleType("Železárny", 7, "Slouží jako rozpis pro vrátnýho.");
         scheduleType.setId(1);
         scheduleType.setShifts(shifts);
@@ -48,7 +48,7 @@ public class ScheduleTypeManager {
         shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 4, "Já jsem poznámka."));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 5));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 6, "komentář"));
-        for (int i = 5; i-4 <= shifts.size(); ++i) shifts.get(i).setId(i);
+        for (int i = 5; i-4 <= shifts.size(); ++i) shifts.get(i-5).setId(i);
         scheduleType = new ScheduleType("Železárny_hasič", 8);
         scheduleType.setId(2);
         scheduleType.setShifts(shifts);
@@ -77,7 +77,7 @@ public class ScheduleTypeManager {
         shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 4, "Já jsem poznámka."));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 5));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 6, "komentář"));
-        for (int i = 5; i-4 <= shifts.size(); ++i) shifts.get(i).setId(i);
+        for (int i = 5; i-4 <= shifts.size(); ++i) shifts.get(i-5).setId(i);
         return shifts;
     }
 }

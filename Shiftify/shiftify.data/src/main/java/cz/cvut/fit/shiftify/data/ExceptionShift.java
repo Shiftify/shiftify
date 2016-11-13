@@ -8,11 +8,11 @@ import java.sql.Time;
 
 public class ExceptionShift extends Shift {
     public ExceptionShift() { }
-    public ExceptionShift(String name, Time from, Time duration, Integer exceptionInScheduleId) {
-        this(name, from, duration, exceptionInScheduleId, null);
+    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId) {
+        this(from, duration, exceptionInScheduleId, null);
     }
-    public ExceptionShift(String name, Time from, Time duration, Integer exceptionInScheduleId, String description) {
-        super(name, from, duration, description);
+    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, String description) {
+        super(from, duration, description);
         setExceptionInScheduleId(exceptionInScheduleId);
     }
 

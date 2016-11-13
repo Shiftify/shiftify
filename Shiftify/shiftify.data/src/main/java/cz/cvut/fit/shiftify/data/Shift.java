@@ -8,28 +8,20 @@ import java.sql.Time;
 
 abstract public class Shift {
     public Shift() { }
-    public Shift(String name, Time from, Time duration) {
-        this(name, from, duration, null);
+    public Shift(Time from, Time duration) {
+        this(from, duration, null);
     }
-    public Shift(String name, Time from, Time duration, String description) {
-        setName(name);
+    public Shift(Time from, Time duration, String description) {
         setFrom(from);
         setDuration(duration);
         setDescription(description);
     }
 
-    protected String name;
     protected Time from;
     protected Time duration;
     protected String description;
 
     // getters and setters
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
     public Time getFrom() {
         return from;
     }

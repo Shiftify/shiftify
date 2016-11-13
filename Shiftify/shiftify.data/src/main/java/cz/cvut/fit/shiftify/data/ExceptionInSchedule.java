@@ -1,6 +1,7 @@
 package cz.cvut.fit.shiftify.data;
 
 import java.sql.Date;
+import java.util.Vector;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -21,6 +22,8 @@ public class ExceptionInSchedule {
     protected Integer scheduleId;
     protected Date date;
     protected String description;
+
+    protected Vector<ExceptionShift> shifts;
 
     // getters and setters
     public Integer getId() {
@@ -46,5 +49,13 @@ public class ExceptionInSchedule {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    // dummy implementation at this point
+    public Vector<ExceptionShift> getShifts() {
+        return shifts;
+    }
+    public void setShifts(Vector<ExceptionShift> shifts) {
+        this.shifts = shifts;
     }
 }

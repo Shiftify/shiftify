@@ -9,13 +9,21 @@ import java.util.Vector;
 
 public class WorkDay {
     public WorkDay() { }
-    public WorkDay(Date date, Vector<Shift> shifts) {
+    public WorkDay(Date date) { // no work this day
+        this(date, null, null);
+    }
+    public WorkDay(Date date, ScheduleShift scheduleShift) {
+        this(date, scheduleShift, null);
+    }
+    public WorkDay(Date date, ScheduleShift scheduleShift, ExceptionShift exceptionShift) {
         setDate(date);
-        setShifts(shifts);
+        setScheduleShift(scheduleShift);
+        setExceptionShift(exceptionShift);
     }
 
     protected Date date;
-    protected Vector<Shift> shifts;
+    protected ScheduleShift scheduleShift;
+    protected ExceptionShift exceptionShift;
 
     // getters and setters
     public Date getDate() {
@@ -24,10 +32,16 @@ public class WorkDay {
     public void setDate(Date date) {
         this.date = date;
     }
-    public Vector<Shift> getShifts() {
-        return shifts;
+    public ScheduleShift getScheduleShift() {
+        return scheduleShift;
     }
-    public void setShifts(Vector<Shift> shifts) {
-        this.shifts = shifts;
+    public void setScheduleShift(ScheduleShift scheduleShift) {
+        this.scheduleShift = scheduleShift;
+    }
+    public ExceptionShift getExceptionShift() {
+        return exceptionShift;
+    }
+    public void setExceptionShift(ExceptionShift exceptionShift) {
+        this.exceptionShift = exceptionShift;
     }
 }
