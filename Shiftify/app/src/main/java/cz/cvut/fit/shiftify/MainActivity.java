@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
-                    fragmentClass = UserListFragment.class;
+                    fragmentClass = PersonsListFragment.class;
                     break;
                 case R.id.nav_item_shifts_list:
                     fragmentClass = ShiftListFragment.class;
