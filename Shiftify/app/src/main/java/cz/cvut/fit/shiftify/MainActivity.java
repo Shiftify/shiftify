@@ -16,6 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 
+/**
+ * Main activity
+ * In this class is implemented navigation drawer logic
+ * You can switch fragment by navigation drawer
+ */
 public class MainActivity extends AppCompatActivity {
 
 
@@ -46,13 +51,15 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(mDrawerToggle);
 
 
+/*        If savedInstanceState == null - set default selected item in navigation drawer
+          Else savedInstanceState != null - get from Bundle id of selected item */
         if (savedInstanceState != null) {
             selectedItemId = savedInstanceState.getInt(SELECTED_ITEM_ID, DEFAULT_ITEM);
         } else {
             selectedItemId = DEFAULT_ITEM;
         }
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
-        selectDrawerItem(newSelectedMenuItem);
+        setNewFragmentContent(newSelectedMenuItem);
     }
 
 
@@ -89,16 +96,21 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectDrawerItem(item);
+                setNewFragmentContent(item);
                 return true;
             }
         });
     }
 
-    private void selectDrawerItem(MenuItem menuItem) {
-        Fragment fragment = null;
-        Class fragmentClass = null;
 
+    /**
+     * Sets new fragment to show
+     * Sets selected item, title and close navigation drawer
+     *
+     * @param menuItem Id of selected item from navigation drawer
+     */
+    private void setNewFragmentContent(MenuItem menuItem) {
+        Class fragmentClass = null;
         selectedItemId = menuItem.getItemId();
 
         if (selectedItemId == R.id.nav_item_feedback) {
@@ -116,16 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            if (fragmentClass != null) {
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-            }
+            switchFragment(fragmentClass);
 
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
@@ -133,8 +136,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets new fragment and content of fragmentContainer in layout
+     *
+     * @param fragmentClass Class of new fragment
+     */
+    private void switchFragment(Class fragmentClass) {
+        Fragment fragment = null;
+        if (fragmentClass != null) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+        }
+    }
+
     @Override
     public void onBackPressed() {
+//        On pressed back button - close drawer
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawers();
         } else {
@@ -146,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         return new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
+    //    Send feedback = set intent with ACTION_VIEW and send into system - browser, html viewer, ...
     private void sendFeedBack() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(getString(R.string.github_url_feedback)));
