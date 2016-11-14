@@ -43,12 +43,18 @@
 
     <string name="title_activity_person_detail">Detail pracovníka</string>
     <string name="title_activity_person_edit">Upravit údaje</string>
+
+    <string name="title_activity_schedule_list">Rozpis šichet</string>
+    <string name="title_activity_schedule_add">Přidat rozpis šichet</string>
+    <string name="title_activity_schedule_edit">Upravit rozpis šichet</string>
+
     <string name="placeholder_firstname">Jméno</string>
     <string name="placeholder_surname">Příjmení</string>
     <string name="placeholder_nickname">Přezdívka</string>
     <string name="placeholder_phone">Telefon</string>
-    <string name="placeholder_email" >Email</string>
+    <string name="placeholder_email">Email</string>
     <string name="button_save">Uložit</string>
     <string name="button_shift_plan_person">Rozpis směn</string>
+    <string name="schedule">Šichta</string>
 
 </resources>

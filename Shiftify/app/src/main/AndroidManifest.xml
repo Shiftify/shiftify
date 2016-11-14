@@ -23,6 +23,18 @@
             android:name=".PersonEditActivity"
             android:label="@string/title_activity_person_edit"
             android:theme="@style/AppTheme"></activity>
+
+        /* Schedule - activities */
+        <activity
+            android:name=".schedules.ScheduleListActivity"
+            android:label="@string/title_activity_schedule_list" />
+        <activity
+            android:name=".schedules.ScheduleAddActivity"
+            android:label="@string/title_activity_schedule_add" />
+        <activity
+            android:name=".schedules.ScheduleEditActivity"
+            android:label="@string/title_activity_schedule_edit" />
+
     </application>
 
 </manifest>
