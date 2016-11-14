@@ -28,7 +28,7 @@ public class UserManager {
         Vector<User> users = new Vector<User>();
         users.add(new User("Michal", "Plameňák", "777222111", "random@something.org"));
         users.add(new User("Petr", "Kůň"));
-        users.add(new User("Martin", "Salamini", null, "some@address.com", "meloun"));
+        users.add(new User("Martin", "Salamini", "", "some@address.com", "meloun"));
         users.add(new User("Martin", "Salamini", "+420423458932"));
         for (int i = 1; i <= users.size(); ++i) users.get(i-1).setId(i);
         return users;

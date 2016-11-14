@@ -4,7 +4,7 @@
         <item
             android:id="@+id/nav_item_shifts_list"
             android:icon="@drawable/icon_bar_example"
-            android:title="@string/shiftsScheduleOfPersons" />
+            android:title="@string/shift_person_schedule" />
         <item
             android:id="@+id/nav_item_persons_list"
             android:icon="@drawable/icon_bar_example"
@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_item_about_project"
             android:icon="@drawable/icon_bar_example"
-            android:title="@string/about_projektu" />
+            android:title="@string/project_about" />
         <item
             android:id="@+id/nav_item_feedback"
             android:icon="@drawable/icon_bar_example"

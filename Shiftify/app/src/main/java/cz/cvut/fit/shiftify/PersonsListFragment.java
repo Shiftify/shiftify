@@ -1,6 +1,7 @@
 package cz.cvut.fit.shiftify;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,7 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Vector;
+
 import cz.cvut.fit.shiftify.CustomPersonsListAdapter;
+import cz.cvut.fit.shiftify.data.User;
+import cz.cvut.fit.shiftify.data.UserManager;
 
 /**
  * Created by Vojta on 13.11.2016.
@@ -30,8 +35,8 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
     * Dummy pole pro seznam osob - pozdeji se budou tahat z DB.
     * Dale pomocne struktury pro ListLayout.
     * */
-private String[] personsArray = { "Jan Novak", "Dan Horak", "Jiri Cernz", "Lukas Modry", "Standa Bily", "Ludek Hnedy", "Ludmila Nova",
-        "Jonas Kalas", "Petr Salas",  "Laso Klas", "Oto Manas"};
+private String[] personsArray;
+private Vector<User> userVector;
 
         Integer[] imageId = {
         R.drawable.face,
@@ -69,26 +74,48 @@ public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
 
-        /*
-        try {
-            ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.persons, android.R.layout.simple_expandable_list_item_1);
-            setListAdapter(adapter);
-            getListView().setOnItemClickListener(this);
-        }catch (Exception e){
-            System.err.println(e.getMessage());
-        }*/
+    UserManager userManager = new UserManager();
+    userVector = new Vector<User>();
 
-        adapter = new CustomPersonsListAdapter(getActivity(), personsArray, imageId);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
+    try {
+        userVector = userManager.users();
 
-        }
+    }catch(Exception e){
+        System.err.println("Nepovedlo se nacist uzivatele z DB.");
+    }
+
+    personsArray = new String[userVector.size()];
+    makeArray(userVector);
 
 
+    adapter = new CustomPersonsListAdapter(getActivity(), personsArray, imageId);
+    setListAdapter(adapter);
+    getListView().setOnItemClickListener(this);
+}
+
+private void makeArray(Vector<User> vector){
+
+    int index = 0;
+    String firstname,surname,nickname;
+
+    for (User u:
+         vector) {
+
+        firstname = u.getFirstName();
+        surname = u.getSurname();
+        nickname = (u.getNickname()== null ? "" : "\"" + u.getNickname() + "\"");
+
+
+        personsArray[index] = firstname + " " + nickname + " " + surname;
+        index++;
+    }
+
+}
 
 @Override
 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+        /*
         Snackbar snack;
         snack = Snackbar.make(view, "Clicked item: " + getResources().getStringArray(R.array.persons)[position], Snackbar.LENGTH_SHORT);
         View snackBarView = snack.getView();
@@ -96,8 +123,12 @@ public void onItemClick(AdapterView<?> adapterView, View view, int position, lon
         TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTypeface(null, Typeface.BOLD);
-        snack.show();
+        snack.show();*/
 
+        Intent i = new Intent(PersonsListFragment.this.getActivity(),PersonDetailActivity.class);
+        i.putExtra("userId",userVector.elementAt(position).getId());
 
-        }
-        }
+        startActivity(i);
+
+}
+}

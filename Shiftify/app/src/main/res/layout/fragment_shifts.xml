@@ -13,7 +13,7 @@
         android:layout_margin="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/shiftsScheduleOfPersons"
+        android:text="@string/shift_person_schedule"
         android:textSize="25sp" />
 
 </LinearLayout>

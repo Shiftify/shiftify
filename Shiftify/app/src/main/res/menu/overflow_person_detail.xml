@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/person_edit"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/person_edit" />
+        <item
+            android:id="@+id/shift_add_exception"
+            android:title="@string/shift_add_exception" />
+        <item
+            android:id="@+id/shift_new_plan"
+            android:title="@string/shift_new_plan" />
+        <item
+            android:id="@+id/shift_cancel_plan"
+            android:title="@string/shift_cancel_plan" />
+        <item
+            android:id="@+id/person_delete"
+            android:title="@string/person_delete" />
+
+    </group>
+
+
+</menu>

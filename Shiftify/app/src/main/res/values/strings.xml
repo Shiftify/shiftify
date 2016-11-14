@@ -1,24 +1,30 @@
 <resources>
     <string name="app_name">Šichtovník</string>
-    <string name="shiftsScheduleOfPersons">Rozpis směn pracovníků</string>
+    <string name="shift_person_schedule">Rozpis směn pracovníků</string>
     <string name="persons_list">Seznam pracovníků</string>
-    <string name="about_projektu">O projektu</string>
+    <string name="project_about">O projektu</string>
     <string name="feedback">Zpětná vazba</string>
     <string name="drawer_open">Otevřít menu</string>
     <string name="drawer_close">Zavřít menu</string>
-    <string name="project_about">Šichtovník je projekt na předmět BI-SP2 na FIT ČVUT.
-Jedná se o android aplikaci, která umožňuje spravovat lidi, jejich šichty a zobrazovat si, kdy má daný člověk volno či je v práci. Dále pak aplikace umí ukázat předhled obsazeností (volno / je v prácí) lidí v daný datum.
+    <string name="project_description">Šichtovník je projekt na předmět BI-SP2 na FIT ČVUT.
+        Jedná se o android aplikaci, která umožňuje spravovat lidi, jejich šichty a zobrazovat si, kdy má daný člověk volno či je v práci. Dále pak aplikace umí ukázat předhled obsazeností (volno / je v prácí) lidí v daný datum.
         \n\nAplikace má za cíl zlepšít svolávání týmu dobrovolných hasičů k akci.
+        \nAutoři
 
-
-\nAutoři
-
-\n- Lukáš Komárek
-\n- Vojtěch Mach
-\n- Petr Panský</string>
+        \n- Lukáš Komárek
+        \n- Vojtěch Mach
+        \n- Petr Panský
+    </string>
     <string name="github_url">https://github.com/thepetas/schift-tracker</string>
     <string name="github_url_feedback">https://github.com/thepetas/schift-tracker</string>
     <string name="more_github">Více na GitHub...</string>
+
+
+    <string name="person_edit">Upravit údaje</string>
+    <string name="shift_add_exception">Přidat vyjímku směny</string>
+    <string name="shift_new_plan">Nový rozpis směn</string>
+    <string name="shift_cancel_plan">Zrušit rozpis směn</string>
+    <string name="person_delete">Smazat pracovníka</string>
 
 
     <string-array name="persons">
@@ -34,5 +40,15 @@ Jedná se o android aplikaci, která umožňuje spravovat lidi, jejich šichty a
         <item>Laso Klas</item>
         <item>Oto Manas</item>
     </string-array>
+
+    <string name="title_activity_person_detail">Detail pracovníka</string>
+    <string name="title_activity_person_edit">Upravit údaje</string>
+    <string name="placeholder_firstname">Jméno</string>
+    <string name="placeholder_surname">Příjmení</string>
+    <string name="placeholder_nickname">Přezdívka</string>
+    <string name="placeholder_phone">Telefon</string>
+    <string name="placeholder_email" >Email</string>
+    <string name="button_save">Uložit</string>
+    <string name="button_shift_plan_person">Rozpis směn</string>
 
 </resources>
