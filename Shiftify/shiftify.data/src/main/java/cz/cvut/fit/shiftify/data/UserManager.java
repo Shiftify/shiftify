@@ -38,10 +38,10 @@ public class UserManager {
     }
     public void deleteRole(int userId, int roleId) throws Exception {
     }
-    public Vector<UserRole> roles(int userId) throws Exception {
-        Vector<UserRole> userRoles = new Vector<UserRole>();
-        userRoles.add(new UserRole(1, 1));
-        return userRoles;
+    public Vector<Role> roles(int userId) throws Exception {
+        Vector<Role> roles = new Vector<Role>();
+        roles.add(new Role("administrator"));
+        return roles;
     }
 
     public void addSchedule(int userId, int scheduleTypeId, Schedule schedule) throws Exception {
