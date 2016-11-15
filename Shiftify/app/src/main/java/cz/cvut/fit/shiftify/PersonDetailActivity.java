@@ -1,6 +1,11 @@
 package cz.cvut.fit.shiftify;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +27,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     TextView numberView;
     TextView emailView;
     Button mScheduleShowButton;
+    User u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +47,19 @@ public class PersonDetailActivity extends AppCompatActivity {
         int userId = i.getIntExtra("userId", -1);
 
         UserManager userManager = new UserManager();
-        User u = null;
 
         if (userId != -1) {
             try {
                 u = userManager.user(userId);
             } catch (Exception e) {
                 System.err.println("Nepodarilo se nacist ID uzivatele pro detail.");
+                this.finish();
             }
-        } else
+        } else {
             System.err.println("Nepodarilo se nacist ID uzivatele pro detail.");
+            this.finish();
+        }
+
 
         emailView = (TextView) findViewById(R.id.person_detail_email);
         numberView = (TextView) findViewById(R.id.person_detail_phone);
@@ -83,23 +92,103 @@ public class PersonDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        Intent i;
 
         switch (id) {
 
             case android.R.id.home:
                 this.finish();
-                return true;
+                break;
 
             case R.id.person_edit:
-                Intent i = new Intent(this, PersonEditActivity.class);
+                i = new Intent(this, PersonEditActivity.class);
+                i.putExtra("userId",u.getId());
                 startActivity(i);
+                break;
 
+            case R.id.person_delete:
+
+
+
+
+
+                // THIS CAUSES AVD TO CRASH !!!!!!!!!!!!!!!!!!
+
+
+                //showDialog();
+
+                break;
         }
-        //switch
-
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void showDialog(){
+            DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(R.string.person_delete_confirm);
+            newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public void showDataNotSetWarning(View view){
+
+        Snackbar snack;
+        snack = Snackbar.make(view, "Akce nelze dokoncit, nejprve vyplnte prislusne pole v detailech uzivatele.", Snackbar.LENGTH_SHORT);
+        View snackBarView = snack.getView();
+        snackBarView.setBackgroundColor(Color.parseColor("#DD3A83FF"));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        textView.setTypeface(null, Typeface.BOLD);
+        snack.show();
+    }
+
+    public void sendSMS(View view){
+
+        String phoneNumber = u.getPhoneNumber();
+
+        if(phoneNumber == null || phoneNumber == ""){
+
+            showDataNotSetWarning(view);
+            return;
+        }
+
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.setData(Uri.parse("sms:"+phoneNumber));
+        startActivity(sendIntent);
+
+    }
+
+    public void callPerson(View view){
+
+        String phoneNumber = u.getPhoneNumber();
+
+        if(phoneNumber == null || phoneNumber == ""){
+
+            showDataNotSetWarning(view);
+            return;
+        }
+
+        Intent sendIntent = new Intent(Intent.ACTION_DIAL);
+        sendIntent.setData(Uri.parse("tel:"+phoneNumber));
+        startActivity(sendIntent);
+
+    }
+
+    public void sendEmail(View view){
+
+        String emailAddress = u.getEmail();
+
+        if(emailAddress == null || emailAddress == ""){
+
+            showDataNotSetWarning(view);
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setType("text/plain");
+        intent.setData(Uri.parse("mailto:"+emailAddress));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+
 
 
 }

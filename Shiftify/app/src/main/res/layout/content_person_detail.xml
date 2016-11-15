@@ -41,27 +41,43 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="1">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_call_black_24dp"
-            android:id="@+id/imageView1" />
+            android:id="@+id/imageView1a"/>
 
         <TextView
             android:text="...mobil"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:id="@+id/person_detail_phone" />
+            android:id="@+id/person_detail_phone"
+            android:layout_weight="1"
+            android:onClick="callPerson"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_chat_black_24dp"
+            android:id="@+id/imageView1b"
+            android:onClick="sendSMS"/>
+        <!--
+            TOTO LZE POUZIT JAKO SAMOSTATNE TLACITKO PRO CALL MISTO KLIKANI NA CISLO OSOBY
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_chat_black_24dp"
+            android:id="@+id/imageView1c" /> -->
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="10dp"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -79,7 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:id="@+id/person_detail_email" />
+            android:id="@+id/person_detail_email"
+            android:onClick="sendEmail"/>
 
     </LinearLayout>
 

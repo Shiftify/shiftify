@@ -39,7 +39,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_firstname" />
+                android:hint="@string/placeholder_firstname"
+                android:id="@+id/edit_text_firstname" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -49,7 +50,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_surname" />
+                android:hint="@string/placeholder_surname"
+                android:id="@+id/edit_text_surname" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -59,7 +61,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_nickname" />
+                android:hint="@string/placeholder_nickname"
+                android:id="@+id/edit_text_nickname"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -70,7 +73,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_phone" />
+                android:hint="@string/placeholder_phone"
+                android:id="@+id/edit_text_phone" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -81,7 +85,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_email" />
+                android:hint="@string/placeholder_email"
+                android:id="@+id/edit_text_email" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -93,7 +98,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button"
+            android:id="@+id/button_person_edit_save"
             android:onClick="personEditSave"
             style="@style/Widget.AppCompat.Button.Colored" />
 

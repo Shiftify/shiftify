@@ -56,5 +56,8 @@
     <string name="button_save">Uložit</string>
     <string name="button_shift_plan_person">Rozpis směn</string>
     <string name="schedule">Šichta</string>
+    <string name="dialog_CONFIRM">Potvrdit</string>
+    <string name="dialog_CANCEL">Zrušit</string>
+    <string name="person_delete_confirm">Opravdu chcete smazat tohoto pracovníka?</string>
 
 </resources>
