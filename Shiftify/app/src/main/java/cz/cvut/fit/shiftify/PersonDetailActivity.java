@@ -115,7 +115,7 @@ public class PersonDetailActivity extends AppCompatActivity {
                 // THIS CAUSES AVD TO CRASH !!!!!!!!!!!!!!!!!!
 
 
-                //showDialog();
+                showDialog();
 
                 break;
         }
@@ -124,7 +124,12 @@ public class PersonDetailActivity extends AppCompatActivity {
     }
 
     public void showDialog(){
-            DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(R.string.person_delete_confirm);
+
+            DialogFragment newFragment = PersonDeleteDialogFragment.newInstance();
+            Bundle userBundle = new Bundle();
+            userBundle.putInt("userId",u.getId());
+            newFragment.setArguments(userBundle);
+
             newFragment.show(getFragmentManager(), "dialog");
     }
 

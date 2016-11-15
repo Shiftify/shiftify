@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private int selectedItemId;
 
     private static final int DEFAULT_ITEM = R.id.nav_item_shifts_list;
+    private static final int PERSON_LIST_ITEM = R.id.nav_item_persons_list;
 
 
     @Override
@@ -53,10 +54,24 @@ public class MainActivity extends AppCompatActivity {
 
 /*        If savedInstanceState == null - set default selected item in navigation drawer
           Else savedInstanceState != null - get from Bundle id of selected item */
+
+
         if (savedInstanceState != null) {
+
             selectedItemId = savedInstanceState.getInt(SELECTED_ITEM_ID, DEFAULT_ITEM);
-        } else {
+        }
+        else {
+
             selectedItemId = DEFAULT_ITEM;
+
+            Intent i = getIntent();
+            if (i != null){
+                int fragmentNumber;
+                fragmentNumber = i.getIntExtra("fragmentNumber",-1);
+                if ( fragmentNumber == 1){
+                    selectedItemId = PERSON_LIST_ITEM;
+                }
+            }
         }
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
         setNewFragmentContent(newSelectedMenuItem);
@@ -115,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (selectedItemId == R.id.nav_item_feedback) {
             sendFeedBack();
-        } else {
+        }
+        else {
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
                     fragmentClass = PersonsListFragment.class;
