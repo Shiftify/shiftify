@@ -45,6 +45,7 @@ public class PersonDeleteDialogFragment extends DialogFragment {
 
                 Bundle bundle = getArguments();
                 int userId = bundle.getInt("userId");
+                userManager = new UserManager();
 
                 try {
 
@@ -55,12 +56,7 @@ public class PersonDeleteDialogFragment extends DialogFragment {
                     System.err.println("Nepodarilo se smazat uzivatele: " + userId);
                 }
 
-
-                // spustit MainActivity s fragmentem PersonListFragment
-
-                Intent i = new Intent(PersonDeleteDialogFragment.this.getActivity(),MainActivity.class);
-                i.putExtra("fragmentNumber",1);
-                startActivity(i);
+                getActivity().finish();
             }
         });
 

@@ -64,14 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
             selectedItemId = DEFAULT_ITEM;
 
-            Intent i = getIntent();
-            if (i != null){
-                int fragmentNumber;
-                fragmentNumber = i.getIntExtra("fragmentNumber",-1);
-                if ( fragmentNumber == 1){
-                    selectedItemId = PERSON_LIST_ITEM;
-                }
-            }
         }
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
         setNewFragmentContent(newSelectedMenuItem);

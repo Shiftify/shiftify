@@ -1,12 +1,13 @@
 package cz.cvut.fit.shiftify.data;
 
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 
 /**
  * Created by lukas on 11.11.2016.
  */
 
-public class User {
+public class User{
     public User() { }
     public User(String firstName, String surname) {
         this(firstName, surname, null, null, null);
