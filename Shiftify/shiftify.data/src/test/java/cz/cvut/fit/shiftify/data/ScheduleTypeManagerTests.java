@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 public class ScheduleTypeManagerTests {
     @Test
     public void dummyMethods_dontThrowException() throws Exception {
-        //assertEquals(4, 2 + 2);
         ScheduleTypeManager stm = new ScheduleTypeManager();
         ScheduleType st = new ScheduleType();
         ScheduleShift ss = new ScheduleShift();

@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 public class RoleManagerTests {
     @Test
     public void dummyMethods_dontThrowException() throws Exception {
-        //assertEquals(4, 2 + 2);
         RoleManager rm = new RoleManager();
         Role r = new Role("admin");
         try { rm.add(r); }
