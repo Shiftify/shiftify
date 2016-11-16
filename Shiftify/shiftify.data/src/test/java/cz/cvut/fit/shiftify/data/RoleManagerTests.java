@@ -16,7 +16,7 @@ public class RoleManagerTests {
         Role r = new Role("admin");
         try { rm.add(r); }
         catch(Exception ex) { assert("RoleManager add method throws exception." == null); }
-        try { rm.edit(r.getId(), new Role("administrator")); }
+        try { rm.edit(new Role("administrator")); }
         catch(Exception ex) { assert("RoleManager edit method throws exception." == null); }
         try { rm.role(r.getId()); }
         catch(Exception ex) { assert("RoleManager role method throws exception." == null); }

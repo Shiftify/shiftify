@@ -8,17 +8,35 @@ import java.util.Vector;
 
 // dummy implementation at this point
 public class RoleManager {
+    /**
+     * Adds role.
+     */
     public void add(Role role) throws Exception {
         role.setId(4);
     }
-    public void edit(int roleId, Role role) throws Exception {
-        role.setId(roleId);
+
+    /**
+     * Edits role. This instance needs to have an id.
+     */
+    public void edit(Role role) throws Exception {
     }
+
+    /**
+     * Deletes role with an id equal to roleId.
+     */
     public void delete(int roleId) throws Exception {
     }
+
+    /**
+     * Gets a role with an id equal to roleId.
+     */
     public Role role(int roleId) throws Exception {
         return new Role("admin", null);
     }
+
+    /**
+     * Gets a list of all roles.
+     */
     public Vector<Role> roles() throws Exception {
         Vector<Role> roles = new Vector<Role>();
         Role role = new Role("admin", null);

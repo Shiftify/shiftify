@@ -9,14 +9,31 @@ import java.sql.Time;
 
 // dummy implementation at this point
 public class ScheduleTypeManager {
+    /**
+     * Adds a scheduleType. This instance has a list of scheduleShifts.
+     */
     public void add(ScheduleType scheduleType) throws Exception {
         scheduleType.setId(3);
     }
-    public void edit(int scheduleTypeId, ScheduleType scheduleType) throws Exception {
-        scheduleType.setId(scheduleTypeId);
+
+    /**
+     * Edits scheduleType. This instance needs to have an id.
+     * Beware of the list of scheduleShifts. U edit them here the same way as well.
+     */
+    public void edit(ScheduleType scheduleType) throws Exception {
     }
+
+    /**
+     * Deletes a scheduleType with an id equal to scheduleTypeId.
+     * Deletes all its scheduleShifts automatically as well.
+     */
     public void delete(int scheduleTypeId) throws Exception {
     }
+
+    /**
+     * Gets a scheduleType with an id equal to scheduleTypeId.
+     * This instance has a list of its scheduleShifts.
+     */
     public ScheduleType scheduleType(int scheduleTypeId) throws Exception {
         Vector<ScheduleShift> shifts = new Vector<ScheduleShift> ();
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 2));
@@ -29,6 +46,10 @@ public class ScheduleTypeManager {
         scheduleType.setShifts(shifts);
         return scheduleType;
     }
+
+    /**
+     * Gets a list of all scheduleTypes.
+     */
     public Vector<ScheduleType> scheduleTypes() throws Exception {
         Vector<ScheduleType> scheduleTypes = new Vector<ScheduleType>();
         Vector<ScheduleShift> shifts = new Vector<ScheduleShift> ();
@@ -54,30 +75,5 @@ public class ScheduleTypeManager {
         scheduleType.setShifts(shifts);
         scheduleTypes.add(scheduleType); // adds second schedule type
         return scheduleTypes;
-    }
-
-    public void addShift(int scheduleTypeId, ScheduleShift shift) throws Exception {
-        shift.setId(11);
-    }
-    public void editShift(int shiftId, ScheduleShift shift) throws Exception {
-        shift.setId(shiftId);
-    }
-    public void deleteShift(int shiftId) throws Exception {
-    }
-    public ScheduleShift shift(int shiftId) throws Exception {
-        ScheduleShift shift = new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 3);
-        shift.setId(shiftId);
-        return shift;
-    }
-    public Vector<ScheduleShift> shifts(int scheduleTypeId) throws Exception {
-        Vector<ScheduleShift> shifts = new Vector<ScheduleShift> ();
-        shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 2, 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 2, 2));
-        shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 3));
-        shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 5));
-        shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 2, 6, "komentář"));
-        for (int i = 5; i-4 <= shifts.size(); ++i) shifts.get(i-5).setId(i);
-        return shifts;
     }
 }

@@ -17,14 +17,8 @@ public class ScheduleTypeManagerTests {
         ScheduleShift ss = new ScheduleShift();
         try { stm.add(st); }
         catch(Exception ex) { assert("RoleManager add method throws exception." == null); }
-        try { stm.edit(st.getId(), st); }
+        try { stm.edit(st); }
         catch(Exception ex) { assert("RoleManager edit method throws exception." == null); }
-        try { stm.addShift(st.getId(), ss); }
-        catch(Exception ex) { assert("RoleManager addShift method throws exception." == null); }
-        try { stm.editShift(ss.getId(), ss); }
-        catch(Exception ex) { assert("RoleManager editShift method throws exception." == null); }
-        try { stm.deleteShift(ss.getId()); }
-        catch(Exception ex) { assert("RoleManager deleteShift method throws exception." == null); }
         try { stm.delete(st.getId()); }
         catch(Exception ex) { assert("RoleManager delete method throws exception." == null); }
     }
