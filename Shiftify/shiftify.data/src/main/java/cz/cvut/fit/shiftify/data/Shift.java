@@ -44,7 +44,8 @@ abstract public class Shift {
     public boolean persistsIntoNextDay() throws Exception {
         if (from == null || duration == null)
             throw new Exception("Null attribute (From or Duration or both) in Shift object.");
-        return new Time(from.getHours() + duration.getHours(),
-                from.getMinutes() + duration.getMinutes(), 0).getHours() > 24;
+        Time t = new Time(from.getHours() + duration.getHours(),
+                from.getMinutes() + duration.getMinutes(), 0);
+        return t.after(new Time(24, 0, 0));
     }
 }
