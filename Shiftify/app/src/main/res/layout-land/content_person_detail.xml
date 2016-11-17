@@ -15,41 +15,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp">
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    >
 
     <Space
         android:layout_width="1dp"
         android:layout_height="50dp"/>
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/person_detail_image"
-        android:src="@drawable/ic_person_black_24dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/round_image"
-        android:padding="1dp"/>
-
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="15dp"/>
-
-    <View
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_height="wrap_content">
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="15dp"/>
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/person_detail_image"
+            android:src="@drawable/ic_person_black_24dp"
+            android:background="@drawable/round_image"
+            android:padding="1dp"/>
 
-    <TextView
-        android:text="...jmeno"
-        android:textSize="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/person_detail_fullname"/>
+        <TextView
+            android:text="...jmeno"
+            android:textSize="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:id="@+id/person_detail_fullname"/>
+
+
+    </LinearLayout>
+
+
     <Space
         android:layout_width="1dp"
         android:layout_height="30dp"/>
@@ -125,12 +124,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="30dp"
         android:padding="15dp"
         android:id="@+id/button_shift_plan_person"
         style="@style/Widget.AppCompat.Button.Colored"
         />
 </RelativeLayout>
-
 </ScrollView>

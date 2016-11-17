@@ -1,19 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="20sp"
+    android:layout_marginRight="10sp"
+    android:layout_marginLeft="10sp">
 
-    <TextView
-        android:id="@+id/name"
+
+    <LinearLayout
+        android:id="@+id/shift_list_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/shift_person_schedule"
-        android:textSize="25sp" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/relative">
+
+            <ImageButton
+                android:id="@+id/date_arrow_left"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/shift_list_header_date"
+                android:layout_toLeftOf="@+id/shift_list_header_date"/>
+                 <!--previous line meant for older APIs-->
+        <TextView
+            android:id="@id/shift_list_header_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:layout_centerInParent="true"
+            android:text="12.2.2016"
+            android:onClick="showPreviousDay"/>
+
+            <ImageButton
+                android:id="@+id/date_arrow_right"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/shift_list_header_date"
+                android:layout_toRightOf="@id/shift_list_header_date"
+                android:onClick="showNextDay"/>
+                <!--previous line meant for older APIs-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignBottom="@id/shift_list_header_date"
+                />
+
+        <ImageButton
+            android:id="@+id/btn_date"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:src="@drawable/ic_event_black_24dp"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:onClick="showDatePicker"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/shift_list_scrollview"
+        android:orientation="vertical"
+        android:layout_below="@+id/shift_list_header">
+        //your UI...
+    </ScrollView>
+
+</RelativeLayout>
