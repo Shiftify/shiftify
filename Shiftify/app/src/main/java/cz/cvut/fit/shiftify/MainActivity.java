@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 
 /**
@@ -184,4 +185,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // listenery na tlacitka fragmentu ShiftListFragment (ve Fragmentu je android nenajde)
+    // .... pozdeji presunout do toho fragmentu (jak?)
+    public void showNextDay(View view){
+
+    }
+    public void showPreviousDay(View view){
+
+    }
+
+    public void showDatePicker(View view){
+
+    }
 }
