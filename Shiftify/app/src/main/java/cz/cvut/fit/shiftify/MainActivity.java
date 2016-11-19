@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.app.DialogFragment;
 
 
 /**
@@ -196,5 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showDatePicker(View view){
 
+        DialogFragment newFragment = new ShiftPlanDateDialog();
+        newFragment.show(getFragmentManager(), "datePicker");
     }
 }

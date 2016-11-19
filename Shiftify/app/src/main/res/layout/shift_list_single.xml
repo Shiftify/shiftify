@@ -48,18 +48,12 @@
                     android:text="1. odpoledni (14:00 - 22:00)"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView" />
+                    android:id="@+id/shift_description" />
             </TableRow>
 
 
         </TableLayout>
 
     </TableRow>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        />
 
 </TableLayout>

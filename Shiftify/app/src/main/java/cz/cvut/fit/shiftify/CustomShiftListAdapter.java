@@ -15,18 +15,20 @@ import android.widget.TextView;
 
 public class CustomShiftListAdapter extends ArrayAdapter<String> {
 
-    private final Activity context;
-
     /*
     *
     *predelat na adapter sichet !
     *
     *
     * */
+    private final Activity context;
+    private final String[] personsArray;
+    private final Integer[] imageId;
+
 
 
     public CustomShiftListAdapter(Activity context, String[] persons, Integer[] imageId) {
-        super(context, R.layout.persons_list_single, persons);
+        super(context, R.layout.shift_list_single, persons);
         this.context = context;
         this.personsArray = persons;
         this.imageId = imageId;
@@ -36,14 +38,18 @@ public class CustomShiftListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View view, ViewGroup parent) {
 
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.persons_list_single, null, true);
+        View rowView= inflater.inflate(R.layout.shift_list_single, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.person_name);
-        txtTitle.setPadding(50,0,0,0);
+        txtTitle.setText(personsArray[position]);
+        //txtTitle.setPadding(50,0,0,0);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.person_image);
-        txtTitle.setText(personsArray[position]);
 
         imageView.setImageResource(imageId[position]);
+
+        TextView shiftDescr = (TextView) rowView.findViewById(R.id.shift_description);
+        shiftDescr.setText(personsArray[position]);
+
         return rowView;
     }
 }

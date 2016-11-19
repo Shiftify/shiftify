@@ -48,6 +48,10 @@ public class UserManager {
         users.add(new User("Petr", "Kůň"));
         users.add(new User("Martin", "Salamini", "", "some@address.com", "meloun"));
         users.add(new User("Martin", "Salamini", "+420423458932"));
+        users.add(new User("Adam", "Moron", "+420423458932"));
+        users.add(new User("Jaromir", "Jagr", "+420423458932"));
+        users.add(new User("Nekdo", "Nekdovic", "+420423458932"));
+        users.add(new User("Nikdo", "Kdokolic", "+420427458932"));
         for (int i = 1; i <= users.size(); ++i) users.get(i-1).setId(i);
         return users;
     }

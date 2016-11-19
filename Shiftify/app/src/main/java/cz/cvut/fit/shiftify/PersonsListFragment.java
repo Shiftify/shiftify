@@ -87,10 +87,10 @@ public void onActivityCreated(Bundle savedInstanceState) {
     personsArray = new String[userVector.size()];
     makeArray(userVector);
 
-
     adapter = new CustomPersonsListAdapter(getActivity(), personsArray, imageId);
     setListAdapter(adapter);
     getListView().setOnItemClickListener(this);
+
 }
 
 private void makeArray(Vector<User> vector){
