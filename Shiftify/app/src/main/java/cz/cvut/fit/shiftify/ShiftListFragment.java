@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -10,15 +11,16 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
 import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
 
-public class ShiftListFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class ShiftListFragment extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
 
     Vector<User> allWorkers;
@@ -29,6 +31,11 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     String [] personsArray;
 
     TextView headerDate;
+    ImageButton btnCal;
+    ImageButton btnArrLeft;
+    ImageButton btnArrRight;
+    Calendar cal;
+    SimpleDateFormat dateFormat;
 
     Integer[] imageId = {
             R.drawable.face,
@@ -47,8 +54,6 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     };
 
-    ImageButton calBtn;
-
 /*
 *
 *    co predavat adapteru??
@@ -60,6 +65,15 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 @Override
 public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_shifts, container, false);
+
+    btnCal = (ImageButton) view.findViewById(R.id.btn_cal);
+    btnArrLeft = (ImageButton) view.findViewById(R.id.date_arrow_left);
+    btnArrRight = (ImageButton) view.findViewById(R.id.date_arrow_right);
+
+    btnCal.setOnClickListener(this);
+    btnArrLeft.setOnClickListener(this);
+    btnArrRight.setOnClickListener(this);
+
     return view;
 }
 
@@ -73,8 +87,12 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         loadWorkers();
-        setHeaderDate();
+
+        // why does this work??
+        headerDate = (TextView) getActivity().findViewById(R.id.shift_list_header_date);
+        initHeaderDate();
 
         adapter = new CustomShiftListAdapter(getActivity(), personsArray, imageId);
         setListAdapter(adapter);
@@ -101,17 +119,33 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 
     }
 
-    private void setHeaderDate(){
+    private void initHeaderDate(){
 
-        headerDate = (TextView)getActivity().findViewById(R.id.shift_list_header_date);
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = new Date();
-        headerDate.setText(dateFormat.format(date).toString());
+        cal = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        String dateStr = dateFormat.format(cal.getTime());
+        headerDate.setText(dateStr);
+    }
+
+    private void setHeaderDate(RelativeDayEnum dayOffset){
+
+        Date d;
+        try {
+            d = dateFormat.parse(headerDate.getText().toString());
+            cal.setTime(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        cal.add(Calendar.DATE, dayOffset.getValue());
+        String dateStr = dateFormat.format(cal.getTime());
+        headerDate.setText(dateStr);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+        CustomSnackbar csnack = new CustomSnackbar(view,"Neni dosud urcena reakce na tuto akci.");
+        csnack.show();
     }
 
     private void makeArray(Vector<User> vector){
@@ -131,5 +165,26 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             index++;
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btn_cal:
+
+                DialogFragment newFragment = new ShiftPlanDateDialog();
+                newFragment.show(getActivity().getFragmentManager(), "datePicker");
+                break;
+            case R.id.date_arrow_left:
+                // date --
+                setHeaderDate(RelativeDayEnum.YESTERDAY);
+                break;
+            case R.id.date_arrow_right:
+                // date ++
+                setHeaderDate(RelativeDayEnum.TOMORROW);
+
+                break;
+        }
     }
 }

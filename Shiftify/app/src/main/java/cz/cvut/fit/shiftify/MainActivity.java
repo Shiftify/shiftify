@@ -2,6 +2,7 @@ package cz.cvut.fit.shiftify;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.app.DialogFragment;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 /**
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         }
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
         setNewFragmentContent(newSelectedMenuItem);
+
     }
 
 
@@ -186,18 +190,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // listenery na tlacitka fragmentu ShiftListFragment (ve Fragmentu je android nenajde)
-    // .... pozdeji presunout do toho fragmentu (jak?)
-    public void showNextDay(View view){
-
-    }
-    public void showPreviousDay(View view){
-
-    }
-
-    public void showDatePicker(View view){
-
-        DialogFragment newFragment = new ShiftPlanDateDialog();
-        newFragment.show(getFragmentManager(), "datePicker");
-    }
 }

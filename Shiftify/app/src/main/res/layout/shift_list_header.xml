@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/shift_list_header"
+    android:id="@id/shift_list_header"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_alignParentTop="true"
@@ -24,8 +24,7 @@
             android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/shift_list_header_date"
-            android:layout_toLeftOf="@+id/shift_list_header_date"
-            android:onClick="showPreviousDay"/>
+            android:layout_toLeftOf="@id/shift_list_header_date"/>
         <!--previous line meant for older APIs-->
 
         <ImageButton
@@ -37,8 +36,7 @@
             android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/shift_list_header_date"
-            android:layout_toRightOf="@id/shift_list_header_date"
-            android:onClick="showNextDay"/>
+            android:layout_toRightOf="@id/shift_list_header_date"/>
         <!--previous line meant for older APIs-->
 
         <View
@@ -49,13 +47,12 @@
             />
 
         <ImageButton
-            android:id="@+id/btn_date"
+            android:id="@+id/btn_cal"
             android:layout_height="40dp"
             android:layout_width="40dp"
             android:src="@drawable/ic_event_black_24dp"
             android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"
-            android:onClick="showDatePicker"/>
+            android:layout_alignParentRight="true"/>
 
         <TextView
             android:id="@id/shift_list_header_date"

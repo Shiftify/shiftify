@@ -15,12 +15,6 @@ import android.widget.TextView;
 
 public class CustomShiftListAdapter extends ArrayAdapter<String> {
 
-    /*
-    *
-    *predelat na adapter sichet !
-    *
-    *
-    * */
     private final Activity context;
     private final String[] personsArray;
     private final Integer[] imageId;
