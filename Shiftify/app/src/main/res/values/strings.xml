@@ -61,4 +61,8 @@
     <string name="person_delete_confirm">Opravdu chcete smazat tohoto pracovníka?</string>
     <string name="person_delete_title">Smazat pracovníka</string>
 
+    <string name="choose_date_from">Vybrat datum začátku</string>
+    <string name="choose_date_to">Vybrat datum konce</string>
+    <string name="unselected">Nevybran</string>
+
 </resources>
