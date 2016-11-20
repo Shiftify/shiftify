@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,14 +26,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="45dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton3"
             android:layout_gravity="center_horizontal"
             android:layout_height="60dp"
             android:clickable="true"
-            app:borderWidth="0dp"
             app:srcCompat="@drawable/icon_bar_example"
             app:backgroundTint="@android:color/holo_blue_light"
             android:layout_width="60dp"
@@ -91,21 +97,20 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <Button
+            android:text="@string/button_save"
+            android:shadowColor="@android:color/darker_gray"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_person_edit_save"
+            android:onClick="personEditSave"
+            style="@style/Widget.AppCompat.Button.Colored" />
+
+
     </LinearLayout>
 
-    <Button
-        android:text="@string/button_save"
-        android:shadowColor="@android:color/darker_gray"
-        android:background="@android:color/holo_blue_dark"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_person_edit_save"
-        android:onClick="personEditSave"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="40dp"
-        style="@style/Widget.AppCompat.Button.Colored" />
-
 </RelativeLayout>
+</ScrollView>

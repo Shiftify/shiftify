@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/person_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_person_black_24dp"
+            android:layout_marginRight="20dp"
+
+            />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/person_name"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20sp"
+                    android:layout_weight="0.8"
+
+                    android:text="Jan Novak" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:text="1. odpoledni (14:00 - 22:00)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shift_description" />
+            </TableRow>
+
+
+        </TableLayout>
+
+    </TableRow>
+
+</TableLayout>
