@@ -8,20 +8,20 @@ import android.provider.ContactsContract;
  */
 
 public class User{
-    public User() { }
+    public User() { setNickname(""); }
     public User(String firstName, String surname) {
-        this(firstName, surname, null, null, null);
+        this(firstName, surname, null, null, "");
     }
     public User(String firstName, String surname, String phoneNumber) {
-        this(firstName, surname, phoneNumber, null, null);
+        this(firstName, surname, phoneNumber, null, "");
     }
     public User(String firstName, String surname, String phoneNumber, String email) {
-        this(firstName, surname, phoneNumber, email, null);
+        this(firstName, surname, phoneNumber, email, "");
     }
     public User(String firstName, String surname, String phoneNumber, String email, String nickname) {
         setFirstName(firstName);
         setSurname(surname);
-        setNickname(nickname);
+        setNickname(nickname == null ? "" : nickname);
         setPhoneNumber(phoneNumber);
         setEmail(email);
     }
@@ -53,7 +53,7 @@ public class User{
         this.surname = surname;
     }
     public String getNickname() {
-        return nickname;
+        return nickname == null ? "" : nickname;
     }
     public void setNickname(String nickname) {
         this.nickname = nickname;
