@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -28,14 +27,15 @@ import cz.cvut.fit.shiftify.utils.CalendarUtils;
  * Created by Petr on 11/13/16.
  */
 
-public class ScheduleEditActivity extends AppCompatActivity implements ScheduleDatePickerDialog.CustomDatePickerDialogCallback {
+public class ScheduleEditActivity extends AppCompatActivity implements DateToDialog.DateToDialogCallback, DateFromDialog.DateFromDialogCallback {
 
     private Spinner mScheduleSpinner;
     private Spinner mFirstShiftSpinner;
-    private Button mDateFromButton;
-    private EditText mDateFromTextView;
-    private Button mDateToButton;
-    private EditText mDateToTextView;
+    private Button mDateFromRemoveButton;
+    private EditText mDateFromEditText;
+    private Button mDateToRemoveButton;
+    private Button mSaveButton;
+    private EditText mDateToEditText;
     private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
 
     private ScheduleType mScheduleType;
@@ -55,15 +55,23 @@ public class ScheduleEditActivity extends AppCompatActivity implements ScheduleD
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mScheduleSpinner = (Spinner) findViewById(R.id.spinnerScheduleType);
-        mFirstShiftSpinner = (Spinner) findViewById(R.id.spinnerFirstShift);
+        mScheduleSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
+        mFirstShiftSpinner = (Spinner) findViewById(R.id.spinner_first_shift);
 
-        mDateFromButton = (Button) findViewById(R.id.dateFromButton);
-        mDateFromTextView = (EditText) findViewById(R.id.dateFromText);
-        mDateToButton = (Button) findViewById(R.id.dateToButton);
-        mDateToTextView = (EditText) findViewById(R.id.dateToText);
+        mDateFromRemoveButton = (Button) findViewById(R.id.date_from_remove_button);
+        mDateFromEditText = (EditText) findViewById(R.id.date_from_text);
+        mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
+        mDateToEditText = (EditText) findViewById(R.id.date_to_text);
+        mSaveButton = (Button) findViewById(R.id.save_button);
 
-        setOnClickButtons();
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        setDateListeners();
         setScheduleTypeSpinner();
         setFirstShiftSpinner();
 
@@ -103,36 +111,50 @@ public class ScheduleEditActivity extends AppCompatActivity implements ScheduleD
         mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
     }
 
-    private void setOnClickButtons() {
-        mDateFromButton.setOnClickListener(new View.OnClickListener() {
+    private void setDateListeners() {
+        mDateFromEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendar(mDateFromTextView.getText().toString());
-                    dialogFragment = new ScheduleDatePickerDialog(getString(R.string.choose_date_from), calendar);
+                    Calendar calendar = CalendarUtils.getCalendar(mDateFromEditText.getText().toString());
+                    dialogFragment = new DateFromDialog(calendar);
                 } catch (ParseException e) {
-                    dialogFragment = new ScheduleDatePickerDialog(getString(R.string.choose_date_from));
+                    dialogFragment = new DateFromDialog();
                 }
                 dialogFragment.show(getFragmentManager(), DATE_FROM_FRAGMENT);
             }
         });
 
-        mDateToButton.setOnClickListener(new View.OnClickListener() {
+        mDateFromRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDateFromEditText.setText(getString(R.string.date_from_unselected));
+            }
+        });
+
+        mDateToEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendar(mDateToTextView.getText().toString());
-                    dialogFragment = new ScheduleDatePickerDialog(getString(R.string.choose_date_to), calendar);
+                    Calendar calendar = CalendarUtils.getCalendar(mDateToEditText.getText().toString());
+                    dialogFragment = new DateToDialog(calendar);
                 } catch (ParseException e) {
-                    dialogFragment = new ScheduleDatePickerDialog(getString(R.string.choose_date_to));
+                    dialogFragment = new DateToDialog();
                 }
                 dialogFragment.show(getFragmentManager(), DATE_TO_FRAGMENT);
             }
         });
 
+        mDateToRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDateToEditText.setText(getString(R.string.date_to_unselected));
+            }
+        });
     }
+
 
     private ScheduleType[] getScheduleTypes() {
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
@@ -171,12 +193,12 @@ public class ScheduleEditActivity extends AppCompatActivity implements ScheduleD
     }
 
     @Override
-    public void onDateSet(Calendar calendar, String title) {
-        String dateString = CalendarUtils.calendarToViewString(calendar);
-        if (title.equals(getString(R.string.choose_date_from))) {
-            mDateFromTextView.setText(dateString);
-        } else if (title.equals(getString(R.string.choose_date_to))) {
-            mDateToTextView.setText(dateString);
-        }
+    public void setDateFrom(Calendar calendar) {
+        mDateFromEditText.setText(CalendarUtils.calendarToViewString(calendar));
+    }
+
+    @Override
+    public void setDateTo(Calendar calendar) {
+        mDateToEditText.setText(CalendarUtils.calendarToViewString(calendar));
     }
 }

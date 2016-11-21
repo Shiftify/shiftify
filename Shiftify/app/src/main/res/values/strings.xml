@@ -62,7 +62,9 @@
     <string name="person_delete_title">Smazat pracovníka</string>
 
     <string name="choose_date_from">Vybrat datum začátku</string>
+    <string name="choose_date_remove">Smazat datum</string>
     <string name="choose_date_to">Vybrat datum konce</string>
-    <string name="unselected">Nevybran</string>
+    <string name="date_to_unselected">Datum konce nevybráno</string>
+    <string name="date_from_unselected">Datum začátku nevybráno</string>
 
 </resources>
