@@ -1,6 +1,7 @@
 package cz.cvut.fit.shiftify.schedules;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +19,12 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import cz.cvut.fit.shiftify.R;
+import cz.cvut.fit.shiftify.data.Schedule;
 import cz.cvut.fit.shiftify.data.ScheduleShift;
 import cz.cvut.fit.shiftify.data.ScheduleType;
 import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
+import cz.cvut.fit.shiftify.data.User;
+import cz.cvut.fit.shiftify.data.UserManager;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**
@@ -37,6 +41,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     private Button mSaveButton;
     private EditText mDateToEditText;
     private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
+
+    private Schedule mSchedule;
 
     private ScheduleType mScheduleType;
     private ScheduleShift mFirstShift;
@@ -64,9 +70,29 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mDateToEditText = (EditText) findViewById(R.id.date_to_text);
         mSaveButton = (Button) findViewById(R.id.save_button);
 
+
+        Intent intent = getIntent();
+        final Integer scheduleId = intent.getIntExtra(ScheduleListActivity.SCHEDULE_ID, -1);
+        final Integer userId = intent.getIntExtra(ScheduleListActivity.USER_ID, 0);
+        if (scheduleId == -1) {
+            mSchedule = new Schedule(userId, null, null, null, null);
+        } else {
+            UserManager userManager = new UserManager();
+            try {
+                mSchedule = userManager.schedule(scheduleId);
+            } catch (Exception e) {
+                mSchedule = new Schedule(userId, null, null, null, null);
+            }
+        }
+
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (scheduleId == -1) {
+//                    save
+                } else {
+//                    update
+                }
                 finish();
             }
         });

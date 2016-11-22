@@ -19,8 +19,10 @@ import android.widget.ListView;
 
 import java.util.Vector;
 
+import cz.cvut.fit.shiftify.PersonDetailActivity;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Schedule;
+import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
 
 /**
@@ -29,6 +31,8 @@ import cz.cvut.fit.shiftify.data.UserManager;
 
 public class ScheduleListActivity extends AppCompatActivity {
 
+    public static final String SCHEDULE_ID = "schedule_id";
+    public static final String USER_ID = "user_id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +44,22 @@ public class ScheduleListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragmentScheduleContainer, new ScheduleListFragment())
-                    .commit();
+        Intent intent = getIntent();
+        int userId = intent.getIntExtra(PersonDetailActivity.USER_ID, 0);
+        UserManager userManager = new UserManager();
+        User user;
+        try {
+            user = userManager.user(userId);
+        } catch (Exception e) {
+            user = null;
+            finish();
         }
 
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragmentScheduleContainer, new ScheduleListFragment(user))
+                    .commit();
+        }
     }
 
     @Override
@@ -63,6 +77,11 @@ public class ScheduleListActivity extends AppCompatActivity {
     public static class ScheduleListFragment extends ListFragment {
 
         private ArrayAdapter<Schedule> mScheduleAdapter;
+        private User mUser;
+
+        public ScheduleListFragment(User user) {
+            mUser = user;
+        }
 
 
         @Override
@@ -79,7 +98,7 @@ public class ScheduleListActivity extends AppCompatActivity {
             Vector<Schedule> scheduleVector = new Vector<>();
 
             try {
-                scheduleVector.addAll(userManager.schedules(1));
+                scheduleVector.addAll(userManager.schedules(mUser.getId()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -92,6 +111,8 @@ public class ScheduleListActivity extends AppCompatActivity {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+            intent.putExtra(SCHEDULE_ID, (int) id);
+            intent.putExtra(USER_ID, mUser.getId());
             startActivity(intent);
         }
     }

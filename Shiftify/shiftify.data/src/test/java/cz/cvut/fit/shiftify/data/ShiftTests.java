@@ -21,5 +21,8 @@ public class ShiftTests {
         eShift.setFrom(new Time(8, 0, 0));
         eShift.setDuration(new Time(5, 30, 0));
         assertFalse(eShift.persistsIntoNextDay());
+        eShift.setFrom(new Time(26, 0, 0));
+        eShift.setDuration(new Time(4, 30, 0));
+        assertTrue(eShift.persistsIntoNextDay());
     }
 }
