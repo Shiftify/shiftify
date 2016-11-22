@@ -15,15 +15,15 @@ public class WorkDay {
     public WorkDay(Date date, ScheduleShift scheduleShift) {
         this(date, scheduleShift, null);
     }
-    public WorkDay(Date date, ScheduleShift scheduleShift, ExceptionShift exceptionShift) {
+    public WorkDay(Date date, ScheduleShift scheduleShift, Vector<ExceptionShift> exceptionShifts) {
         setDate(date);
         setScheduleShift(scheduleShift);
-        setExceptionShift(exceptionShift);
+        setExceptionShifts(exceptionShifts);
     }
 
     protected Date date;
     protected ScheduleShift scheduleShift;
-    protected ExceptionShift exceptionShift;
+    protected Vector<ExceptionShift> exceptionShifts;
 
     // getters and setters
     public Date getDate() {
@@ -38,10 +38,44 @@ public class WorkDay {
     public void setScheduleShift(ScheduleShift scheduleShift) {
         this.scheduleShift = scheduleShift;
     }
-    public ExceptionShift getExceptionShift() {
-        return exceptionShift;
+    public Vector<ExceptionShift> getExceptionShifts() {
+        return exceptionShifts;
     }
-    public void setExceptionShift(ExceptionShift exceptionShift) {
-        this.exceptionShift = exceptionShift;
+    public void setExceptionShifts(Vector<ExceptionShift> exceptionShifts) {
+        this.exceptionShifts = exceptionShifts;
+    }
+
+    public boolean hasShifts() {
+         return hasScheduleShift() || hasExceptionShifts();
+    }
+    public boolean hasScheduleShift() {
+        return scheduleShift != null;
+    }
+    public boolean hasExceptionShifts() {
+        return exceptionShifts != null && !exceptionShifts.isEmpty();
+    }
+
+    public boolean persistsIntoNextDay() throws Exception {
+        if (hasExceptionShifts()) {
+            for (ExceptionShift ex : exceptionShifts)
+                if (ex.persistsIntoNextDay())
+                    return true;
+            return false;
+        }
+        if (hasScheduleShift())
+            return scheduleShift.persistsIntoNextDay();
+        return false;
+    }
+    public Vector<Shift> shiftsPersistingIntoNextDay() throws Exception {
+        Vector<Shift> shifts = new Vector<Shift>();
+        if (hasExceptionShifts()) {
+            for (ExceptionShift ex : exceptionShifts)
+                if (ex.persistsIntoNextDay())
+                    shifts.add(ex);
+            return shifts;
+        }
+        if (hasScheduleShift() && scheduleShift.persistsIntoNextDay())
+            shifts.add(scheduleShift);
+        return shifts;
     }
 }

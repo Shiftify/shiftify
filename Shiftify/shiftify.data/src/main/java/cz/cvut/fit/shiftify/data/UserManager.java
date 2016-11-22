@@ -272,17 +272,21 @@ public class UserManager {
         Vector<WorkDay> workDays = new Vector<WorkDay>();
         int count = (int)(to.getTime() - from.getTime()) / (60*60*24*1000) + 1;
         Date tmp = from;
+        Vector<ExceptionShift> vector;
         for (int i = 0; i < count; ++i) {
             switch(new Random().nextInt(5)) {
                 case 0:
+                    vector = new Vector<ExceptionShift>();
+                    vector.add(new ExceptionShift(new Time(8, 0, 0), new Time(4, 0, 0), 1, "Uteču dřív."));
                     workDays.add(new WorkDay(tmp, new ScheduleShift("2. noční", new Time(22, 0, 0),
-                            new Time(8, 0, 0), 2, 6, "Kdo usne, má padáka!"),
-                            new ExceptionShift(new Time(8, 0, 0), new Time(4, 0, 0), 1, "Uteču dřív.")));
+                            new Time(8, 0, 0), 2, 6, "Kdo usne, má padáka!"), vector));
                     break;
                 case 1:
+                    vector = new Vector<ExceptionShift>();
+                    vector.add(new ExceptionShift(new Time(15, 0, 0), new Time(2, 0, 0), 1));
+                    vector.add(new ExceptionShift(new Time(22, 0, 0), new Time(8, 0, 0), 5));
                     workDays.add(new WorkDay(tmp, new ScheduleShift("2. odpolední", new Time(14, 0, 0),
-                            new Time(8, 0, 0), 1, 4, "Kdo usne, má padáka!"),
-                            new ExceptionShift(new Time(15, 0, 0), new Time(9, 0, 0), 1)));
+                            new Time(8, 0, 0), 1, 4, "Kdo usne, má padáka!"), vector));
                     break;
                 case 2:
                     workDays.add(new WorkDay(tmp, new ScheduleShift("1. ranní", new Time(6, 0, 0),
