@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Schedule;
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**
  * Created by petr on 11/14/16.
@@ -37,12 +40,18 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
     }
 
     private String getScheduleTitle(Schedule schedule) {
-        String res = mContext.getResources().getString(R.string.schedule);
-        res += "( " + schedule.getFrom().toString() + " - ";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(schedule.getFrom());
+//        TODO After upgraded managers -> schedule.getScheduleType.getName();
+//        String res = schedule.getScheduleType.getName();
+        String res = "";
+        res += CalendarUtils.calendarToViewString(calendar) + " - ";
         if (schedule.getTo() != null) {
-            res += schedule.getTo().toString();
+            calendar.setTime(schedule.getTo());
+            res += CalendarUtils.calendarToViewString(calendar);
+        } else {
+            res += mContext.getString(R.string.undefinite_time);
         }
-        res += " )";
         return res;
     }
 }

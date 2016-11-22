@@ -23,6 +23,8 @@ import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 public class PersonDetailActivity extends AppCompatActivity {
 
+    public static final String USER_ID = "user_id";
+
     TextView fullname;
     TextView numberView;
     TextView emailView;
@@ -75,6 +77,7 @@ public class PersonDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PersonDetailActivity.this, ScheduleListActivity.class);
+                intent.putExtra(USER_ID, u.getId());
                 startActivity(intent);
             }
         });
@@ -102,14 +105,11 @@ public class PersonDetailActivity extends AppCompatActivity {
 
             case R.id.person_edit:
                 i = new Intent(this, PersonEditActivity.class);
-                i.putExtra("userId",u.getId());
+                i.putExtra("userId", u.getId());
                 startActivity(i);
                 break;
 
             case R.id.person_delete:
-
-
-
 
 
                 // THIS CAUSES AVD TO CRASH !!!!!!!!!!!!!!!!!!
@@ -123,17 +123,17 @@ public class PersonDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDialog(){
+    public void showDialog() {
 
-            DialogFragment newFragment = PersonDeleteDialogFragment.newInstance();
-            Bundle userBundle = new Bundle();
-            userBundle.putInt("userId",u.getId());
-            newFragment.setArguments(userBundle);
+        DialogFragment newFragment = PersonDeleteDialogFragment.newInstance();
+        Bundle userBundle = new Bundle();
+        userBundle.putInt("userId", u.getId());
+        newFragment.setArguments(userBundle);
 
-            newFragment.show(getFragmentManager(), "dialog");
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
-    public void showDataNotSetWarning(View view){
+    public void showDataNotSetWarning(View view) {
 
         Snackbar snack;
         snack = Snackbar.make(view, "Akce nelze dokoncit, nejprve vyplnte prislusne pole v detailech uzivatele.", Snackbar.LENGTH_SHORT);
@@ -145,55 +145,54 @@ public class PersonDetailActivity extends AppCompatActivity {
         snack.show();
     }
 
-    public void sendSMS(View view){
+    public void sendSMS(View view) {
 
         String phoneNumber = u.getPhoneNumber();
 
-        if(phoneNumber == null || phoneNumber == ""){
+        if (phoneNumber == null || phoneNumber == "") {
 
             showDataNotSetWarning(view);
             return;
         }
 
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.setData(Uri.parse("sms:"+phoneNumber));
+        sendIntent.setData(Uri.parse("sms:" + phoneNumber));
         startActivity(sendIntent);
 
     }
 
-    public void callPerson(View view){
+    public void callPerson(View view) {
 
         String phoneNumber = u.getPhoneNumber();
 
-        if(phoneNumber == null || phoneNumber == ""){
+        if (phoneNumber == null || phoneNumber == "") {
 
             showDataNotSetWarning(view);
             return;
         }
 
         Intent sendIntent = new Intent(Intent.ACTION_DIAL);
-        sendIntent.setData(Uri.parse("tel:"+phoneNumber));
+        sendIntent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(sendIntent);
 
     }
 
-    public void sendEmail(View view){
+    public void sendEmail(View view) {
 
         String emailAddress = u.getEmail();
 
-        if(emailAddress == null || emailAddress == ""){
+        if (emailAddress == null || emailAddress == "") {
 
             showDataNotSetWarning(view);
             return;
         }
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setType("text/plain");
-        intent.setData(Uri.parse("mailto:"+emailAddress));
+        intent.setData(Uri.parse("mailto:" + emailAddress));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
-
 
 
 }
