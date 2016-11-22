@@ -47,6 +47,12 @@ abstract public class Shift {
         this.description = description;
     }
 
+    public String getName() {
+        return null;
+    }
+    public Boolean getIsWorking() {
+        return true;
+    }
     public boolean persistsIntoNextDay() throws Exception {
         if (from == null || duration == null)
             throw new Exception("Null attribute (From or Duration or both) in Shift object.");

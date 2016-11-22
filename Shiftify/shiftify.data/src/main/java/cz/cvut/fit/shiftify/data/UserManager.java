@@ -178,9 +178,9 @@ public class UserManager {
     public ExceptionInSchedule exceptionInSchedule(int exceptionInScheduleId) throws Exception {
         ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(new Date(116, 10, 4), 1, "Need to finish some stuff.");
         Vector<ExceptionShift> shifts = new Vector<ExceptionShift>();
-        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, "Staff meating"));
-        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, "Management meating"));
-        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), exceptionInScheduleId));
+        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, true, "Staff meating"));
+        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, true, "Management meating"));
+        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), exceptionInScheduleId, true));
         for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         exceptionInSchedule.setId(exceptionInScheduleId);
         exceptionInSchedule.setShifts(shifts);
@@ -193,9 +193,9 @@ public class UserManager {
     public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, Date date) throws Exception {
         ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(date, 1, "Need to finish some stuff.");
         Vector<ExceptionShift> shifts = new Vector<ExceptionShift>();
-        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, "Staff meating"));
-        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1, "Management meating"));
-        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1));
+        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true, "Staff meating"));
+        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1, true, "Management meating"));
+        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true));
         for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         exceptionInSchedule.setId(1);
         exceptionInSchedule.setShifts(shifts);
@@ -209,18 +209,18 @@ public class UserManager {
         Vector<ExceptionInSchedule> exceptions = new Vector<ExceptionInSchedule>();
         ExceptionInSchedule exception = new ExceptionInSchedule(from, 1);
         Vector<ExceptionShift> shifts = new Vector<ExceptionShift>();
-        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1));
-        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1));
-        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, "Management meating"));
+        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true));
+        shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1, true));
+        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true, "Management meating"));
         for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
         exception = new ExceptionInSchedule(to, 1, "Need to finish some stuff.");
         shifts = new Vector<ExceptionShift>();
-        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, "Staff meating"));
-        shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1, "Management meating"));
-        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1));
+        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true, "Staff meating"));
+        shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1, true, "Management meating"));
+        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true));
         for (int i = 4; i <= shifts.size(); ++i) shifts.get(i-4).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
@@ -235,9 +235,9 @@ public class UserManager {
         Vector<ExceptionInSchedule> exceptions = new Vector<ExceptionInSchedule>();
         ExceptionInSchedule exception = new ExceptionInSchedule(new Date(116, 10, 4), 1);
         Vector<ExceptionShift> shifts = new Vector<ExceptionShift>();
-        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1));
-        shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1));
-        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, "Staff meating"));
+        shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true));
+        shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1, true));
+        shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true, "Staff meating"));
         for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
@@ -255,9 +255,10 @@ public class UserManager {
      * it can also have an exceptionShift. This workDay has a date given as parameter.
      */
     public WorkDay shiftsForDate(int userId, Date date) throws Exception {
-        WorkDay workDay = new WorkDay(date,
-                new ScheduleShift("2. noční", new Time(22, 0, 0),
-                        new Time(8, 0, 0), 2, 5, "Kdo usne, ma padaka!"));
+        Vector<Shift> shifts = new Vector<Shift>();
+        shifts.add(new ScheduleShift("2. noční", new Time(22, 0, 0), new Time(8, 0, 0), 2, 5,
+                "Kdo usne, ma padaka!"));
+        WorkDay workDay = new WorkDay(date, shifts);
         return workDay;
     }
 
@@ -272,29 +273,33 @@ public class UserManager {
         Vector<WorkDay> workDays = new Vector<WorkDay>();
         int count = (int)(to.getTime() - from.getTime()) / (60*60*24*1000) + 1;
         Date tmp = from;
-        Vector<ExceptionShift> vector;
+        Vector<Shift> vector;
         for (int i = 0; i < count; ++i) {
+            vector = new Vector<Shift>();
             switch(new Random().nextInt(5)) {
                 case 0:
-                    vector = new Vector<ExceptionShift>();
-                    vector.add(new ExceptionShift(new Time(8, 0, 0), new Time(4, 0, 0), 1, "Uteču dřív."));
-                    workDays.add(new WorkDay(tmp, new ScheduleShift("2. noční", new Time(22, 0, 0),
-                            new Time(8, 0, 0), 2, 6, "Kdo usne, má padáka!"), vector));
+                    vector.add(new ExceptionShift(new Time(8, 0, 0), new Time(4, 0, 0), 1, true, "Uteču dřív."));
+                    vector.add(new ExceptionShift(new Time(22, 0, 0), new Time(2, 0, 0), 1, false, "Uteču dřív."));
+                    workDays.add(new WorkDay(tmp, vector));
                     break;
                 case 1:
-                    vector = new Vector<ExceptionShift>();
-                    vector.add(new ExceptionShift(new Time(15, 0, 0), new Time(2, 0, 0), 1));
-                    vector.add(new ExceptionShift(new Time(22, 0, 0), new Time(8, 0, 0), 5));
-                    workDays.add(new WorkDay(tmp, new ScheduleShift("2. odpolední", new Time(14, 0, 0),
-                            new Time(8, 0, 0), 1, 4, "Kdo usne, má padáka!"), vector));
+                    vector.add(new ScheduleShift("2. odpolední", new Time(14, 0, 0),
+                            new Time(1, 0, 0), 1, 4, "Kdo usne, má padáka!"));
+                    vector.add(new ExceptionShift(new Time(15, 0, 0), new Time(2, 0, 0), 1, false));
+                    vector.add(new ScheduleShift("2. odpolední", new Time(17, 0, 0),
+                            new Time(5, 0, 0), 1, 4, "Kdo usne, má padáka!"));
+                    vector.add(new ExceptionShift(new Time(22, 0, 0), new Time(2, 0, 0), 5, true));
+                    workDays.add(new WorkDay(tmp, vector));
                     break;
                 case 2:
-                    workDays.add(new WorkDay(tmp, new ScheduleShift("1. ranní", new Time(6, 0, 0),
-                            new Time(8, 0, 0), 2, 1)));
+                    vector.add(new ScheduleShift("1. ranní", new Time(6, 0, 0),
+                            new Time(8, 0, 0), 2, 1));
+                    workDays.add(new WorkDay(tmp, vector));
                     break;
                 case 3:
-                    workDays.add(new WorkDay(tmp, new ScheduleShift("1. odpolední", new Time(14, 0, 0),
-                            new Time(8, 0, 0), 1, 3)));
+                    vector.add(new ScheduleShift("1. odpolední", new Time(14, 0, 0),
+                            new Time(8, 0, 0), 1, 3));
+                    workDays.add(new WorkDay(tmp, vector));
                     break;
                 default:
                     workDays.add(new WorkDay(tmp));

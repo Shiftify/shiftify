@@ -10,20 +10,15 @@ import java.util.Vector;
 public class WorkDay {
     public WorkDay() { }
     public WorkDay(Date date) { // no work this day
-        this(date, null, null);
+        this(date, null);
     }
-    public WorkDay(Date date, ScheduleShift scheduleShift) {
-        this(date, scheduleShift, null);
-    }
-    public WorkDay(Date date, ScheduleShift scheduleShift, Vector<ExceptionShift> exceptionShifts) {
+    public WorkDay(Date date, Vector<Shift> shifts) {
         setDate(date);
-        setScheduleShift(scheduleShift);
-        setExceptionShifts(exceptionShifts);
+        setShifts(shifts);
     }
 
     protected Date date;
-    protected ScheduleShift scheduleShift;
-    protected Vector<ExceptionShift> exceptionShifts;
+    protected Vector<Shift> shifts;
 
     // getters and setters
     public Date getDate() {
@@ -32,50 +27,14 @@ public class WorkDay {
     public void setDate(Date date) {
         this.date = date;
     }
-    public ScheduleShift getScheduleShift() {
-        return scheduleShift;
+    public Vector<Shift> getShifts() {
+        return shifts;
     }
-    public void setScheduleShift(ScheduleShift scheduleShift) {
-        this.scheduleShift = scheduleShift;
-    }
-    public Vector<ExceptionShift> getExceptionShifts() {
-        return exceptionShifts;
-    }
-    public void setExceptionShifts(Vector<ExceptionShift> exceptionShifts) {
-        this.exceptionShifts = exceptionShifts;
+    public void setShifts(Vector<Shift> shifts) {
+        this.shifts = shifts;
     }
 
     public boolean hasShifts() {
-         return hasScheduleShift() || hasExceptionShifts();
-    }
-    public boolean hasScheduleShift() {
-        return scheduleShift != null;
-    }
-    public boolean hasExceptionShifts() {
-        return exceptionShifts != null && !exceptionShifts.isEmpty();
-    }
-
-    public boolean persistsIntoNextDay() throws Exception {
-        if (hasExceptionShifts()) {
-            for (ExceptionShift ex : exceptionShifts)
-                if (ex.persistsIntoNextDay())
-                    return true;
-            return false;
-        }
-        if (hasScheduleShift())
-            return scheduleShift.persistsIntoNextDay();
-        return false;
-    }
-    public Vector<Shift> shiftsPersistingIntoNextDay() throws Exception {
-        Vector<Shift> shifts = new Vector<Shift>();
-        if (hasExceptionShifts()) {
-            for (ExceptionShift ex : exceptionShifts)
-                if (ex.persistsIntoNextDay())
-                    shifts.add(ex);
-            return shifts;
-        }
-        if (hasScheduleShift() && scheduleShift.persistsIntoNextDay())
-            shifts.add(scheduleShift);
-        return shifts;
+         return shifts == null || shifts.isEmpty();
     }
 }

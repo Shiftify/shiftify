@@ -8,16 +8,18 @@ import java.sql.Time;
 
 public class ExceptionShift extends Shift {
     public ExceptionShift() { }
-    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId) {
-        this(from, duration, exceptionInScheduleId, null);
+    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, Boolean isWorking) {
+        this(from, duration, exceptionInScheduleId, isWorking, null);
     }
-    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, String description) {
+    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, Boolean isWorking, String description) {
         super(from, duration, description);
         setExceptionInScheduleId(exceptionInScheduleId);
+        setIsWorking(isWorking);
     }
 
     protected Integer id;
     protected Integer exceptionInScheduleId;
+    protected Boolean isWorking;
 
     // getters and setters
     public Integer getId() {
@@ -31,5 +33,11 @@ public class ExceptionShift extends Shift {
     }
     public void setExceptionInScheduleId(Integer exceptionInScheduleId) {
         this.exceptionInScheduleId = exceptionInScheduleId;
+    }
+    public Boolean getIsWorking() {
+        return isWorking;
+    }
+    public void setIsWorking(Boolean isWorking) {
+        this.isWorking = isWorking;
     }
 }
