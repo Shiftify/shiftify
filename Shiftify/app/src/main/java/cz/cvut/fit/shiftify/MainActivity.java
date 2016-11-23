@@ -20,13 +20,15 @@ import android.app.DialogFragment;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 
 /**
  * Main activity
  * In this class is implemented navigation drawer logic
  * You can switch fragment by navigation drawer
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShiftPlanDateDialog.ShiftPlanDialogCallback {
 
 
     private static final String SELECTED_ITEM_ID = "selected_item";
@@ -64,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
 
             selectedItemId = savedInstanceState.getInt(SELECTED_ITEM_ID, DEFAULT_ITEM);
-        }
-        else {
+        } else {
 
             selectedItemId = DEFAULT_ITEM;
 
@@ -128,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (selectedItemId == R.id.nav_item_feedback) {
             sendFeedBack();
-        }
-        else {
+        } else {
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
                     fragmentClass = PersonsListFragment.class;
@@ -190,4 +190,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void setSelectedDay(Calendar calendar) {
+
+        ShiftListFragment shiftListFragment = (ShiftListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (shiftListFragment != null) {
+            shiftListFragment.setSelectedDate(calendar);
+        }
+    }
 }

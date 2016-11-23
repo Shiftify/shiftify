@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -97,15 +98,17 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             }
         });
 
+
+        mScheduleSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
+        mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
         setDateListeners();
-        setScheduleTypeSpinner();
-        setFirstShiftSpinner();
 
         mScheduleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 mScheduleType = getScheduleTypes()[position];
-                setFirstShiftSpinner();
+                mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(ScheduleEditActivity.this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
+                mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
             }
 
             @Override
@@ -125,16 +128,28 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
             }
         });
+
+        fillScheduleContent();
     }
 
-    private void setScheduleTypeSpinner() {
-        mScheduleSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
-        mScheduleType = (ScheduleType) mScheduleSpinner.getSelectedItem();
-    }
+    private void fillScheduleContent() {
+        if (mSchedule.getScheduleTypeId() != 0 || mSchedule.getStartingDayOfScheduleCycle() != 0) {
+//            TODO select scheduleType and firstShift in Spinner
+        } else {
+            mScheduleType = (ScheduleType) mScheduleSpinner.getSelectedItem();
+            mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
+        }
 
-    private void setFirstShiftSpinner() {
-        mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
-        mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
+        if (mSchedule.getFrom() != null) {
+            Calendar calendarFrom = Calendar.getInstance();
+            calendarFrom.setTime(mSchedule.getFrom());
+            mDateFromEditText.setText(CalendarUtils.calendarToViewString(calendarFrom));
+        }
+        if (mSchedule.getTo() != null) {
+            Calendar calendarTo = Calendar.getInstance();
+            calendarTo.setTime(mSchedule.getTo());
+            mDateToEditText.setText(CalendarUtils.calendarToViewString(calendarTo));
+        }
     }
 
     private void setDateListeners() {

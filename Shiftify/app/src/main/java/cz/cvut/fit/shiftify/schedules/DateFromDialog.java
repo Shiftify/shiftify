@@ -15,9 +15,6 @@ import java.util.Calendar;
 
 public class DateFromDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    public static final String DAY = "day";
-    public static final String MONTH = "month";
-    public static final String YEAR = "year";
     private Calendar mCalendar;
     private DateFromDialogCallback mCallback;
 
@@ -48,9 +45,8 @@ public class DateFromDialog extends DialogFragment implements DatePickerDialog.O
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this,
+        return new DatePickerDialog(getActivity(), this,
                 mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-        return datePickerDialog;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,16 @@ import java.util.Vector;
 
 import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 public class ShiftListFragment extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
-
 
     Vector<User> allWorkers;
     Vector<User> freeWorkers;
     Vector<User> nonfreeWorkers;
     UserManager userManager;
     CustomShiftListAdapter adapter;
-    String [] personsArray;
+    String[] personsArray;
 
     TextView headerDate;
     ImageButton btnCal;
@@ -54,31 +55,31 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     };
 
-/*
-*
-*    co predavat adapteru??
-*    vektor Useru a Shifts ? - ale jak je spojit dohromady
-*    nebo vektor dvojic User, String (string je ta nazev sichty) ?
-*
-*/
-@Nullable
-@Override
-public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_shifts, container, false);
+    /*
+    *
+    *    co predavat adapteru??
+    *    vektor Useru a Shifts ? - ale jak je spojit dohromady
+    *    nebo vektor dvojic User, String (string je ta nazev sichty) ?
+    *
+    */
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_shifts, container, false);
 
-    btnCal = (ImageButton) view.findViewById(R.id.btn_cal);
-    btnArrLeft = (ImageButton) view.findViewById(R.id.date_arrow_left);
-    btnArrRight = (ImageButton) view.findViewById(R.id.date_arrow_right);
+        btnCal = (ImageButton) view.findViewById(R.id.btn_cal);
+        btnArrLeft = (ImageButton) view.findViewById(R.id.date_arrow_left);
+        btnArrRight = (ImageButton) view.findViewById(R.id.date_arrow_right);
 
-    btnCal.setOnClickListener(this);
-    btnArrLeft.setOnClickListener(this);
-    btnArrRight.setOnClickListener(this);
+        btnCal.setOnClickListener(this);
+        btnArrLeft.setOnClickListener(this);
+        btnArrRight.setOnClickListener(this);
 
-    return view;
-}
+        return view;
+    }
 
 
-    private void getFreeWorkersArray(){
+    private void getFreeWorkersArray() {
 
 
     }
@@ -99,7 +100,7 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         getListView().setOnItemClickListener(this);
     }
 
-    private void loadWorkers(){
+    private void loadWorkers() {
 
         freeWorkers = new Vector<User>();
         userManager = new UserManager();
@@ -110,7 +111,7 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         try {
             allWorkers = userManager.users();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println("Nepovedlo se nacist uzivatele z DB.");
         }
 
@@ -119,7 +120,7 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 
     }
 
-    private void initHeaderDate(){
+    private void initHeaderDate() {
 
         cal = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -127,7 +128,7 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         headerDate.setText(dateStr);
     }
 
-    private void setHeaderDate(RelativeDayEnum dayOffset){
+    private void setHeaderDate(RelativeDayEnum dayOffset) {
 
         Date d;
         try {
@@ -144,21 +145,21 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        CustomSnackbar csnack = new CustomSnackbar(view,"Neni dosud urcena reakce na tuto akci.");
+        CustomSnackbar csnack = new CustomSnackbar(view, "Neni dosud urcena reakce na tuto akci.");
         csnack.show();
     }
 
-    private void makeArray(Vector<User> vector){
+    private void makeArray(Vector<User> vector) {
 
         int index = 0;
-        String firstname,surname,nickname;
+        String firstname, surname, nickname;
 
-        for (User u:
+        for (User u :
                 vector) {
 
             firstname = u.getFirstName();
             surname = u.getSurname();
-            nickname = (u.getNickname()== null ? "" : "\"" + u.getNickname() + "\"");
+            nickname = (u.getNickname() == null ? "" : "\"" + u.getNickname() + "\"");
 
 
             personsArray[index] = firstname + " " + nickname + " " + surname;
@@ -186,5 +187,10 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 
                 break;
         }
+    }
+
+    public void setSelectedDate(Calendar calendar) {
+        headerDate.setText(CalendarUtils.calendarToViewString(calendar));
+//        TODO dalsi veci
     }
 }
