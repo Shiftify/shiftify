@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
@@ -50,6 +51,11 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
         Calendar calendar = Calendar.getInstance();
         calendar.set(i, i1, i2);
         mCallback.setSelectedDay(calendar);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
     }
 
     public interface ShiftPlanDialogCallback {
