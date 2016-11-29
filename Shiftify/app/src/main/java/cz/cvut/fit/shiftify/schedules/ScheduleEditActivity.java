@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,7 +40,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     private Button mDateFromRemoveButton;
     private EditText mDateFromEditText;
     private Button mDateToRemoveButton;
-    private Button mSaveButton;
     private EditText mDateToEditText;
     private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
 
@@ -69,7 +69,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mDateFromEditText = (EditText) findViewById(R.id.date_from_text);
         mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
         mDateToEditText = (EditText) findViewById(R.id.date_to_text);
-        mSaveButton = (Button) findViewById(R.id.save_button);
 
 
         Intent intent = getIntent();
@@ -85,18 +84,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
                 mSchedule = new Schedule(userId, null, null, null, null);
             }
         }
-
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scheduleId == -1) {
-//                    save
-                } else {
-//                    update
-                }
-                finish();
-            }
-        });
 
 
         mScheduleSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
@@ -223,9 +210,23 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.done_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.done_item:
+                if (mSchedule.getId() == null) {
+//                    save
+                } else {
+//                    update
+                }
                 this.finish();
                 return true;
             default:

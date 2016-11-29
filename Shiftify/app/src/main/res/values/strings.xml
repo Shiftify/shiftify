@@ -44,9 +44,9 @@
     <string name="title_activity_person_detail">Detail pracovníka</string>
     <string name="title_activity_person_edit">Upravit údaje</string>
 
-    <string name="title_activity_schedule_list">Rozpis šichet</string>
-    <string name="title_activity_schedule_add">Přidat rozpis šichet</string>
-    <string name="title_activity_schedule_edit">Upravit rozpis šichet</string>
+    <string name="schedules_list">Rozpis plánů šichet</string>
+    <string name="schedule_add">Přidat plán šichet</string>
+    <string name="schedule_edit">U</string>
 
     <string name="placeholder_firstname">Jméno</string>
     <string name="placeholder_surname">Příjmení</string>
