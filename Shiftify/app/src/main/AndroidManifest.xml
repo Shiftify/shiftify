@@ -22,19 +22,24 @@
         <activity
             android:name=".PersonEditActivity"
             android:label="@string/title_activity_person_edit"
-            android:theme="@style/AppTheme"
-            ></activity>
+            android:theme="@style/AppTheme" />
 
         /* Schedule - activities */
         <activity
             android:name=".schedules.ScheduleListActivity"
             android:label="@string/schedules_list" />
         <activity
-            android:name=".schedules.ScheduleAddActivity"
-            android:label="@string/schedule_add" />
-        <activity
             android:name=".schedules.ScheduleEditActivity"
             android:label="@string/schedule_edit" />
+
+        /* Exception - activities */
+        <activity
+            android:name=".exceptions.ExceptionListActivity"
+            android:label="@string/exception_list" />
+
+        <activity
+            android:name=".exceptions.ExceptionEditActivity"
+            android:label="@string/exception_list" />
 
     </application>
 

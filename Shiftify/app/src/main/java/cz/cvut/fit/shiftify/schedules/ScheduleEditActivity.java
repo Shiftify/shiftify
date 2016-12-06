@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +24,9 @@ import cz.cvut.fit.shiftify.data.Schedule;
 import cz.cvut.fit.shiftify.data.ScheduleShift;
 import cz.cvut.fit.shiftify.data.ScheduleType;
 import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
-import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
+import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 /**
  * Created by Petr on 11/13/16.
@@ -55,12 +54,17 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_add);
+        setContentView(R.layout.activity_schedule_edit);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Intent intent = getIntent();
+        final Integer scheduleId = intent.getIntExtra(ScheduleListActivity.SCHEDULE_ID, -1);
+        final Integer userId = intent.getIntExtra(ScheduleListActivity.USER_ID, 0);
+
+        if (scheduleId == -1) {
+            ToolbarUtils.setToolbar(this, R.string.schedule_add);
+        } else {
+            ToolbarUtils.setToolbar(this);
+        }
 
         mScheduleSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
         mFirstShiftSpinner = (Spinner) findViewById(R.id.spinner_first_shift);
@@ -70,10 +74,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
         mDateToEditText = (EditText) findViewById(R.id.date_to_text);
 
-
-        Intent intent = getIntent();
-        final Integer scheduleId = intent.getIntExtra(ScheduleListActivity.SCHEDULE_ID, -1);
-        final Integer userId = intent.getIntExtra(ScheduleListActivity.USER_ID, 0);
         if (scheduleId == -1) {
             mSchedule = new Schedule(userId, null, null, null, null);
         } else {

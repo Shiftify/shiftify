@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 
@@ -95,18 +96,16 @@ public class PersonDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        Intent i;
-
+        Intent intent;
         switch (id) {
 
             case android.R.id.home:
                 this.finish();
                 break;
-
             case R.id.person_edit:
-                i = new Intent(this, PersonEditActivity.class);
-                i.putExtra("userId", u.getId());
-                startActivity(i);
+                intent = new Intent(this, PersonEditActivity.class);
+                intent.putExtra("userId", u.getId());
+                startActivity(intent);
                 break;
 
             case R.id.person_delete:
@@ -118,8 +117,19 @@ public class PersonDetailActivity extends AppCompatActivity {
                 showDialog();
 
                 break;
-        }
+            case R.id.exception_list:
+                intent = new Intent(this, ExceptionListActivity.class);
+                intent.putExtra(USER_ID, u.getId());
+                startActivity(intent);
+                break;
 
+            case R.id.schedule_list:
+                intent = new Intent(this, ScheduleListActivity.class);
+                intent.putExtra(USER_ID, u.getId());
+                startActivity(intent);
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

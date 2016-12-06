@@ -46,7 +46,7 @@
 
     <string name="schedules_list">Rozpis plánů šichet</string>
     <string name="schedule_add">Přidat plán šichet</string>
-    <string name="schedule_edit">U</string>
+    <string name="schedule_edit">Upravit rozspis</string>
 
     <string name="placeholder_firstname">Jméno</string>
     <string name="placeholder_surname">Příjmení</string>
@@ -67,5 +67,10 @@
     <string name="date_to_unselected">Datum konce nevybráno</string>
     <string name="date_from_unselected">Datum začátku nevybráno</string>
     <string name="undefinite_time">neurčito</string>
+
+    <string name="exception_list">Seznam vyjímek</string>
+    <string name="exception">Vyjímka</string>
+    <string name="exception_edit">Upravit vyjímku</string>
+    <string name="exception_add">Přidat vyjímku</string>
 
 </resources>

@@ -20,5 +20,8 @@
         <item
             android:id="@+id/schedule_list"
             android:title="@string/schedules_list" />
+        <item
+            android:id="@+id/exception_list"
+            android:title="@string/exception_list" />
     </group>
 </menu>
