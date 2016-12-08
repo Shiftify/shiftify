@@ -3,11 +3,51 @@ package cz.cvut.fit.shiftify.data;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 
+import java.util.HashMap;
+
 /**
  * Created by lukas on 11.11.2016.
  */
 
-public class User{
+public class User extends DbTable {
+    // Columns names
+    protected static final String COL_NAME_FIRSTNAME = "FirstName";
+    protected static final String COL_NAME_SURNAME = "Surname";
+    protected static final String COL_NAME_NICKNAME = "Nickname";
+    protected static final String COL_NAME_PHONENUMBER = "PhoneNumber";
+    protected static final String COL_NAME_EMAIL = "Email";
+    protected static final String COL_NAME_PICTUREPATH = "PicturePath";
+    // Overridden methods of DbTable
+    protected static String[] getColumnNames() {
+        return new String[] { COL_NAME_FIRSTNAME, COL_NAME_SURNAME, COL_NAME_NICKNAME,
+                COL_NAME_PHONENUMBER, COL_NAME_EMAIL, COL_NAME_PICTUREPATH };
+    }
+    protected static HashMap<String, ColumnType> getColumnTypes() {
+        HashMap<String, ColumnType> types = new HashMap<>();
+        types.put(COL_NAME_FIRSTNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_SURNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_NICKNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_PHONENUMBER, ColumnType.NVARCHAR50);
+        types.put(COL_NAME_EMAIL, ColumnType.NVARCHAR255);
+        types.put(COL_NAME_PICTUREPATH, ColumnType.NVARCHAR1000);
+        return types;
+    }
+    protected static HashMap<String, TableAttribute[]> getColumnAttributes() {
+        HashMap<String, TableAttribute[]> attrs = new HashMap<>();
+        attrs.put(COL_NAME_FIRSTNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_SURNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_NICKNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_PHONENUMBER, new TableAttribute[] { TableAttribute.UNIQUE });
+        attrs.put(COL_NAME_EMAIL, new TableAttribute[] { TableAttribute.UNIQUE });
+        return attrs;
+    }
+    protected static HashMap<String, String[]> getUniqueConstraints() {
+        HashMap<String, String[]> constraints = new HashMap<>();
+        constraints.put("unique_User_Names", new String[] { COL_NAME_FIRSTNAME,
+                COL_NAME_SURNAME, COL_NAME_NICKNAME });
+        return constraints;
+    }
+
     public User() { setNickname(""); }
     public User(String firstName, String surname) {
         this(firstName, surname, null, null, "");
@@ -18,10 +58,12 @@ public class User{
     public User(String firstName, String surname, String phoneNumber, String email) {
         this(firstName, surname, phoneNumber, email, null, null);
     }
-    public User(String firstName, String surname, String phoneNumber, String email, String nickname) {
+    public User(String firstName, String surname, String phoneNumber, String email,
+                String nickname) {
         this(firstName, surname, phoneNumber, email, nickname, null);
     }
-    public User(String firstName, String surname, String phoneNumber, String email, String nickname, String picturePath) {
+    public User(String firstName, String surname, String phoneNumber, String email,
+                String nickname, String picturePath) {
         setFirstName(firstName);
         setSurname(surname);
         setNickname(nickname);
@@ -30,7 +72,6 @@ public class User{
         setPicturePath(picturePath);
     }
 
-    protected Integer id;
     protected String firstName;
     protected String surname;
     protected String nickname;
@@ -39,12 +80,6 @@ public class User{
     protected String picturePath;
 
     // getters and setters
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
     public String getFirstName() {
         return firstName;
     }
@@ -58,7 +93,7 @@ public class User{
         this.surname = surname;
     }
     public String getNickname() {
-        return nickname == null ? "" : nickname;
+        return (nickname == null || nickname.isEmpty() ? null : nickname);
     }
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? "" : nickname;
