@@ -45,28 +45,38 @@ public abstract class DbTable {
         }
     }
 
-    public static final String TABLE_NAME = null;
-    public static final String COL_NAME_ID = "Id";
-    public static final String[] COLUMN_NAMES =
-            Utilities.concatStringArrays(getDefaultColumnNames(), getColumnNames());
-    public static final HashMap<String, ColumnType> COLUMN_TYPES =
-            Utilities.concatHashMaps(getDefaultColumnTypes(), getColumnTypes());
-    public static final HashMap<String, TableAttribute[]> COLUMN_ATTRIBUTES =
-            Utilities.concatHashMaps(getDefaultColumnAttributes(), getColumnAttributes());
-    public static final HashMap<String, String> FOREIGN_KEYS =
-            Utilities.concatHashMaps(getDefaultForeignKeys(), getForeignKeys());
-    public static final HashMap<String, String[]> UNIQUE_CONSTRAINTS =
-            Utilities.concatHashMaps(getDefaultUniqueConstraints(), getUniqueConstraints());
+    protected void setupVariables() {
+        COL_NAME_ID = "Id";
+        COLUMN_NAMES =
+                Utilities.concatStringArrays(getDefaultColumnNames(), getColumnNames());
+        COLUMN_TYPES =
+                Utilities.concatHashMaps(getDefaultColumnTypes(), getColumnTypes());
+        COLUMN_ATTRIBUTES =
+                Utilities.concatHashMaps(getDefaultColumnAttributes(), getColumnAttributes());
+        FOREIGN_KEYS =
+                Utilities.concatHashMaps(getDefaultForeignKeys(), getForeignKeys());
+        UNIQUE_CONSTRAINTS =
+                Utilities.concatHashMaps(getDefaultUniqueConstraints(), getUniqueConstraints());
+    }
 
-    public static String createTableQuery() {
+    protected String TABLE_NAME;
+    protected String COL_NAME_ID;
+    protected String[] COLUMN_NAMES;
+    protected HashMap<String, ColumnType> COLUMN_TYPES;
+    protected HashMap<String, TableAttribute[]> COLUMN_ATTRIBUTES;
+    protected HashMap<String, String> FOREIGN_KEYS;
+    protected HashMap<String, String[]> UNIQUE_CONSTRAINTS;
+
+    public String createTableQuery() {
         String query = "CREATE TABLE '" + TABLE_NAME + "'(",
                 foreignKeys = "";
         boolean first = true;
         for (String col : COLUMN_NAMES) {
-            query += (first ? "" : ",") + "'" + col + "' " + COLUMN_TYPES.get(col);
+            query += (first ? "" : ",") + "'" + col + "' " + COLUMN_TYPES.get(col).getType();
             TableAttribute[] attrs = COLUMN_ATTRIBUTES.get(col);
-            for (TableAttribute attr : attrs)
-                query += " " + attr;
+            if (attrs != null)
+                for (TableAttribute attr : attrs)
+                    query += " " + attr.getAttribute();
             String targetTable;
             if ((targetTable = FOREIGN_KEYS.get(col)) != null)
                 foreignKeys += (foreignKeys.isEmpty() ? "" : ",") + foreignKey(col, targetTable, COL_NAME_ID);
@@ -78,53 +88,53 @@ public abstract class DbTable {
         return query;
     }
 
-    private static String[] getDefaultColumnNames() {
+    protected String[] getDefaultColumnNames() {
         return new String[] { COL_NAME_ID };
     }
-    private static HashMap<String, ColumnType> getDefaultColumnTypes() {
+    protected HashMap<String, ColumnType> getDefaultColumnTypes() {
         HashMap<String, ColumnType> types = new HashMap<>();
         types.put(COL_NAME_ID, ColumnType.INTEGER);
         return types;
     }
-    private static HashMap<String, TableAttribute[]> getDefaultColumnAttributes() {
+    protected HashMap<String, TableAttribute[]> getDefaultColumnAttributes() {
         HashMap<String, TableAttribute[]> columns = new HashMap<>();
         columns.put(COL_NAME_ID, new TableAttribute[] { TableAttribute.NOTNULL,
                 TableAttribute.PRIMARYKEY, TableAttribute.AUTOINCREMENT });
         return columns;
     }
-    private static HashMap<String, String> getDefaultForeignKeys() {
+    protected HashMap<String, String> getDefaultForeignKeys() {
         return new HashMap<>();
     }
-    private static HashMap<String, String[]> getDefaultUniqueConstraints() {
+    protected HashMap<String, String[]> getDefaultUniqueConstraints() {
         return new HashMap<>();
     }
     // Subclasses need to implement these if they've got these
-    protected static String[] getColumnNames() {
+    protected String[] getColumnNames() {
         return new String[] {};
     }
-    protected static HashMap<String, ColumnType> getColumnTypes() {
+    protected HashMap<String, ColumnType> getColumnTypes() {
         return new HashMap<>();
     }
-    protected static HashMap<String, TableAttribute[]> getColumnAttributes() {
+    protected HashMap<String, TableAttribute[]> getColumnAttributes() {
         return new HashMap<>();
     }
-    protected static HashMap<String, String> getForeignKeys() {
+    protected HashMap<String, String> getForeignKeys() {
         return new HashMap<>();
     }
-    protected static HashMap<String, String[]> getUniqueConstraints() {
+    protected HashMap<String, String[]> getUniqueConstraints() {
         return new HashMap<>();
     }
     // Helpful methods for createTableScript
-    private static String getUniqueIndices() {
+    private String getUniqueIndices() {
         String ret = "";
         for (HashMap.Entry<String, String[]> entry : UNIQUE_CONSTRAINTS.entrySet())
             ret += uniqueIndex(entry.getKey(), entry.getValue()) + "\n";
         return ret;
     }
-    private static String foreignKey(String key, String target_table, String target_column) {
+    private String foreignKey(String key, String target_table, String target_column) {
         return "FOREIGN KEY('" + key + "') REFERENCES '" + target_table + "'('" + target_column + "')";
     }
-    private static String uniqueIndex(String constraint_name, String[] columns) {
+    private String uniqueIndex(String constraint_name, String[] columns) {
         String ret = "CREATE UNIQUE INDEX '" + constraint_name + "' ON '" + TABLE_NAME + "'(";
         boolean first = true;
         for (String column : columns) {
@@ -134,7 +144,7 @@ public abstract class DbTable {
         return ret + ");";
     }
 
-    // Non-static methods to work with rows.
+    // Methods to work with rows.
     public String insertQuery(DbTable row, HashMap<String, String> values) {
         String query = "INSERT INTO '" + TABLE_NAME + "'(",
             vals = " VALUES(";
