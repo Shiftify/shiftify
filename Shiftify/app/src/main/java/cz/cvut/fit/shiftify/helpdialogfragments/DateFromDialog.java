@@ -1,4 +1,4 @@
-package cz.cvut.fit.shiftify.schedules;
+package cz.cvut.fit.shiftify.helpdialogfragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -13,16 +13,16 @@ import java.util.Calendar;
  * Created by petr on 11/20/16.
  */
 
-public class DateToDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DateFromDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private Calendar mCalendar;
-    private DateToDialogCallback mCallback;
+    private DateFromDialogCallback mCallback;
 
-    public DateToDialog() {
+    public DateFromDialog() {
         mCalendar = Calendar.getInstance();
     }
 
-    public DateToDialog(Calendar calendar) {
+    public DateFromDialog(Calendar calendar) {
         mCalendar = calendar;
     }
 
@@ -31,9 +31,9 @@ public class DateToDialog extends DialogFragment implements DatePickerDialog.OnD
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallback = (DateToDialogCallback) activity;
+            mCallback = (DateFromDialogCallback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement DateFromDialogCallback");
+            throw new ClassCastException(activity.toString() + " must implement " + DateFromDialogCallback.class.getName());
         }
     }
 
@@ -53,10 +53,10 @@ public class DateToDialog extends DialogFragment implements DatePickerDialog.OnD
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(i, i1, i2);
-        mCallback.setDateTo(calendar);
+        mCallback.setDateFrom(calendar);
     }
 
-    public interface DateToDialogCallback {
-        public void setDateTo(Calendar calendar);
+    public interface DateFromDialogCallback {
+        public void setDateFrom(Calendar calendar);
     }
 }

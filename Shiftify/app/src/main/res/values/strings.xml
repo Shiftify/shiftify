@@ -66,6 +66,8 @@
     <string name="choose_date_to">Vybrat datum konce</string>
     <string name="date_to_unselected">Datum konce nevybráno</string>
     <string name="date_from_unselected">Datum začátku nevybráno</string>
+    <string name="time_to_unselected">Čas konce nevybráno</string>
+    <string name="time_from_unselected">Čas začátku nevybráno</string>
     <string name="undefinite_time">neurčito</string>
 
     <string name="exception_list">Seznam vyjímek</string>

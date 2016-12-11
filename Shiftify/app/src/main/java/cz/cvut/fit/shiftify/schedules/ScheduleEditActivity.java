@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,8 @@ import cz.cvut.fit.shiftify.data.ScheduleShift;
 import cz.cvut.fit.shiftify.data.ScheduleType;
 import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
 import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.helpdialogfragments.DateFromDialog;
+import cz.cvut.fit.shiftify.helpdialogfragments.DateToDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
@@ -36,7 +37,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     private Spinner mScheduleSpinner;
     private Spinner mFirstShiftSpinner;
-    private Button mDateFromRemoveButton;
     private EditText mDateFromEditText;
     private Button mDateToRemoveButton;
     private EditText mDateToEditText;
@@ -69,7 +69,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mScheduleSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
         mFirstShiftSpinner = (Spinner) findViewById(R.id.spinner_first_shift);
 
-        mDateFromRemoveButton = (Button) findViewById(R.id.date_from_remove_button);
         mDateFromEditText = (EditText) findViewById(R.id.date_from_text);
         mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
         mDateToEditText = (EditText) findViewById(R.id.date_to_text);
@@ -130,12 +129,12 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         if (mSchedule.getFrom() != null) {
             Calendar calendarFrom = Calendar.getInstance();
             calendarFrom.setTime(mSchedule.getFrom());
-            mDateFromEditText.setText(CalendarUtils.calendarToViewString(calendarFrom));
+            mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendarFrom));
         }
         if (mSchedule.getTo() != null) {
             Calendar calendarTo = Calendar.getInstance();
             calendarTo.setTime(mSchedule.getTo());
-            mDateToEditText.setText(CalendarUtils.calendarToViewString(calendarTo));
+            mDateToEditText.setText(CalendarUtils.calendarToDateString(calendarTo));
         }
     }
 
@@ -145,7 +144,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendar(mDateFromEditText.getText().toString());
+                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateFromEditText.getText().toString());
                     dialogFragment = new DateFromDialog(calendar);
                 } catch (ParseException e) {
                     dialogFragment = new DateFromDialog();
@@ -154,19 +153,12 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             }
         });
 
-        mDateFromRemoveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDateFromEditText.setText(getString(R.string.date_from_unselected));
-            }
-        });
-
         mDateToEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendar(mDateToEditText.getText().toString());
+                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateToEditText.getText().toString());
                     dialogFragment = new DateToDialog(calendar);
                 } catch (ParseException e) {
                     dialogFragment = new DateToDialog();
@@ -236,11 +228,11 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     @Override
     public void setDateFrom(Calendar calendar) {
-        mDateFromEditText.setText(CalendarUtils.calendarToViewString(calendar));
+        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
     }
 
     @Override
     public void setDateTo(Calendar calendar) {
-        mDateToEditText.setText(CalendarUtils.calendarToViewString(calendar));
+        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
     }
 }

@@ -39,13 +39,13 @@
                 android:layout_weight="1"
                 android:focusable="false"
                 android:text="@string/date_from_unselected" />
-
-            <Button
-                android:id="@+id/date_from_remove_button"
+            <EditText
+                android:id="@+id/time_from_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/choose_date_remove" />
+                android:focusable="false"
+                android:text="@string/time_to_unselected" />
 
         </LinearLayout>
 
@@ -63,12 +63,13 @@
                 android:focusable="false"
                 android:text="@string/date_to_unselected" />
 
-            <Button
-                android:id="@+id/date_to_remove_button"
+            <EditText
+                android:id="@+id/time_to_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/choose_date_remove" />
+                android:focusable="false"
+                android:text="@string/time_to_unselected" />
 
         </LinearLayout>
     </LinearLayout>

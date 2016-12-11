@@ -44,23 +44,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <EditText
                 android:id="@+id/date_from_text"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:focusable="false"
                 android:text="@string/date_from_unselected" />
-
-            <Button
-                android:id="@+id/date_from_remove_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/choose_date_remove" />
-
         </LinearLayout>
 
         <LinearLayout
