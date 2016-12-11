@@ -47,6 +47,11 @@ public class TimeFromDialog extends DialogFragment implements TimePickerDialog.O
         mMinute = minute;
     }
 
+    public TimeFromDialog(Calendar calendar) {
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = calendar.get(Calendar.MINUTE);
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new TimePickerDialog(getActivity(), this,

@@ -19,6 +19,11 @@ public class TimeToDialog extends DialogFragment implements TimePickerDialog.OnT
     private int mMinute;
     private TimeToDialogCallback mCallback;
 
+    public TimeToDialog(Calendar calendar) {
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = calendar.get(Calendar.MINUTE);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

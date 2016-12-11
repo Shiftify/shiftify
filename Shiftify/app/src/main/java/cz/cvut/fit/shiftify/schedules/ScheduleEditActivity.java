@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -37,9 +37,9 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     private Spinner mScheduleSpinner;
     private Spinner mFirstShiftSpinner;
-    private EditText mDateFromEditText;
+    private TextView mDateFromEditText;
     private Button mDateToRemoveButton;
-    private EditText mDateToEditText;
+    private TextView mDateToEditText;
     private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
 
     private Schedule mSchedule;
@@ -69,9 +69,9 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mScheduleSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
         mFirstShiftSpinner = (Spinner) findViewById(R.id.spinner_first_shift);
 
-        mDateFromEditText = (EditText) findViewById(R.id.date_from_text);
+        mDateFromEditText = (TextView) findViewById(R.id.date_from_text);
         mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
-        mDateToEditText = (EditText) findViewById(R.id.date_to_text);
+        mDateToEditText = (TextView) findViewById(R.id.date_to_text);
 
         if (scheduleId == -1) {
             mSchedule = new Schedule(userId, null, null, null, null);
@@ -170,7 +170,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mDateToRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDateToEditText.setText(getString(R.string.date_to_unselected));
+                mDateToEditText.setText(getString(R.string.date_to));
             }
         });
     }

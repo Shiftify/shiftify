@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.util.TimeUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -29,10 +29,10 @@ import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 public class ExceptionEditActivity extends AppCompatActivity implements DateFromDialog.DateFromDialogCallback, DateToDialog.DateToDialogCallback, TimeFromDialog.TimeFromDialogCallback, TimeToDialog.TimeToDialogCallback {
 
-    private EditText mDateFromEditText;
-    private EditText mDateToEditText;
-    private EditText mTimeFromEditText;
-    private EditText mTimeToEditText;
+    private TextView mDateFromEditText;
+    private TextView mDateToEditText;
+    private TextView mTimeFromEditText;
+    private TextView mTimeToEditText;
 
     private static final String DATE_FROM_FRAGMENT = "date_from_fragment";
     private static final String DATE_TO_FRAGMENT = "date_to_fragment";
@@ -56,10 +56,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
 
         Calendar calendar = Calendar.getInstance();
 
-        mDateFromEditText = (EditText) findViewById(R.id.date_from_text);
-        mDateToEditText = (EditText) findViewById(R.id.date_to_text);
-        mTimeFromEditText = (EditText) findViewById(R.id.time_from_text);
-        mTimeToEditText = (EditText) findViewById(R.id.time_to_text);
+        mDateFromEditText = (TextView) findViewById(R.id.date_from_text);
+        mDateToEditText = (TextView) findViewById(R.id.date_to_text);
+        mTimeFromEditText = (TextView) findViewById(R.id.time_from_text);
+        mTimeToEditText = (TextView) findViewById(R.id.time_to_text);
         initEditTexts(calendar, null);
 
 
@@ -94,7 +94,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
         mTimeFromEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialogFragment = new TimeFromDialog();
+                Calendar c = Calendar.getInstance();
+                c = MyTimeUtils.StringToTime(mTimeFromEditText.getText().toString());
+                DialogFragment dialogFragment = new TimeFromDialog(c);
                 dialogFragment.show(getFragmentManager(), TIME_FROM_FRAGMENT);
             }
         });
@@ -102,7 +104,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
         mTimeToEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialogFragment = new TimeToDialog();
+                Calendar c = Calendar.getInstance();
+                c = MyTimeUtils.StringToTime(mTimeToEditText.getText().toString());
+                DialogFragment dialogFragment = new TimeToDialog(c);
                 dialogFragment.show(getFragmentManager(), TIME_TO_FRAGMENT);
             }
         });
@@ -138,14 +142,23 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
         } else {
 
         }
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.done_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done_item:
+                finish();
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
