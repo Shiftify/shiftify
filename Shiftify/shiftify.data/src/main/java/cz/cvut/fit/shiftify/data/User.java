@@ -48,14 +48,29 @@ public class User extends DbTable {
     }
 
     // Columns names
-    protected String COL_NAME_FIRSTNAME;
-    protected String COL_NAME_SURNAME;
-    protected String COL_NAME_NICKNAME;
-    protected String COL_NAME_PHONENUMBER;
-    protected String COL_NAME_EMAIL;
-    protected String COL_NAME_PICTUREPATH;
+    public String COL_NAME_FIRSTNAME;
+    public String COL_NAME_SURNAME;
+    public String COL_NAME_NICKNAME;
+    public String COL_NAME_PHONENUMBER;
+    public String COL_NAME_EMAIL;
+    public String COL_NAME_PICTUREPATH;
 
     // Overridden methods of DbTable
+    protected String getParam(String paramName) {
+        if (paramName == COL_NAME_FIRSTNAME)
+            return firstName;
+        if (paramName == COL_NAME_SURNAME)
+            return surname;
+        if (paramName == COL_NAME_NICKNAME)
+            return nickname;
+        if (paramName == COL_NAME_PHONENUMBER)
+            return phoneNumber;
+        if (paramName == COL_NAME_EMAIL)
+            return email;
+        if (paramName == COL_NAME_PICTUREPATH)
+            return picturePath;
+        return null;
+    }
     protected String[] getColumnNames() {
         return new String[] { COL_NAME_FIRSTNAME, COL_NAME_SURNAME, COL_NAME_NICKNAME,
                 COL_NAME_PHONENUMBER, COL_NAME_EMAIL, COL_NAME_PICTUREPATH };

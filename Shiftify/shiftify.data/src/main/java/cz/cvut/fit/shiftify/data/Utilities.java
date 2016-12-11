@@ -10,6 +10,9 @@ import java.util.List;
  */
 
 public abstract class Utilities {
+    public static <K> K logicalOr(K first, K second) {
+        return (first == null ? second : first);
+    }
     public static String[] concatStringArrays(String[] first, String[] second) {
         List<String> both = new ArrayList<String>(first.length + second.length);
         Collections.addAll(both, first);
