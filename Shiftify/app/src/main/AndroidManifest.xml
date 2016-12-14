@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.cvut.fit.shiftify">
 
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +28,6 @@
             android:name=".PersonEditActivity"
             android:label="@string/title_activity_person_edit"
             android:theme="@style/AppTheme" />
-
         /* Schedule - activities */
         <activity
             android:name=".schedules.ScheduleListActivity"
@@ -31,16 +35,17 @@
         <activity
             android:name=".schedules.ScheduleEditActivity"
             android:label="@string/schedule_edit" />
-
         /* Exception - activities */
         <activity
             android:name=".exceptions.ExceptionListActivity"
             android:label="@string/exception_list" />
-
         <activity
             android:name=".exceptions.ExceptionEditActivity"
             android:label="@string/exception_list" />
-
+        <activity
+            android:name=".PersonShiftsActivity"
+            android:label="@string/title_activity_person_shifts"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

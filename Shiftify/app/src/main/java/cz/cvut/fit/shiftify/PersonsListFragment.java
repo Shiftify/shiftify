@@ -103,10 +103,10 @@ private void makeArray(Vector<User> vector){
 
         firstname = u.getFirstName();
         surname = u.getSurname();
-        nickname = (u.getNickname()== null ? "" : "\"" + u.getNickname() + "\"");
+        nickname = (u.getNickname()== null ? " " : " \"" + u.getNickname() + "\" ");
 
 
-        personsArray[index] = firstname + " " + nickname + " " + surname;
+        personsArray[index] = firstname + nickname + surname;
         index++;
     }
 
@@ -115,15 +115,6 @@ private void makeArray(Vector<User> vector){
 @Override
 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-        /*
-        Snackbar snack;
-        snack = Snackbar.make(view, "Clicked item: " + getResources().getStringArray(R.array.persons)[position], Snackbar.LENGTH_SHORT);
-        View snackBarView = snack.getView();
-        snackBarView.setBackgroundColor(Color.parseColor("#DD3A83FF"));
-        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        textView.setTypeface(null, Typeface.BOLD);
-        snack.show();*/
 
         Intent i = new Intent(PersonsListFragment.this.getActivity(),PersonDetailActivity.class);
         i.putExtra("userId",userVector.elementAt(position).getId());

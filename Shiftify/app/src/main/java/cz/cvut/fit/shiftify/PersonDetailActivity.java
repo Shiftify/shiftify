@@ -29,7 +29,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     TextView fullname;
     TextView numberView;
     TextView emailView;
-    Button mScheduleShowButton;
+    Button scheduleButton;
     User u;
 
     @Override
@@ -67,21 +67,12 @@ public class PersonDetailActivity extends AppCompatActivity {
         emailView = (TextView) findViewById(R.id.person_detail_email);
         numberView = (TextView) findViewById(R.id.person_detail_phone);
         fullname = (TextView) findViewById(R.id.person_detail_fullname);
-        mScheduleShowButton = (Button) findViewById(R.id.button_shift_plan_person);
+        scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
 
-
-        fullname.setText(u.getFirstName() + (u.getNickname() == null ? "" : " " + u.getNickname()) + " " + u.getSurname());
+        fullname.setText(u.getFirstName() + (u.getNickname() == null ? "" : " \"" + u.getNickname() + "\"") + " " + u.getSurname());
         emailView.setText(u.getEmail().toString());
         numberView.setText(u.getPhoneNumber().toString());
 
-        mScheduleShowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PersonDetailActivity.this, ScheduleListActivity.class);
-                intent.putExtra(USER_ID, u.getId());
-                startActivity(intent);
-            }
-        });
 
     }
 
@@ -202,6 +193,25 @@ public class PersonDetailActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
+    }
+    public void showScheduleShifts(View view){
+
+        Intent intent = new Intent(this, PersonShiftsActivity.class);
+        intent.putExtra("userId", u.getId());
+        startActivity(intent);
+    }
+
+    public void showExceptionList(View view){
+
+        Intent intent = new Intent(this, ExceptionListActivity.class);
+        intent.putExtra(USER_ID, u.getId());
+        startActivity(intent);
+    }
+    public void showScheduleTypeList(View view){
+
+        Intent intent = new Intent(this, ScheduleListActivity.class);
+        intent.putExtra(USER_ID, u.getId());
+        startActivity(intent);
     }
 
 
