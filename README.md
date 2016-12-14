@@ -13,6 +13,13 @@ Aplikace má za cíl zlepšít svolávání týmu dobrovolných hasičů k akci.
 - Petr Panský
 
 
+
+
+## Chcete vyzkoušet demo verzi?
+
+Pokud si chcete u sebe na mobilu vyzkoušet demo naší aplikace, neváhejte. Vše ohledně instalace najdete na naší wiki v sekci [Instalace demo verze](https://github.com/thepetas/shiftify/wiki/Instalace-demo-verze).
+
+
 ## Zprovoznění projektu
 
 Nejprve je nutné si nainstalovat [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
