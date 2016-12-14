@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
+
 
 
 /**
@@ -189,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
         intent.setData(Uri.parse(getString(R.string.github_url_feedback)));
         startActivity(intent);
     }
+
 
     @Override
     public void setSelectedDay(Calendar calendar) {

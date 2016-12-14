@@ -63,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_call_black_24dp"
-            android:id="@+id/imageView1a"/>
+            android:id="@+id/imageView1a"
+            android:layout_gravity="center"/>
 
         <TextView
             android:text="...mobil"
@@ -119,16 +120,50 @@
     <Button
 
         android:shadowColor="@android:color/darker_gray"
-        android:background="@android:color/holo_blue_dark"
-        android:text="@string/button_shift_plan_person"
+        android:background="@color/colorPrimary"
+        android:text="@string/shift_schedule_button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="30dp"
+        android:onClick="showScheduleShifts"
         android:padding="15dp"
-        android:id="@+id/button_shift_plan_person"
+        android:id="@+id/person_detail_schedule_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        />
+    <Button
+
+        android:shadowColor="@android:color/darker_gray"
+        android:background="@color/colorPrimary"
+        android:text="@string/shift_exception_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/person_detail_schedule_button"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        android:padding="15dp"
+        android:onClick="showExceptionList"
+        android:id="@+id/person_detail_exceptions_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        />
+
+    <Button
+
+        android:shadowColor="@android:color/darker_gray"
+        android:background="@color/colorPrimary"
+        android:text="@string/shift_types_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/person_detail_exceptions_button"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        android:onClick="showScheduleTypeList"
+        android:padding="15dp"
+        android:id="@+id/person_detail_schedule_types_button"
         style="@style/Widget.AppCompat.Button.Colored"
         />
 </RelativeLayout>

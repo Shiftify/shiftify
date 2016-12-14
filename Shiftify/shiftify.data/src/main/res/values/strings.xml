@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">shiftify.data</string>
+    <string name="exception_shift">Vyjímečná směna</string>
 </resources>

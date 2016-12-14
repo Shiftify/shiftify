@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="20sp"
-    android:layout_marginRight="5sp"
-    android:layout_marginLeft="5sp">
+    android:orientation="vertical">
 
     <include
         android:id="@+id/shift_list_header"
