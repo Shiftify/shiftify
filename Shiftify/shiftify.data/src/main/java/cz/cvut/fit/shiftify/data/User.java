@@ -10,21 +10,79 @@ import java.util.HashMap;
  */
 
 public class User extends DbTable {
+    // New static attributes
+    public static final String TABLE_NAME = "User";
+    protected static final String[] COLUMN_NAMES =
+            Utilities.concatStrArrays(getDefaultColumnNames(), getColumnNames());;
+    protected static final HashMap<String, ColumnType> COLUMN_TYPES =
+            Utilities.concatHashMaps(getDefaultColumnTypes(), getColumnTypes());
+    protected static final HashMap<String, TableAttribute[]> COLUMN_ATTRIBUTES =
+            Utilities.concatHashMaps(getDefaultColumnAttributes(), getColumnAttributes());
+    protected static final HashMap<String, String> FOREIGN_KEYS =
+            Utilities.concatHashMaps(getDefaultForeignKeys(), getForeignKeys());
+    protected static final HashMap<String, String[]> UNIQUE_CONSTRAINTS =
+            Utilities.concatHashMaps(getDefaultUniqueConstraints(), getUniqueConstraints());
+
+    // Columns names
+    public static final String COL_NAME_FIRSTNAME = "FirstName";
+    public static final String COL_NAME_SURNAME = "Surname";
+    public static final String COL_NAME_NICKNAME = "Nickname";
+    public static final String COL_NAME_PHONENUMBER = "PhoneNumber";
+    public static final String COL_NAME_EMAIL = "Email";
+    public static final String COL_NAME_PICTUREPATH = "PicturePath";
+
+    // Overridden methods of DbTable
+    protected String getParam(String paramName) {
+        if (paramName.equals(COL_NAME_FIRSTNAME))
+            return firstName;
+        if (paramName.equals(COL_NAME_SURNAME))
+            return surname;
+        if (paramName.equals(COL_NAME_NICKNAME))
+            return nickname;
+        if (paramName.equals(COL_NAME_PHONENUMBER))
+            return phoneNumber;
+        if (paramName.equals(COL_NAME_EMAIL))
+            return email;
+        if (paramName.equals(COL_NAME_PICTUREPATH))
+            return picturePath;
+        return null;
+    }
+    protected static String[] getColumnNames() {
+        return new String[] { COL_NAME_FIRSTNAME, COL_NAME_SURNAME, COL_NAME_NICKNAME,
+                COL_NAME_PHONENUMBER, COL_NAME_EMAIL, COL_NAME_PICTUREPATH };
+    }
+    protected static HashMap<String, ColumnType> getColumnTypes() {
+        HashMap<String, ColumnType> types = new HashMap<>();
+        types.put(COL_NAME_FIRSTNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_SURNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_NICKNAME, ColumnType.NVARCHAR100);
+        types.put(COL_NAME_PHONENUMBER, ColumnType.NVARCHAR50);
+        types.put(COL_NAME_EMAIL, ColumnType.NVARCHAR255);
+        types.put(COL_NAME_PICTUREPATH, ColumnType.NVARCHAR1000);
+        return types;
+    }
+    protected static HashMap<String, TableAttribute[]> getColumnAttributes() {
+        HashMap<String, TableAttribute[]> attrs = new HashMap<>();
+        attrs.put(COL_NAME_FIRSTNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_SURNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_NICKNAME, new TableAttribute[] { TableAttribute.NOTNULL });
+        attrs.put(COL_NAME_PHONENUMBER, new TableAttribute[] { TableAttribute.UNIQUE });
+        attrs.put(COL_NAME_EMAIL, new TableAttribute[] { TableAttribute.UNIQUE });
+        return attrs;
+    }
+    protected static HashMap<String, String[]> getUniqueConstraints() {
+        HashMap<String, String[]> constraints = new HashMap<>();
+        constraints.put("unique_User_Names", new String[] { COL_NAME_FIRSTNAME,
+                COL_NAME_SURNAME, COL_NAME_NICKNAME });
+        return constraints;
+    }
+
     // Constructors
     public User() {
-        TABLE_NAME = "User";
-        COL_NAME_FIRSTNAME = "FirstName";
-        COL_NAME_SURNAME = "Surname";
-        COL_NAME_NICKNAME = "Nickname";
-        COL_NAME_PHONENUMBER = "PhoneNumber";
-        COL_NAME_EMAIL = "Email";
-        COL_NAME_PICTUREPATH = "PicturePath";
-        setupVariables();
-
-        setNickname("");
+        this(null, null, null, null, null, null);
     }
     public User(String firstName, String surname) {
-        this(firstName, surname, null, null, "");
+        this(firstName, surname, null, null, null, null);
     }
     public User(String firstName, String surname, String phoneNumber) {
         this(firstName, surname, phoneNumber, null, null, null);
@@ -38,67 +96,13 @@ public class User extends DbTable {
     }
     public User(String firstName, String surname, String phoneNumber, String email,
                 String nickname, String picturePath) {
-        this();
+        super();
         setFirstName(firstName);
         setSurname(surname);
         setNickname(nickname);
         setPhoneNumber(phoneNumber);
         setEmail(email);
         setPicturePath(picturePath);
-    }
-
-    // Columns names
-    public String COL_NAME_FIRSTNAME;
-    public String COL_NAME_SURNAME;
-    public String COL_NAME_NICKNAME;
-    public String COL_NAME_PHONENUMBER;
-    public String COL_NAME_EMAIL;
-    public String COL_NAME_PICTUREPATH;
-
-    // Overridden methods of DbTable
-    protected String getParam(String paramName) {
-        if (paramName == COL_NAME_FIRSTNAME)
-            return firstName;
-        if (paramName == COL_NAME_SURNAME)
-            return surname;
-        if (paramName == COL_NAME_NICKNAME)
-            return nickname;
-        if (paramName == COL_NAME_PHONENUMBER)
-            return phoneNumber;
-        if (paramName == COL_NAME_EMAIL)
-            return email;
-        if (paramName == COL_NAME_PICTUREPATH)
-            return picturePath;
-        return null;
-    }
-    protected String[] getColumnNames() {
-        return new String[] { COL_NAME_FIRSTNAME, COL_NAME_SURNAME, COL_NAME_NICKNAME,
-                COL_NAME_PHONENUMBER, COL_NAME_EMAIL, COL_NAME_PICTUREPATH };
-    }
-    protected HashMap<String, ColumnType> getColumnTypes() {
-        HashMap<String, ColumnType> types = new HashMap<>();
-        types.put(COL_NAME_FIRSTNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_SURNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_NICKNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_PHONENUMBER, ColumnType.NVARCHAR50);
-        types.put(COL_NAME_EMAIL, ColumnType.NVARCHAR255);
-        types.put(COL_NAME_PICTUREPATH, ColumnType.NVARCHAR1000);
-        return types;
-    }
-    protected HashMap<String, TableAttribute[]> getColumnAttributes() {
-        HashMap<String, TableAttribute[]> attrs = new HashMap<>();
-        attrs.put(COL_NAME_FIRSTNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_SURNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_NICKNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_PHONENUMBER, new TableAttribute[] { TableAttribute.UNIQUE });
-        attrs.put(COL_NAME_EMAIL, new TableAttribute[] { TableAttribute.UNIQUE });
-        return attrs;
-    }
-    protected HashMap<String, String[]> getUniqueConstraints() {
-        HashMap<String, String[]> constraints = new HashMap<>();
-        constraints.put("unique_User_Names", new String[] { COL_NAME_FIRSTNAME,
-                COL_NAME_SURNAME, COL_NAME_NICKNAME });
-        return constraints;
     }
 
     // Values of table row
