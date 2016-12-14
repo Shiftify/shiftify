@@ -119,8 +119,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     }
 
     private void fillScheduleContent() {
-        if (mSchedule.getScheduleTypeId() != 0 || mSchedule.getStartingDayOfScheduleCycle() != 0) {
-//            TODO select scheduleType and firstShift in Spinner
+        if (mSchedule.getScheduleTypeId() != null || mSchedule.getStartingDayOfScheduleCycle() != null) {
+////            TODO select scheduleType and firstShift in Spinner
         } else {
             mScheduleType = (ScheduleType) mScheduleSpinner.getSelectedItem();
             mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
