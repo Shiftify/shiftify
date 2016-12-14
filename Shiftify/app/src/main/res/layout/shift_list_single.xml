@@ -5,6 +5,7 @@
 
 
     <TableRow
+        android:id="@+id/person_table_row"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp">
@@ -16,7 +17,6 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_person_black_24dp"
             android:layout_marginRight="20dp"
-
             />
 
         <TableLayout

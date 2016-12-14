@@ -43,6 +43,7 @@
 
     <string name="title_activity_person_detail">Detail pracovníka</string>
     <string name="title_activity_person_edit">Upravit údaje</string>
+    <string name="title_activity_person_shifts">Rozpis šichet pracovníka</string>
 
     <string name="schedules_list">Rozpis plánů šichet</string>
     <string name="schedule_add">Přidat plán šichet</string>
@@ -76,6 +77,9 @@
     <string name="exception_add">Přidat vyjímku</string>
     <string name="exception_type">Typ vyjímky</string>
     <string name="exception_title">Název vyjímky</string>
+    <string name="shift_exception_button_text">Výjimky</string>
+    <string name="shift_schedule_button_text">Rozpis směn</string>
+    <string name="shift_types_button_text">Druhy směn</string>
 
     <string name="days_count">Počet dní</string>
     <string name="schedule_type_title">Název typu plánu šichet</string>

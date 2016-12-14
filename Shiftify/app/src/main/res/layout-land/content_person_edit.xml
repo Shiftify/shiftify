@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    xmlns:android="http://schemas.android.com/apk/res/android" />
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -30,7 +29,7 @@
         android:layout_marginTop="45dp">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton3"
+            android:id="@+id/person_edit_image"
             android:layout_gravity="center_horizontal"
             android:layout_height="60dp"
             android:clickable="true"
@@ -96,18 +95,6 @@
                 android:id="@+id/edit_text_email" />
 
         </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:text="@string/button_save"
-            android:shadowColor="@android:color/darker_gray"
-            android:background="@android:color/holo_blue_dark"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_person_edit_save"
-            android:onClick="personEditSave"
-            style="@style/Widget.AppCompat.Button.Colored" />
 
 
     </LinearLayout>

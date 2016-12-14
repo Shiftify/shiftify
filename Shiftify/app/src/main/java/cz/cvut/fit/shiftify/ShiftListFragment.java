@@ -1,6 +1,7 @@
 package cz.cvut.fit.shiftify;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -25,7 +26,6 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     Vector<User> allWorkers;
     Vector<User> freeWorkers;
-    Vector<User> nonfreeWorkers;
     UserManager userManager;
     CustomShiftListAdapter adapter;
     String[] personsArray;
@@ -142,10 +142,12 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-        CustomSnackbar csnack = new CustomSnackbar(view, "Neni dosud urcena reakce na tuto akci.");
-        csnack.show();
+        Intent intent = new Intent(getActivity(), PersonShiftsActivity.class);  //PersonScheduleActivity
+
+        intent.putExtra("userId", allWorkers.elementAt(position).getId());
+        startActivity(intent);
     }
 
     private void makeArray(Vector<User> vector) {
@@ -158,10 +160,10 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
             firstname = u.getFirstName();
             surname = u.getSurname();
-            nickname = (u.getNickname() == null ? "" : "\"" + u.getNickname() + "\"");
+            nickname = (u.getNickname() == null ? " " : " \"" + u.getNickname() + "\" ");
 
 
-            personsArray[index] = firstname + " " + nickname + " " + surname;
+            personsArray[index] = firstname + nickname + surname;
             index++;
         }
 

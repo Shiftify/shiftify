@@ -15,6 +15,25 @@
         android:orientation="horizontal"
         android:id="@+id/relative">
 
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:weightSum="1">
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.8"
+                android:gravity="right">
         <ImageButton
             android:id="@+id/date_arrow_left"
             android:layout_height="wrap_content"
@@ -22,10 +41,17 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
             android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/shift_list_header_date"
-            android:layout_toLeftOf="@id/shift_list_header_date"/>
+            android:layout_gravity="center"/>
         <!--previous line meant for older APIs-->
+
+            <TextView
+                android:id="@id/shift_list_header_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:text="12.2.2016"/>
 
         <ImageButton
             android:id="@+id/date_arrow_right"
@@ -34,37 +60,38 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/shift_list_header_date"
-            android:layout_toRightOf="@id/shift_list_header_date"/>
+            android:layout_gravity="center"/>
         <!--previous line meant for older APIs-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_alignBottom="@id/shift_list_header_date"
-            />
+                </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_cal"
-            android:layout_height="40dp"
-            android:layout_width="40dp"
-            android:src="@drawable/ic_event_black_24dp"
-            android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"/>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
+                android:gravity="right">
 
-        <TextView
-            android:id="@id/shift_list_header_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:text="12.2.2016"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            <ImageButton
+                android:id="@+id/btn_cal"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:src="@drawable/ic_event_black_24dp"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right"/>
 
+            </LinearLayout>
+        </TableRow>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignBottom="@id/shift_list_header_date"
+                />
+        </TableLayout>>
     </RelativeLayout>
 
 </LinearLayout>
