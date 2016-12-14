@@ -40,7 +40,6 @@ public class ExceptionListActivity extends AppCompatActivity {
     public static final String USER_ID = "user_id";
     public static final String EXCEPTION_ID = "exception_id";
 
-    private FloatingActionButton mAddFloatingButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,14 +58,6 @@ public class ExceptionListActivity extends AppCompatActivity {
                     .commit();
         }
 
-        mAddFloatingButton = (FloatingActionButton) findViewById(R.id.float_add_button);
-        mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ExceptionListActivity.this, ExceptionEditActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 
@@ -84,6 +75,7 @@ public class ExceptionListActivity extends AppCompatActivity {
 
         private ArrayAdapter<ExceptionNew> mExceptionAdapter;
         private User mUser;
+        private FloatingActionButton mAddFloatingButton;
 
         public ExceptionListFragment(User user) {
             mUser = user;
@@ -93,6 +85,15 @@ public class ExceptionListActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_default_list, container, false);
+
+            mAddFloatingButton = (FloatingActionButton) view.findViewById(R.id.float_add_button);
+            mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
+                    startActivity(intent);
+                }
+            });
             return view;
         }
 

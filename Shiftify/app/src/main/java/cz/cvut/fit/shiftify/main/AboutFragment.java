@@ -1,4 +1,4 @@
-package cz.cvut.fit.shiftify;
+package cz.cvut.fit.shiftify.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import cz.cvut.fit.shiftify.R;
 
 public class AboutFragment extends Fragment {
 

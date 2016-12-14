@@ -33,7 +33,6 @@ public class ScheduleListActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_ID = "schedule_id";
     public static final String USER_ID = "user_id";
-    private FloatingActionButton mAddFloatingButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,15 +57,6 @@ public class ScheduleListActivity extends AppCompatActivity {
                     .add(R.id.fragment_schedule_container, new ScheduleListFragment(user))
                     .commit();
         }
-
-        mAddFloatingButton = (FloatingActionButton) findViewById(R.id.float_add_button);
-        mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ScheduleListActivity.this, ScheduleEditActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -85,6 +75,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
         private ArrayAdapter<Schedule> mScheduleAdapter;
         private User mUser;
+        private FloatingActionButton mAddFloatingButton;
 
         public ScheduleListFragment(User user) {
             mUser = user;
@@ -94,6 +85,14 @@ public class ScheduleListActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_default_list, container, false);
+            mAddFloatingButton = (FloatingActionButton) view.findViewById(R.id.float_add_button);
+            mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+                    startActivity(intent);
+                }
+            });
             return view;
         }
 

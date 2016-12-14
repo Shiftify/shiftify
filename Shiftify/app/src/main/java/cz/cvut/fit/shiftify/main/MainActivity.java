@@ -1,8 +1,7 @@
-package cz.cvut.fit.shiftify;
+package cz.cvut.fit.shiftify.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,12 +14,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.app.DialogFragment;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.util.Calendar;
+
+import cz.cvut.fit.shiftify.PersonsListFragment;
+import cz.cvut.fit.shiftify.R;
+import cz.cvut.fit.shiftify.ShiftListFragment;
+import cz.cvut.fit.shiftify.ShiftPlanDateDialog;
+import cz.cvut.fit.shiftify.data.Schedule;
+import cz.cvut.fit.shiftify.data.ScheduleType;
 
 
 /**
@@ -61,15 +63,10 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
 
 /*        If savedInstanceState == null - set default selected item in navigation drawer
           Else savedInstanceState != null - get from Bundle id of selected item */
-
-
         if (savedInstanceState != null) {
-
             selectedItemId = savedInstanceState.getInt(SELECTED_ITEM_ID, DEFAULT_ITEM);
         } else {
-
             selectedItemId = DEFAULT_ITEM;
-
         }
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
         setNewFragmentContent(newSelectedMenuItem);
@@ -139,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
                     break;
                 case R.id.nav_item_about_project:
                     fragmentClass = AboutFragment.class;
+                    break;
+                case R.id.nav_item_schedule_types_list:
+                    fragmentClass = ScheduleTypeListFragment.class;
                     break;
             }
 
