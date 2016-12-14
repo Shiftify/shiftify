@@ -4,6 +4,7 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Schedule;
 import cz.cvut.fit.shiftify.data.User;
 import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.exceptions.ExceptionEditActivity;
+import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 /**
@@ -30,6 +33,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_ID = "schedule_id";
     public static final String USER_ID = "user_id";
+    private FloatingActionButton mAddFloatingButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +58,15 @@ public class ScheduleListActivity extends AppCompatActivity {
                     .add(R.id.fragment_schedule_container, new ScheduleListFragment(user))
                     .commit();
         }
+
+        mAddFloatingButton = (FloatingActionButton) findViewById(R.id.float_add_button);
+        mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ScheduleListActivity.this, ScheduleEditActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

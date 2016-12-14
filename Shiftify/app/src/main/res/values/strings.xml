@@ -64,13 +64,17 @@
     <string name="choose_date_from">Vybrat datum začátku</string>
     <string name="choose_date_remove">Smazat datum</string>
     <string name="choose_date_to">Vybrat datum konce</string>
-    <string name="date_to_unselected">Datum konce nevybráno</string>
-    <string name="date_from_unselected">Datum začátku nevybráno</string>
+    <string name="date_to">Datum konce</string>
+    <string name="date_from">Datum začátku</string>
+    <string name="time_to">Čas konce</string>
+    <string name="time_from">Čas začátku</string>
     <string name="undefinite_time">neurčito</string>
 
     <string name="exception_list">Seznam vyjímek</string>
     <string name="exception">Vyjímka</string>
     <string name="exception_edit">Upravit vyjímku</string>
     <string name="exception_add">Přidat vyjímku</string>
+    <string name="exception_type">Typ vyjímky</string>
+    <string name="exception_title">Název vyjímky</string>
 
 </resources>

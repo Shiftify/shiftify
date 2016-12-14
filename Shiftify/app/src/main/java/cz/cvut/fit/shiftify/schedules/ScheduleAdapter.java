@@ -45,10 +45,10 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
 //        TODO After upgraded managers -> schedule.getScheduleType.getName();
 //        String res = schedule.getScheduleType.getName();
         String res = "";
-        res += CalendarUtils.calendarToViewString(calendar) + " - ";
+        res += CalendarUtils.calendarToDateString(calendar) + " - ";
         if (schedule.getTo() != null) {
             calendar.setTime(schedule.getTo());
-            res += CalendarUtils.calendarToViewString(calendar);
+            res += CalendarUtils.calendarToDateString(calendar);
         } else {
             res += mContext.getString(R.string.undefinite_time);
         }
