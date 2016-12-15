@@ -45,7 +45,7 @@
         <!--previous line meant for older APIs-->
 
             <TextView
-                android:id="@id/shift_list_header_date"
+                android:id="@+id/shift_list_header_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
