@@ -15,7 +15,7 @@ public class UserManager {
      * Adds user, updates the instance afterwards (sets the id).
      */
     public void add(User user) throws Exception {
-        user.setId(5);
+        user.setId(1L);
     }
 
     /**
@@ -33,9 +33,9 @@ public class UserManager {
     /**
      * Gets user that has id equal to userId.
      */
-    public User user(int userId) throws Exception {
+    public User user(long userId) throws Exception {
         User user = new User("Michal", "Plameňák", "777222111", "random@something.org");
-        user.setId(1);
+        user.setId(1L);
         return user;
     }
 
@@ -52,7 +52,7 @@ public class UserManager {
         users.add(new User("Jaromir", "Jagr", "+420423458932"));
         users.add(new User("Nekdo", "Nekdovic", "+420423458932"));
         users.add(new User("Nikdo", "Kdokolic", "+420427458932"));
-        for (int i = 1; i <= users.size(); ++i) users.get(i-1).setId(i);
+        for (int i = 1; i <= users.size(); ++i) users.get(i - 1).setId(Long.valueOf(i));
         return users;
     }
 
@@ -99,8 +99,8 @@ public class UserManager {
     /**
      * Gets schedule that has id equal to scheduleId.
      */
-    public Schedule schedule(int scheduleId) throws Exception {
-        Schedule schedule = new Schedule(1, 2, new Date(116, 10, 2), null, 3);
+    public Schedule schedule(long scheduleId) throws Exception {
+        Schedule schedule = new Schedule(new Long(1), 2, new Date(116, 10, 2), null, 3);
         schedule.setId(scheduleId);
         return schedule;
     }
@@ -109,7 +109,7 @@ public class UserManager {
      * Gets schedule (of a user), that is current = schedule.getFrom() <= today <= schedule.getTo().
      * Return null, if no schedule has met the requirements.
      */
-    public Schedule currentSchedule(int userId) throws Exception {
+    public Schedule currentSchedule(long userId) throws Exception {
         Schedule schedule = new Schedule(userId, 2, new Date(116, 10, 2), null, 3);
         schedule.setId(2);
         return schedule;
@@ -119,7 +119,7 @@ public class UserManager {
      * Gets schedule (of a user), that has the greatest expiration date = schedule.getTo().
      */
     // returns the last schedule, even if not current, or null if the user never had a schedule
-    public Schedule lastSchedule(int userId) throws Exception {
+    public Schedule lastSchedule(long userId) throws Exception {
         Schedule schedule = new Schedule(userId, 1, new Date(116, 10, 2), new Date(116, 10, 10), 1);
         schedule.setId(4);
         return schedule;
@@ -128,24 +128,24 @@ public class UserManager {
     /**
      * Gets schedules that are current in some of the dates between from and to.
      */
-    public Vector<Schedule> SchedulesForPeriod(int userId, Date from, Date to) throws Exception {
+    public Vector<Schedule> SchedulesForPeriod(long userId, Date from, Date to) throws Exception {
         if (from == null || to == null) throw new Exception("From nor to date must be null.");
         if (from.after(to)) throw new Exception("From date cannot be after to date.");
         Vector<Schedule> schedules = new Vector<Schedule>();
         schedules.add(new Schedule(userId, 1, from, to, 1));
         schedules.add(new Schedule(userId, 1, to, null, 1));
-        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i-1).setId(i);
+        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId(i);
         return schedules;
     }
 
     /**
      * Gets all schedules of a user.
      */
-    public Vector<Schedule> schedules(int userId) throws Exception {
+    public Vector<Schedule> schedules(long userId) throws Exception {
         Vector<Schedule> schedules = new Vector<Schedule>();
         schedules.add(new Schedule(userId, 1, new Date(116, 10, 2), new Date(116, 10, 10), 1));
         schedules.add(new Schedule(userId, 1, new Date(116, 10, 11), null, 4));
-        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i-1).setId(i);
+        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId(i);
         return schedules;
     }
 
@@ -157,7 +157,7 @@ public class UserManager {
         exceptionInSchedule.setId(4);
         exceptionInSchedule.setScheduleId(scheduleId);
         for (int i = 1; i <= exceptionInSchedule.getShifts().size(); ++i)
-            exceptionInSchedule.getShifts().get(i-1).setId(i);
+            exceptionInSchedule.getShifts().get(i - 1).setId(i);
     }
 
     /**
@@ -181,7 +181,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, true, "Staff meating"));
         shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), exceptionInScheduleId, true, "Management meating"));
         shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), exceptionInScheduleId, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId(i);
         exceptionInSchedule.setId(exceptionInScheduleId);
         exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
@@ -196,7 +196,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true, "Staff meating"));
         shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1, true, "Management meating"));
         shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId(i);
         exceptionInSchedule.setId(1);
         exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
@@ -212,7 +212,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true));
         shifts.add(new ExceptionShift(new Time(9, 0, 0), new Time(2, 0, 0), 1, true));
         shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true, "Management meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
@@ -221,7 +221,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true, "Staff meating"));
         shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1, true, "Management meating"));
         shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true));
-        for (int i = 4; i <= shifts.size(); ++i) shifts.get(i-4).setId(i);
+        for (int i = 4; i <= shifts.size(); ++i) shifts.get(i - 4).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds second exception in schedule
@@ -238,7 +238,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(new Time(6, 0, 0), new Time(2, 0, 0), 1, true));
         shifts.add(new ExceptionShift(new Time(10, 0, 0), new Time(2, 0, 0), 1, true));
         shifts.add(new ExceptionShift(new Time(13, 0, 0), new Time(5, 0, 0), 1, true, "Staff meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i-1).setId(i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId(i);
         exception.setId(1);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
@@ -271,12 +271,12 @@ public class UserManager {
         if (from == null || to == null) throw new Exception("From nor to date must be null.");
         if (from.after(to)) throw new Exception("From date cannot be after to date.");
         Vector<WorkDay> workDays = new Vector<WorkDay>();
-        int count = (int)(to.getTime() - from.getTime()) / (60*60*24*1000) + 1;
+        int count = (int) (to.getTime() - from.getTime()) / (60 * 60 * 24 * 1000) + 1;
         Date tmp = from;
         Vector<Shift> vector;
         for (int i = 0; i < count; ++i) {
             vector = new Vector<Shift>();
-            switch(new Random().nextInt(5)) {
+            switch (new Random().nextInt(5)) {
                 case 0:
                     vector.add(new ExceptionShift(new Time(8, 0, 0), new Time(4, 0, 0), 1, true, "Uteču dřív."));
                     vector.add(new ExceptionShift(new Time(22, 0, 0), new Time(2, 0, 0), 1, false, "Uteču dřív."));
@@ -304,7 +304,7 @@ public class UserManager {
                 default:
                     workDays.add(new WorkDay(tmp));
             }
-            tmp.setTime(tmp.getTime() + 24*60*60*1000);
+            tmp.setTime(tmp.getTime() + 24 * 60 * 60 * 1000);
         }
         return workDays;
     }

@@ -1,5 +1,7 @@
 package cz.cvut.fit.shiftify.data;
 
+import org.greenrobot.greendao.annotation.NotNull;
+
 import java.util.Date;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Date;
 
 public class Schedule {
     public Schedule() { }
-    public Schedule(Integer userId, Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
+    public Schedule(Long userId, Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
         setUserId(userId);
         setScheduleTypeId(scheduleTypeId);
         setFrom(from);
@@ -16,24 +18,24 @@ public class Schedule {
         setStartingDayOfScheduleCycle(startingDayOfScheduleCycle);
     }
 
-    protected Integer id;
-    protected Integer userId;
+    protected Long id;
+    protected Long userId;
     protected Integer scheduleTypeId;
     protected Date from;
     protected Date to;
     protected Integer startingDayOfScheduleCycle;
 
     // getters and setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public Integer getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
-    public void setUserId(Integer userId) {
+    public void setUserId(@NotNull Long userId) {
         this.userId = userId;
     }
     public Integer getScheduleTypeId() {

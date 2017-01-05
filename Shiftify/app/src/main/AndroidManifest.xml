@@ -41,7 +41,7 @@
             android:label="@string/exception_list" />
         <activity
             android:name=".exceptions.ExceptionEditActivity"
-            android:label="@string/exception_list" />
+            android:label="@string/exception_edit" />
         <activity
             android:name=".PersonShiftsActivity"
             android:label="@string/title_activity_person_shifts"

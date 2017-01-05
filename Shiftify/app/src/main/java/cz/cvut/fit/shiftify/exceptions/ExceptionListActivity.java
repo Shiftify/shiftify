@@ -39,6 +39,7 @@ public class ExceptionListActivity extends AppCompatActivity {
 
     public static final String USER_ID = "user_id";
     public static final String EXCEPTION_ID = "exception_id";
+    public static final String TAG = "EXCEPTION_LIST_ACTIVITY";
 
 
     @Override
@@ -49,7 +50,7 @@ public class ExceptionListActivity extends AppCompatActivity {
         ToolbarUtils.setToolbar(this);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra(PersonDetailActivity.USER_ID, 0);
+        long userId = intent.getLongExtra(PersonDetailActivity.USER_ID, 0);
         User user = new User();
 
         if (savedInstanceState == null) {
@@ -100,14 +101,7 @@ public class ExceptionListActivity extends AppCompatActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-
-            UserManager userManager = new UserManager();
             List<ExceptionNew> exceptionNewList = new ArrayList<>(ExceptionNew.getExceptions());
-//            try {
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             ExceptionNew[] exceptions = exceptionNewList.toArray(new ExceptionNew[exceptionNewList.size()]);
             mExceptionAdapter = new ExceptionAdapter(getActivity(), R.layout.list_item_exception, exceptions);
             setListAdapter(mExceptionAdapter);
@@ -115,8 +109,9 @@ public class ExceptionListActivity extends AppCompatActivity {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
+            ExceptionNew exception = mExceptionAdapter.getItem(position);
             Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
-            intent.putExtra(EXCEPTION_ID, (int) id);
+            intent.putExtra(EXCEPTION_ID, (int) exception.getId());
             intent.putExtra(USER_ID, mUser.getId());
             startActivity(intent);
         }

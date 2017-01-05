@@ -5,7 +5,8 @@ package cz.cvut.fit.shiftify.data;
  */
 
 public class Role {
-    public Role() { }
+    public Role() {
+    }
     public Role(String name) {
         this(name, null);
     }

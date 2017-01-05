@@ -42,7 +42,7 @@ public class ScheduleListActivity extends AppCompatActivity {
         ToolbarUtils.setToolbar(this);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra(PersonDetailActivity.USER_ID, 0);
+        long userId = intent.getLongExtra(PersonDetailActivity.USER_ID, 0);
         UserManager userManager = new UserManager();
         User user;
         try {
@@ -117,7 +117,8 @@ public class ScheduleListActivity extends AppCompatActivity {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-            intent.putExtra(SCHEDULE_ID, (int) id);
+            Schedule schedule = mScheduleAdapter.getItem(position);
+            intent.putExtra(SCHEDULE_ID, schedule.getId());
             intent.putExtra(USER_ID, mUser.getId());
             startActivity(intent);
         }

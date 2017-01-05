@@ -1,100 +1,52 @@
 package cz.cvut.fit.shiftify.data;
 
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-
-import java.util.HashMap;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
 
 /**
  * Created by lukas on 11.11.2016.
  */
 
-public class User extends DbTable {
-    // New static attributes
-    public static final String TABLE_NAME = "User";
-    protected static final String[] COLUMN_NAMES =
-            Utilities.concatStrArrays(getDefaultColumnNames(), getColumnNames());;
-    protected static final HashMap<String, ColumnType> COLUMN_TYPES =
-            Utilities.concatHashMaps(getDefaultColumnTypes(), getColumnTypes());
-    protected static final HashMap<String, TableAttribute[]> COLUMN_ATTRIBUTES =
-            Utilities.concatHashMaps(getDefaultColumnAttributes(), getColumnAttributes());
-    protected static final HashMap<String, String> FOREIGN_KEYS =
-            Utilities.concatHashMaps(getDefaultForeignKeys(), getForeignKeys());
-    protected static final HashMap<String, String[]> UNIQUE_CONSTRAINTS =
-            Utilities.concatHashMaps(getDefaultUniqueConstraints(), getUniqueConstraints());
+@Entity(nameInDb = "users", generateConstructors = false, generateGettersSetters = false)
+public class User {
 
-    // Columns names
-    public static final String COL_NAME_FIRSTNAME = "FirstName";
-    public static final String COL_NAME_SURNAME = "Surname";
-    public static final String COL_NAME_NICKNAME = "Nickname";
-    public static final String COL_NAME_PHONENUMBER = "PhoneNumber";
-    public static final String COL_NAME_EMAIL = "Email";
-    public static final String COL_NAME_PICTUREPATH = "PicturePath";
+    @Id(autoincrement = true)
+    protected Long id;
 
-    // Overridden methods of DbTable
-    protected String getParam(String paramName) {
-        if (paramName.equals(COL_NAME_FIRSTNAME))
-            return firstName;
-        if (paramName.equals(COL_NAME_SURNAME))
-            return surname;
-        if (paramName.equals(COL_NAME_NICKNAME))
-            return nickname;
-        if (paramName.equals(COL_NAME_PHONENUMBER))
-            return phoneNumber;
-        if (paramName.equals(COL_NAME_EMAIL))
-            return email;
-        if (paramName.equals(COL_NAME_PICTUREPATH))
-            return picturePath;
-        return null;
-    }
-    protected static String[] getColumnNames() {
-        return new String[] { COL_NAME_FIRSTNAME, COL_NAME_SURNAME, COL_NAME_NICKNAME,
-                COL_NAME_PHONENUMBER, COL_NAME_EMAIL, COL_NAME_PICTUREPATH };
-    }
-    protected static HashMap<String, ColumnType> getColumnTypes() {
-        HashMap<String, ColumnType> types = new HashMap<>();
-        types.put(COL_NAME_FIRSTNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_SURNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_NICKNAME, ColumnType.NVARCHAR100);
-        types.put(COL_NAME_PHONENUMBER, ColumnType.NVARCHAR50);
-        types.put(COL_NAME_EMAIL, ColumnType.NVARCHAR255);
-        types.put(COL_NAME_PICTUREPATH, ColumnType.NVARCHAR1000);
-        return types;
-    }
-    protected static HashMap<String, TableAttribute[]> getColumnAttributes() {
-        HashMap<String, TableAttribute[]> attrs = new HashMap<>();
-        attrs.put(COL_NAME_FIRSTNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_SURNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_NICKNAME, new TableAttribute[] { TableAttribute.NOTNULL });
-        attrs.put(COL_NAME_PHONENUMBER, new TableAttribute[] { TableAttribute.UNIQUE });
-        attrs.put(COL_NAME_EMAIL, new TableAttribute[] { TableAttribute.UNIQUE });
-        return attrs;
-    }
-    protected static HashMap<String, String[]> getUniqueConstraints() {
-        HashMap<String, String[]> constraints = new HashMap<>();
-        constraints.put("unique_User_Names", new String[] { COL_NAME_FIRSTNAME,
-                COL_NAME_SURNAME, COL_NAME_NICKNAME });
-        return constraints;
-    }
+    @NotNull
+    protected String firstName;
 
-    // Constructors
+    @NotNull
+    protected String surname;
+
+    protected String nickname;
+    protected String phoneNumber;
+    protected String email;
+    protected String picturePath;
+
     public User() {
-        this(null, null, null, null, null, null);
     }
-    public User(String firstName, String surname) {
+
+    public User(@NotNull String firstName, @NotNull String surname) {
         this(firstName, surname, null, null, null, null);
     }
-    public User(String firstName, String surname, String phoneNumber) {
+
+    public User(@NotNull String firstName, @NotNull String surname, String phoneNumber) {
         this(firstName, surname, phoneNumber, null, null, null);
     }
-    public User(String firstName, String surname, String phoneNumber, String email) {
+
+    public User(@NotNull String firstName, @NotNull String surname, String phoneNumber, String email) {
         this(firstName, surname, phoneNumber, email, null, null);
     }
-    public User(String firstName, String surname, String phoneNumber, String email,
+
+    public User(@NotNull String firstName, @NotNull String surname, String phoneNumber, String email,
                 String nickname) {
         this(firstName, surname, phoneNumber, email, nickname, null);
     }
-    public User(String firstName, String surname, String phoneNumber, String email,
+
+    public User(@NotNull String firstName, @NotNull String surname, String phoneNumber, String email,
                 String nickname, String picturePath) {
         super();
         setFirstName(firstName);
@@ -105,48 +57,69 @@ public class User extends DbTable {
         setPicturePath(picturePath);
     }
 
-    // Values of table row
-    protected String firstName;
-    protected String surname;
-    protected String nickname;
-    protected String phoneNumber;
-    protected String email;
-    protected String picturePath;
-
-    // Getters and setters
-    public String getFirstName() {
-        return firstName;
+    public User(Long id, String firstName, @NotNull String surname, String phoneNumber, String email,
+                String nickname, String picturePath) {
+        setId(id);
+        setFirstName(firstName);
+        setSurname(surname);
+        setNickname(nickname);
+        setPhoneNumber(phoneNumber);
+        setEmail(email);
+        setPicturePath(picturePath);
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public String getSurname() {
-        return surname;
+        return this.surname;
     }
+
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
     public String getNickname() {
-        return (nickname == null || nickname.isEmpty() ? null : nickname);
+        return this.nickname;
     }
+
     public void setNickname(String nickname) {
-        this.nickname = nickname == null ? "" : nickname;
+        this.nickname = nickname;
     }
+
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.phoneNumber;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public String getEmail() {
-        return email;
+        return this.email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPicturePath() {
-        return picturePath;
+        return this.picturePath;
     }
+
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }

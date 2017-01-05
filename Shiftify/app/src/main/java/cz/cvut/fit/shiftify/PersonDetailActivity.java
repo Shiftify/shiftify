@@ -47,7 +47,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent i = getIntent();
-        int userId = i.getIntExtra("userId", -1);
+        long userId = i.getLongExtra("userId", -1);
 
         UserManager userManager = new UserManager();
 
@@ -128,7 +128,7 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         DialogFragment newFragment = PersonDeleteDialogFragment.newInstance();
         Bundle userBundle = new Bundle();
-        userBundle.putInt("userId", u.getId());
+        userBundle.putLong("userId", u.getId());
         newFragment.setArguments(userBundle);
 
         newFragment.show(getFragmentManager(), "dialog");

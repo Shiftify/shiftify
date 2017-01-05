@@ -35,7 +35,7 @@ public class PersonShiftsActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        int userId = i.getIntExtra("userId", -1);
+        long userId = i.getLongExtra("userId", -1);
 
         UserManager userManager = new UserManager();
 

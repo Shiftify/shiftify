@@ -18,7 +18,7 @@ import cz.cvut.fit.shiftify.data.ScheduleType;
 
 public class ScheduleTypeAdapter extends ArrayAdapter<ScheduleType> {
 
-    private Context mContext;
+    private final Context mContext;
 
     public ScheduleTypeAdapter(Context context, int resource, ScheduleType[] objects) {
         super(context, resource, objects);

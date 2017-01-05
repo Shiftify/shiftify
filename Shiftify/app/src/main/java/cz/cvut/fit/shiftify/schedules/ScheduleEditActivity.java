@@ -57,8 +57,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         setContentView(R.layout.activity_schedule_edit);
 
         Intent intent = getIntent();
-        final Integer scheduleId = intent.getIntExtra(ScheduleListActivity.SCHEDULE_ID, -1);
-        final Integer userId = intent.getIntExtra(ScheduleListActivity.USER_ID, 0);
+        long scheduleId = intent.getLongExtra(ScheduleListActivity.SCHEDULE_ID, -1);
+        long userId = intent.getLongExtra(ScheduleListActivity.USER_ID, 0);
 
         if (scheduleId == -1) {
             ToolbarUtils.setToolbar(this, R.string.schedule_add);

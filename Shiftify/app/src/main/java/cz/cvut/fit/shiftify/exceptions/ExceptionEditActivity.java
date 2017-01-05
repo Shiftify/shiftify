@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -27,15 +26,13 @@ import cz.cvut.fit.shiftify.utils.ToolbarUtils;
  * Created by petr on 12/6/16.
  */
 
-public class ExceptionEditActivity extends AppCompatActivity implements DateFromDialog.DateFromDialogCallback, DateToDialog.DateToDialogCallback, TimeFromDialog.TimeFromDialogCallback, TimeToDialog.TimeToDialogCallback {
+public class ExceptionEditActivity extends AppCompatActivity implements DateFromDialog.DateFromDialogCallback, TimeFromDialog.TimeFromDialogCallback, TimeToDialog.TimeToDialogCallback {
 
-    private TextView mDateFromEditText;
-    private TextView mDateToEditText;
+    private TextView mDate;
     private TextView mTimeFromEditText;
     private TextView mTimeToEditText;
 
-    private static final String DATE_FROM_FRAGMENT = "date_from_fragment";
-    private static final String DATE_TO_FRAGMENT = "date_to_fragment";
+    private static final String DATE_FRAGMENT = "date_fragment";
     private static final String TIME_TO_FRAGMENT = "time_to_fragment";
     private static final String TIME_FROM_FRAGMENT = "time_from_fragment";
 
@@ -45,8 +42,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
         setContentView(R.layout.activity_exception_edit);
 
         Intent intent = getIntent();
-        int exceptionId = intent.getIntExtra(ExceptionListActivity.EXCEPTION_ID, 0);
-        int userId = intent.getIntExtra(ExceptionListActivity.USER_ID, 0);
+        long exceptionId = intent.getLongExtra(ExceptionListActivity.EXCEPTION_ID, 0);
+        long userId = intent.getLongExtra(ExceptionListActivity.USER_ID, 0);
 
         if (exceptionId == 0) {
             ToolbarUtils.setToolbar(this, R.string.exception_add);
@@ -56,38 +53,23 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
 
         Calendar calendar = Calendar.getInstance();
 
-        mDateFromEditText = (TextView) findViewById(R.id.date_from_text);
-        mDateToEditText = (TextView) findViewById(R.id.date_to_text);
+        mDate = (TextView) findViewById(R.id.date_text);
         mTimeFromEditText = (TextView) findViewById(R.id.time_from_text);
         mTimeToEditText = (TextView) findViewById(R.id.time_to_text);
         initEditTexts(calendar, null);
 
 
-        mDateFromEditText.setOnClickListener(new View.OnClickListener() {
+        mDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateFromEditText.getText().toString());
+                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDate.getText().toString());
                     dialogFragment = new DateFromDialog(calendar);
                 } catch (ParseException e) {
                     dialogFragment = new DateFromDialog();
                 }
-                dialogFragment.show(getFragmentManager(), DATE_FROM_FRAGMENT);
-            }
-        });
-
-        mDateToEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment dialogFragment;
-                try {
-                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateFromEditText.getText().toString());
-                    dialogFragment = new DateToDialog(calendar);
-                } catch (ParseException e) {
-                    dialogFragment = new DateToDialog();
-                }
-                dialogFragment.show(getFragmentManager(), DATE_TO_FRAGMENT);
+                dialogFragment.show(getFragmentManager(), DATE_FRAGMENT);
             }
         });
 
@@ -114,12 +96,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
     }
 
     private void setDateFromText(Calendar calendar) {
-        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
+        mDate.setText(CalendarUtils.calendarToDateString(calendar));
 
-    }
-
-    private void setDateToText(Calendar calendar) {
-        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
     }
 
     private void setTimeFromText(Calendar calendar) {
@@ -137,7 +115,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
             setDateFromText(start);
             setTimeFromText(start);
             start.add(Calendar.DATE, 4);
-            setDateToText(start);
             setTimeToText(start);
         } else {
 
@@ -163,12 +140,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
 
     @Override
     public void setDateFrom(Calendar calendar) {
-        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
-    }
-
-    @Override
-    public void setDateTo(Calendar calendar) {
-        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
+        mDate.setText(CalendarUtils.calendarToDateString(calendar));
     }
 
     @Override

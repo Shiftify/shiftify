@@ -47,7 +47,7 @@
 
     <string name="schedules_list">Rozpis plánů šichet</string>
     <string name="schedule_add">Přidat plán šichet</string>
-    <string name="schedule_edit">Upravit rozspis</string>
+    <string name="schedule_edit">Upravit rozpis</string>
 
     <string name="placeholder_firstname">Jméno</string>
     <string name="placeholder_surname">Příjmení</string>
@@ -85,6 +85,9 @@
     <string name="schedule_type_title">Název typu plánu šichet</string>
     <string name="schedule_types">Typy plánů šichet</string>
     <string name="schedule_types_manage">Správa plánů šichet</string>
+
+    <string name="free_time">Volno</string>
+    <string name="work_time">Práce</string>
 
     <string name="unknown">Neznámo</string>
 

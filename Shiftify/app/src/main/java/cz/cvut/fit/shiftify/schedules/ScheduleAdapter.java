@@ -21,7 +21,7 @@ import cz.cvut.fit.shiftify.utils.CalendarUtils;
 public class ScheduleAdapter extends ArrayAdapter<Schedule> {
 
 
-    private Context mContext;
+    private final Context mContext;
 
     public ScheduleAdapter(Context context, int resource, Schedule[] objects) {
         super(context, resource, objects);

@@ -69,7 +69,7 @@ public class PersonEditActivity extends AppCompatActivity {
 
         UserManager userManager = new UserManager();
 
-        int userId = getIntent().getIntExtra("userId",-1);
+        long userId = getIntent().getLongExtra("userId",-1);
 
         if(userId == -1){
             System.err.println("Nepodarilo se nacist UserId v PersonEditActivity.");
