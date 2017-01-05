@@ -16,7 +16,7 @@ public class ShiftTests {
         assertTrue(sShift.persistsIntoNextDay());
         sShift.setDuration(new Time(2, 0, 0));
         assertFalse(sShift.persistsIntoNextDay());
-        ExceptionShift eShift = new ExceptionShift(new Time(0, 2, 0), new Time(23, 59, 0), 1, true);
+        ExceptionShift eShift = new ExceptionShift(new Time(0, 2, 0), new Time(23, 59, 0), 1L, true);
         assertTrue(eShift.persistsIntoNextDay());
         eShift.setFrom(new Time(8, 0, 0));
         eShift.setDuration(new Time(5, 30, 0));

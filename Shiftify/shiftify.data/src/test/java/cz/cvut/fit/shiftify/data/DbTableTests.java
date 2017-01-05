@@ -2,15 +2,12 @@ package cz.cvut.fit.shiftify.data;
 
 import org.junit.Test;
 
-import java.sql.Time;
-import java.text.Format;
+import cz.cvut.fit.shiftify.data.models.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static cz.cvut.fit.shiftify.data.DbTable.QueryCondition;
-import static cz.cvut.fit.shiftify.data.DbTable.QueryCondition.ComparisonType;
 
 /**
  * Created by lukas on 16.11.2016.

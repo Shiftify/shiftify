@@ -2,17 +2,13 @@ package cz.cvut.fit.shiftify;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-import cz.cvut.fit.shiftify.data.User;
-import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.data.models.User;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
 
 public class PersonShiftsActivity extends AppCompatActivity {
 

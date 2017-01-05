@@ -1,6 +1,6 @@
 package cz.cvut.fit.shiftify.data;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -17,18 +17,18 @@ public class ScheduleType {
         setDescription(description);
     }
 
-    protected Integer id;
+    protected Long id;
     protected String name;
     protected Integer daysOfScheduleCycle;
     protected String description;
 
-    protected Vector<ScheduleShift> shifts;
+    protected List<ScheduleShift> shifts;
 
     // getters and setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
     public String getName() {
@@ -51,10 +51,10 @@ public class ScheduleType {
     }
 
     // dummy implementation at this point
-    public Vector<ScheduleShift> getShifts() {
+    public List<ScheduleShift> getShifts() {
         return shifts;
     }
-    public void setShifts(Vector<ScheduleShift> shifts) {
+    public void setShifts(List<ScheduleShift> shifts) {
         this.shifts = shifts;
     }
 }

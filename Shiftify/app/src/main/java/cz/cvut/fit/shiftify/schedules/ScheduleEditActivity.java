@@ -15,15 +15,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Vector;
+import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Schedule;
 import cz.cvut.fit.shiftify.data.ScheduleShift;
 import cz.cvut.fit.shiftify.data.ScheduleType;
 import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
-import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.helpdialogfragments.DateFromDialog;
 import cz.cvut.fit.shiftify.helpdialogfragments.DateToDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -106,7 +107,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mFirstShiftSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                mFirstShift = mScheduleType.getShifts().elementAt(position);
+                mFirstShift = mScheduleType.getShifts().get(position);
             }
 
             @Override
@@ -178,27 +179,27 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     private ScheduleType[] getScheduleTypes() {
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
-        Vector<ScheduleType> scheduleTypesVector = new Vector<>();
+        List<ScheduleType> scheduleTypesList = new ArrayList<>();
 
         try {
-            scheduleTypesVector.addAll(scheduleTypeManager.scheduleTypes());
+            scheduleTypesList.addAll(scheduleTypeManager.scheduleTypes());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return scheduleTypesVector.toArray(new ScheduleType[scheduleTypesVector.size()]);
+        return scheduleTypesList.toArray(new ScheduleType[scheduleTypesList.size()]);
     }
 
     private ScheduleShift[] getScheduleShifts(ScheduleType scheduleType) {
-        Vector<ScheduleShift> scheduleShiftsVector = new Vector<>();
+        List<ScheduleShift> scheduleShiftsList = new ArrayList<>();
 
         try {
-            scheduleShiftsVector.addAll(scheduleType.getShifts());
+            scheduleShiftsList.addAll(scheduleType.getShifts());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return scheduleShiftsVector.toArray(new ScheduleShift[scheduleShiftsVector.size()]);
+        return scheduleShiftsList.toArray(new ScheduleShift[scheduleShiftsList.size()]);
     }
 
     @Override

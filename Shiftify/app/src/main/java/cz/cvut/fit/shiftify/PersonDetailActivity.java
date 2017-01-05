@@ -1,7 +1,6 @@
 package cz.cvut.fit.shiftify;
 
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,8 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cz.cvut.fit.shiftify.data.User;
-import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.data.ExceptionNew;
+import cz.cvut.fit.shiftify.data.models.User;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
@@ -31,6 +31,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     TextView emailView;
     Button scheduleButton;
     User u;
+    private UserManager mUserManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,11 @@ public class PersonDetailActivity extends AppCompatActivity {
         Intent i = getIntent();
         long userId = i.getLongExtra("userId", -1);
 
-        UserManager userManager = new UserManager();
+        mUserManager = new UserManager();
 
         if (userId != -1) {
             try {
-                u = userManager.user(userId);
+                u = mUserManager.user(userId);
             } catch (Exception e) {
                 System.err.println("Nepodarilo se nacist ID uzivatele pro detail.");
                 this.finish();
@@ -69,9 +70,13 @@ public class PersonDetailActivity extends AppCompatActivity {
         fullname = (TextView) findViewById(R.id.person_detail_fullname);
         scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
 
-        fullname.setText(u.getFirstName() + (u.getNickname() == null ? "" : " \"" + u.getNickname() + "\"") + " " + u.getSurname());
-        emailView.setText(u.getEmail().toString());
-        numberView.setText(u.getPhoneNumber().toString());
+        fullname.setText(u.getFullNameNick());
+        if (u.getEmail() != null) {
+            emailView.setText(u.getEmail().toString());
+        }
+        if (u.getPhoneNumber() != null) {
+            numberView.setText(u.getPhoneNumber().toString());
+        }
 
 
     }
@@ -100,13 +105,8 @@ public class PersonDetailActivity extends AppCompatActivity {
                 break;
 
             case R.id.person_delete:
-
-
-                // THIS CAUSES AVD TO CRASH !!!!!!!!!!!!!!!!!!
-
-
                 showDialog();
-
+                finish();
                 break;
             case R.id.exception_list:
                 intent = new Intent(this, ExceptionListActivity.class);
@@ -130,7 +130,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         Bundle userBundle = new Bundle();
         userBundle.putLong("userId", u.getId());
         newFragment.setArguments(userBundle);
-
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -194,20 +193,22 @@ public class PersonDetailActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public void showScheduleShifts(View view){
+
+    public void showScheduleShifts(View view) {
 
         Intent intent = new Intent(this, PersonShiftsActivity.class);
         intent.putExtra("userId", u.getId());
         startActivity(intent);
     }
 
-    public void showExceptionList(View view){
+    public void showExceptionList(View view) {
 
         Intent intent = new Intent(this, ExceptionListActivity.class);
         intent.putExtra(USER_ID, u.getId());
         startActivity(intent);
     }
-    public void showScheduleTypeList(View view){
+
+    public void showScheduleTypeList(View view) {
 
         Intent intent = new Intent(this, ScheduleListActivity.class);
         intent.putExtra(USER_ID, u.getId());

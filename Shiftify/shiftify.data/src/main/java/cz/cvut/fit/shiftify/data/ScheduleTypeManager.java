@@ -1,7 +1,8 @@
 package cz.cvut.fit.shiftify.data;
 
-import java.util.Vector;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -27,15 +28,15 @@ public class ScheduleTypeManager {
      * Deletes a scheduleType with an id equal to scheduleTypeId.
      * Deletes all its scheduleShifts automatically as well.
      */
-    public void delete(int scheduleTypeId) throws Exception {
+    public void delete(long scheduleTypeId) throws Exception {
     }
 
     /**
      * Gets a scheduleType with an id equal to scheduleTypeId.
      * This instance has a list of its scheduleShifts.
      */
-    public ScheduleType scheduleType(int scheduleTypeId) throws Exception {
-        Vector<ScheduleShift> shifts = new Vector<ScheduleShift> ();
+    public ScheduleType scheduleType(long scheduleTypeId) throws Exception {
+        List<ScheduleShift> shifts = new ArrayList<>();
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 2));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 1, 3));
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 5));
@@ -50,9 +51,9 @@ public class ScheduleTypeManager {
     /**
      * Gets a list of all scheduleTypes.
      */
-    public Vector<ScheduleType> scheduleTypes() throws Exception {
-        Vector<ScheduleType> scheduleTypes = new Vector<ScheduleType>();
-        Vector<ScheduleShift> shifts = new Vector<ScheduleShift> ();
+    public List<ScheduleType> scheduleTypes() throws Exception {
+        List<ScheduleType> scheduleTypes = new ArrayList<>();
+        List<ScheduleShift> shifts = new ArrayList<>();
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 2, "To se bude blbě vstávat."));
         shifts.add(new ScheduleShift("nocni", new Time(22, 0, 0), new Time(8, 0, 0), 1, 3));
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 1, 5, "To se bude blbě vstávat."));
@@ -62,7 +63,7 @@ public class ScheduleTypeManager {
         scheduleType.setId(1);
         scheduleType.setShifts(shifts);
         scheduleTypes.add(scheduleType); // adds first schedule type
-        shifts = new Vector<ScheduleShift> ();
+        shifts = new ArrayList<>();
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 2, 1, "To se bude blbě vstávat."));
         shifts.add(new ScheduleShift("ranni", new Time(6, 0, 0), new Time(8, 0, 0), 2, 2));
         shifts.add(new ScheduleShift("odpoledni", new Time(14, 0, 0), new Time(8, 0, 0), 2, 3));

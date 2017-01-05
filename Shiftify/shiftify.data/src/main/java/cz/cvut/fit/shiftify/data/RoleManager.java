@@ -1,6 +1,9 @@
 package cz.cvut.fit.shiftify.data;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.cvut.fit.shiftify.data.models.Role;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -12,7 +15,7 @@ public class RoleManager {
      * Adds role.
      */
     public void add(Role role) throws Exception {
-        role.setId(4);
+        role.setId(4L);
     }
 
     /**
@@ -37,13 +40,13 @@ public class RoleManager {
     /**
      * Gets a list of all roles.
      */
-    public Vector<Role> roles() throws Exception {
-        Vector<Role> roles = new Vector<Role>();
+    public List<Role> roles() throws Exception {
+        List<Role> roles = new ArrayList<>();
         Role role = new Role("admin", null);
-        role.setId(1);
+        role.setId(1L);
         roles.add(role);
         role = new Role("leader", "A member of a team, that takes care of the others.");
-        role.setId(2);
+        role.setId(2L);
         roles.add(role);
         return roles;
     }

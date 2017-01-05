@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +24,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cz.cvut.fit.shiftify.data.UserManager;
-import cz.cvut.fit.shiftify.data.User;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.data.models.User;
 
 public class PersonEditActivity extends AppCompatActivity {
 

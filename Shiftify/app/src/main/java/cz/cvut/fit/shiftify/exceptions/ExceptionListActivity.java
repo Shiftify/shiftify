@@ -6,29 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import cz.cvut.fit.shiftify.PersonDetailActivity;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.ExceptionNew;
-import cz.cvut.fit.shiftify.data.ExceptionShift;
-import cz.cvut.fit.shiftify.data.Schedule;
-import cz.cvut.fit.shiftify.data.User;
-import cz.cvut.fit.shiftify.data.UserManager;
-import cz.cvut.fit.shiftify.schedules.ScheduleAdapter;
-import cz.cvut.fit.shiftify.schedules.ScheduleEditActivity;
+import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 /**

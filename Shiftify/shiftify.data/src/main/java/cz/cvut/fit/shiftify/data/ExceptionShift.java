@@ -8,30 +8,30 @@ import java.sql.Time;
 
 public class ExceptionShift extends Shift {
     public ExceptionShift() { }
-    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, Boolean isWorking) {
+    public ExceptionShift(Time from, Time duration, Long exceptionInScheduleId, Boolean isWorking) {
         this(from, duration, exceptionInScheduleId, isWorking, null);
     }
-    public ExceptionShift(Time from, Time duration, Integer exceptionInScheduleId, Boolean isWorking, String description) {
+    public ExceptionShift(Time from, Time duration, Long exceptionInScheduleId, Boolean isWorking, String description) {
         super(from, duration, description);
         setExceptionInScheduleId(exceptionInScheduleId);
         setIsWorking(isWorking);
     }
 
-    protected Integer id;
-    protected Integer exceptionInScheduleId;
+    protected Long id;
+    protected Long exceptionInScheduleId;
     protected Boolean isWorking;
 
     // getters and setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public Integer getExceptionInScheduleId() {
+    public Long getExceptionInScheduleId() {
         return exceptionInScheduleId;
     }
-    public void setExceptionInScheduleId(Integer exceptionInScheduleId) {
+    public void setExceptionInScheduleId(long exceptionInScheduleId) {
         this.exceptionInScheduleId = exceptionInScheduleId;
     }
     public Boolean getIsWorking() {

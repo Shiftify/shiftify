@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cz.cvut.fit.shiftify.data.models.User;
+
 /**
  * Created by petr on 12/6/16.
  */

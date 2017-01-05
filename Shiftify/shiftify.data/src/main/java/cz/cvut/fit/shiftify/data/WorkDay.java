@@ -1,7 +1,7 @@
 package cz.cvut.fit.shiftify.data;
 
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -12,13 +12,13 @@ public class WorkDay {
     public WorkDay(Date date) { // no work this day
         this(date, null);
     }
-    public WorkDay(Date date, Vector<Shift> shifts) {
+    public WorkDay(Date date, List<Shift> shifts) {
         setDate(date);
         setShifts(shifts);
     }
 
     protected Date date;
-    protected Vector<Shift> shifts;
+    protected List<Shift> shifts;
 
     // getters and setters
     public Date getDate() {
@@ -27,10 +27,10 @@ public class WorkDay {
     public void setDate(Date date) {
         this.date = date;
     }
-    public Vector<Shift> getShifts() {
+    public List<Shift> getShifts() {
         return shifts;
     }
-    public void setShifts(Vector<Shift> shifts) {
+    public void setShifts(List<Shift> shifts) {
         this.shifts = shifts;
     }
 

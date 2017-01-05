@@ -1,7 +1,10 @@
 package cz.cvut.fit.shiftify.data;
 
 import org.junit.Test;
-import java.sql.Date;
+
+import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.data.models.User;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

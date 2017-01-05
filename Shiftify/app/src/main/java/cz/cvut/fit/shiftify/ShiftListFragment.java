@@ -14,18 +14,19 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 
-import cz.cvut.fit.shiftify.data.User;
-import cz.cvut.fit.shiftify.data.UserManager;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 public class ShiftListFragment extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    Vector<User> allWorkers;
-    Vector<User> freeWorkers;
+    List<User> allWorkers;
+    List<User> freeWorkers;
     UserManager userManager;
     CustomShiftListAdapter adapter;
     String[] personsArray;
@@ -101,11 +102,11 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     private void loadWorkers() {
 
-        freeWorkers = new Vector<User>();
+        freeWorkers = new ArrayList<>();
         userManager = new UserManager();
 
         UserManager userManager = new UserManager();
-        allWorkers = new Vector<User>();
+        allWorkers = new ArrayList<>();
 
         try {
             allWorkers = userManager.users();
@@ -146,17 +147,17 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
         Intent intent = new Intent(getActivity(), PersonShiftsActivity.class);  //PersonScheduleActivity
 
-        intent.putExtra("userId", allWorkers.elementAt(position).getId());
+        intent.putExtra("userId", allWorkers.get(position).getId());
         startActivity(intent);
     }
 
-    private void makeArray(Vector<User> vector) {
+    private void makeArray(List<User> list) {
 
         int index = 0;
         String firstname, surname, nickname;
 
         for (User u :
-                vector) {
+                list) {
 
             firstname = u.getFirstName();
             surname = u.getSurname();
