@@ -1,22 +1,27 @@
 package cz.cvut.fit.shiftify.data.managers;
 
-import java.sql.Date;
+import android.util.Log;
+
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import cz.cvut.fit.shiftify.data.App;
-import cz.cvut.fit.shiftify.data.DaoSession;
 import cz.cvut.fit.shiftify.data.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.ExceptionShift;
+import cz.cvut.fit.shiftify.data.models.DaoSession;
 import cz.cvut.fit.shiftify.data.models.Role;
-import cz.cvut.fit.shiftify.data.Schedule;
-import cz.cvut.fit.shiftify.data.ScheduleShift;
+import cz.cvut.fit.shiftify.data.models.Schedule;
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 import cz.cvut.fit.shiftify.data.Shift;
 import cz.cvut.fit.shiftify.data.WorkDay;
+import cz.cvut.fit.shiftify.data.models.ScheduleDao;
+import cz.cvut.fit.shiftify.data.models.ScheduleType;
 import cz.cvut.fit.shiftify.data.models.User;
-import cz.cvut.fit.shiftify.data.UserDao;
+import cz.cvut.fit.shiftify.data.models.UserDao;
 
 
 /**
@@ -26,81 +31,58 @@ import cz.cvut.fit.shiftify.data.UserDao;
 // dummy implementation at this point
 public class UserManager {
 
-    private UserDao mUserDao;
+    private UserDao userDao;
+    private ScheduleDao scheduleDao;
 
     public UserManager() {
         DaoSession daoSession = App.getNewDaoSession();
-        mUserDao = daoSession.getUserDao();
+        userDao = daoSession.getUserDao();
+        scheduleDao = daoSession.getScheduleDao();
     }
 
     /**
      * Adds user, updates the instance afterwards (sets the id).
      */
     public void add(User user) throws Exception {
-        mUserDao.insert(user);
-//        user.setId(1L);
+        userDao.insert(user);
     }
 
     /**
      * Edits user, user has to have an id.
      */
     public void edit(User user) throws Exception {
+        userDao.save(user);
     }
 
     /**
      * Deletes user that has id equal to userId.
      */
     public void delete(long userId) throws Exception {
-        mUserDao.deleteByKey(userId);
+        userDao.deleteByKey(userId);
+    }
+
+    public void deleteAll() throws Exception {
+        userDao.deleteAll();
     }
 
     /**
      * Gets user that has id equal to userId.
      */
-    public User user(long userId) throws Exception {
+
+    public User user(long userId) {
 //        User user = new User("Michal", "Plameňák", "777222111", "random@something.org");
 //        user.setId(1L);
 //        return user;
 
-        return mUserDao.load(userId);
+        return userDao.load(userId);
     }
 
     /**
-     * Gets all users.
+     * Gets all allUsers.
      */
 
-    public static void initUsers() {
-        UserDao userDao = App.getNewDaoSession().getUserDao();
-        if (userDao.loadAll().size() < 8) {
-            userDao.deleteAll();
-            List<User> users = new ArrayList<>();
-            users.add(new User("Michal", "Plameňák", "777222111", "random@something.org"));
-            users.add(new User("Petr", "Kůň"));
-            users.add(new User("Martin", "Salamini", null, "some@address.com", "meloun"));
-            users.add(new User("Martin", "Salamini", "+420423458932"));
-            users.add(new User("Adam", "Moron", "+420423458932"));
-            users.add(new User("Jaromir", "Jagr", "+420423458932"));
-            users.add(new User("Nekdo", "Nekdovic", "+420423458932"));
-            users.add(new User("Nikdo", "Kdokolic", "+420427458932"));
-            for (User u : users) {
-                userDao.insert(u);
-            }
-        }
-    }
-
-    public List<User> users() throws Exception {
-//        List<User> users = new ArrayList<>();
-//        users.add(new User("Michal", "Plameňák", "777222111", "random@something.org"));
-//        users.add(new User("Petr", "Kůň"));
-//        users.add(new User("Martin", "Salamini", null, "some@address.com", "meloun"));
-//        users.add(new User("Martin", "Salamini", "+420423458932"));
-//        users.add(new User("Adam", "Moron", "+420423458932"));
-//        users.add(new User("Jaromir", "Jagr", "+420423458932"));
-//        users.add(new User("Nekdo", "Nekdovic", "+420423458932"));
-//        users.add(new User("Nikdo", "Kdokolic", "+420427458932"));
-//        for (int i = 1; i <= users.size(); ++i) users.get(i - 1).setId(Long.valueOf(i));
-//        return users;
-        return mUserDao.loadAll();
+    public List<User> allUsers() {
+        return userDao.loadAll();
     }
 
     /**
@@ -128,28 +110,33 @@ public class UserManager {
      * Adds a schedule to a user. This schedule needs to have a value in userId and scheduleTypeId.
      */
     public void addSchedule(Schedule schedule) throws Exception {
-        schedule.setId(5);
+        scheduleDao.insert(schedule);
+//        schedule.setId(5);
     }
 
     /**
      * Edits a schedule. This schedule instance needs to have an id.
      */
     public void editSchedule(Schedule schedule) throws Exception {
+        scheduleDao.save(schedule);
     }
 
     /**
      * Deletes a schedule that has id equal to scheduleId.
      */
-    public void deleteSchedule(int scheduleId) throws Exception {
+    public void deleteSchedule(long scheduleId) throws Exception {
+        scheduleDao.deleteByKey(scheduleId);
+    }
+
+    public void deleteScheduleAll() {
+        scheduleDao.deleteAll();
     }
 
     /**
      * Gets schedule that has id equal to scheduleId.
      */
-    public Schedule schedule(long scheduleId) throws Exception {
-        Schedule schedule = new Schedule(new Long(1), 2, new Date(116, 10, 2), null, 3);
-        schedule.setId(scheduleId);
-        return schedule;
+    public Schedule schedule(long scheduleId){
+        return scheduleDao.load(scheduleId);
     }
 
     /**
@@ -157,9 +144,16 @@ public class UserManager {
      * Return null, if no schedule has met the requirements.
      */
     public Schedule currentSchedule(long userId) throws Exception {
-        Schedule schedule = new Schedule(userId, 2, new Date(116, 10, 2), null, 3);
-        schedule.setId(2);
-        return schedule;
+//        Schedule schedule = new Schedule(userId, 2, new Date(116, 10, 2), null, 3);
+//        schedule.setId(2);
+//        return schedule;
+        User user = userDao.load(userId);
+        Date today = Calendar.getInstance().getTime();
+        for (Schedule schedule : user.getSchedules()) {
+            if (schedule.getFrom().before(today) && (schedule.getTo() == null || schedule.getTo().after(today)))
+                return schedule;
+        }
+        return null;
     }
 
     /**
@@ -167,7 +161,7 @@ public class UserManager {
      */
     // returns the last schedule, even if not current, or null if the user never had a schedule
     public Schedule lastSchedule(long userId) throws Exception {
-        Schedule schedule = new Schedule(userId, 1, new Date(116, 10, 2), new Date(116, 10, 10), 1);
+        Schedule schedule = new Schedule(userId, 1L, new Date(116, 10, 2), new Date(116, 10, 10), 1);
         schedule.setId(4);
         return schedule;
     }
@@ -179,8 +173,8 @@ public class UserManager {
         if (from == null || to == null) throw new Exception("From nor to date must be null.");
         if (from.after(to)) throw new Exception("From date cannot be after to date.");
         List<Schedule> schedules = new ArrayList<>();
-        schedules.add(new Schedule(userId, 1, from, to, 1));
-        schedules.add(new Schedule(userId, 1, to, null, 1));
+        schedules.add(new Schedule(userId, 1L, from, to, 1));
+        schedules.add(new Schedule(userId, 1L, to, null, 1));
         for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId(i);
         return schedules;
     }
@@ -189,11 +183,7 @@ public class UserManager {
      * Gets all schedules of a user.
      */
     public List<Schedule> schedules(long userId) throws Exception {
-        List<Schedule> schedules = new ArrayList<>();
-        schedules.add(new Schedule(userId, 1, new Date(116, 10, 2), new Date(116, 10, 10), 1));
-        schedules.add(new Schedule(userId, 1, new Date(116, 10, 11), null, 4));
-        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId(i);
-        return schedules;
+        return userDao.load(userId).getSchedules();
     }
 
     /**
@@ -201,7 +191,7 @@ public class UserManager {
      * and a list of exceptionSchedules.
      */
     public void addExceptionInSchedule(long scheduleId, ExceptionInSchedule exceptionInSchedule) throws Exception {
-        exceptionInSchedule.setId(new Long(4));
+        exceptionInSchedule.setId(4L);
         exceptionInSchedule.setScheduleId(scheduleId);
         for (int i = 1; i <= exceptionInSchedule.getShifts().size(); ++i)
             exceptionInSchedule.getShifts().get(i - 1).setId(i);

@@ -9,8 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.ScheduleShift;
-import cz.cvut.fit.shiftify.data.ScheduleType;
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 
 /**
  * Created by petr on 11/14/16.

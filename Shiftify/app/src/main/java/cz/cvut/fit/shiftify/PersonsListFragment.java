@@ -73,7 +73,7 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
         userList = new ArrayList<>();
 
         try {
-            userList = userManager.users();
+            userList = userManager.allUsers();
 
         } catch (Exception e) {
             System.err.println("Nepovedlo se nacist uzivatele z DB.");

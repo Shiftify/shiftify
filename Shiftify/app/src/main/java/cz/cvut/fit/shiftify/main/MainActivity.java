@@ -16,15 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.Calendar;
-import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 
 import cz.cvut.fit.shiftify.PersonsListFragment;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.ShiftListFragment;
 import cz.cvut.fit.shiftify.ShiftPlanDateDialog;
-import cz.cvut.fit.shiftify.data.Schedule;
-import cz.cvut.fit.shiftify.data.ScheduleType;
 
 
 /**

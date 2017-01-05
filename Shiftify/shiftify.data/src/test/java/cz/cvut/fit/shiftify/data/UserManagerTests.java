@@ -23,8 +23,8 @@ public class UserManagerTests {
 //        catch(Exception ex) { assert("UserManager edit method throws exception." == null); }
 //        try { um.user(u.getId()); }
 //        catch(Exception ex) { assert("UserManager user method throws exception." == null); }
-//        try { um.users(); }
-//        catch(Exception ex) { assert("UserManager users method throws exception." == null); }
+//        try { um.allUsers(); }
+//        catch(Exception ex) { assert("UserManager allUsers method throws exception." == null); }
 //        try { um.delete(u.getId()); }
 //        catch(Exception ex) { assert("UserManager delete method throws exception." == null); }
 //        try { um.shiftsForDate(u.getId(), new Date(116, 10, 12)); }

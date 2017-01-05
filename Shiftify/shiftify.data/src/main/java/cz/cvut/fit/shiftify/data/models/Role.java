@@ -9,7 +9,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * Created by lukas on 11.11.2016.
  */
 
-@Entity(nameInDb = "roles", generateConstructors = false, generateGettersSetters = false)
+@Entity(generateConstructors = false, generateGettersSetters = false)
 public class Role {
 
     @Id(autoincrement = true)

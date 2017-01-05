@@ -5,7 +5,10 @@ import android.content.Context;
 
 import org.greenrobot.greendao.database.Database;
 
+import cz.cvut.fit.shiftify.data.managers.FillDataManager;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.data.models.DaoMaster;
+import cz.cvut.fit.shiftify.data.models.DaoSession;
 
 /**
  * Created by petr on 11/22/16.
@@ -29,7 +32,7 @@ public class App extends Application {
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
-        UserManager.initUsers();
+        FillDataManager.initAll();
     }
 
     public static Context getsContext() {

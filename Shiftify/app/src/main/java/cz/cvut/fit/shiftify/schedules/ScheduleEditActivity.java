@@ -20,10 +20,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.Schedule;
-import cz.cvut.fit.shiftify.data.ScheduleShift;
-import cz.cvut.fit.shiftify.data.ScheduleType;
-import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
+import cz.cvut.fit.shiftify.data.models.Schedule;
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
+import cz.cvut.fit.shiftify.data.models.ScheduleType;
+import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.helpdialogfragments.DateFromDialog;
 import cz.cvut.fit.shiftify.helpdialogfragments.DateToDialog;
@@ -44,6 +44,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
 
     private Schedule mSchedule;
+    private UserManager mUserManager;
 
     private ScheduleType mScheduleType;
     private ScheduleShift mFirstShift;
@@ -56,6 +57,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_edit);
+        mUserManager = new UserManager();
 
         Intent intent = getIntent();
         long scheduleId = intent.getLongExtra(ScheduleListActivity.SCHEDULE_ID, -1);
@@ -81,12 +83,12 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             try {
                 mSchedule = userManager.schedule(scheduleId);
             } catch (Exception e) {
-                mSchedule = new Schedule(userId, null, null, null, null);
             }
         }
 
 
         mScheduleSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
+
         mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
         setDateListeners();
 
@@ -182,7 +184,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         List<ScheduleType> scheduleTypesList = new ArrayList<>();
 
         try {
-            scheduleTypesList.addAll(scheduleTypeManager.scheduleTypes());
+            scheduleTypesList.addAll(scheduleTypeManager.scheduleTypesAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -210,15 +212,20 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        UserManager userManager = new UserManager();
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
             case R.id.done_item:
-                if (mSchedule.getId() == null) {
-//                    save
-                } else {
-//                    update
+                try {
+                    if (mSchedule.getId() == null) {
+                        userManager.addSchedule(mSchedule);
+                    } else {
+                        userManager.editSchedule(mSchedule);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 this.finish();
                 return true;

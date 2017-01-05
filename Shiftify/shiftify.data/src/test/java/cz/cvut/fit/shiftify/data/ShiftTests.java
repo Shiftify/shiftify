@@ -2,6 +2,9 @@ package cz.cvut.fit.shiftify.data;
 
 import org.junit.Test;
 import java.sql.Time;
+
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

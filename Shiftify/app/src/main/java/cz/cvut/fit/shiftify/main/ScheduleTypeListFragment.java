@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.ScheduleType;
-import cz.cvut.fit.shiftify.data.ScheduleTypeManager;
-import cz.cvut.fit.shiftify.schedules.ScheduleTypeAdapter;
+import cz.cvut.fit.shiftify.data.models.ScheduleType;
+import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
 
 /**
  * Created by petr on 12/14/16.
@@ -38,7 +37,7 @@ public class ScheduleTypeListFragment extends ListFragment implements AdapterVie
         ScheduleTypeManager typeManager = new ScheduleTypeManager();
         List<ScheduleType> types = new ArrayList<>();
         try {
-            types = typeManager.scheduleTypes();
+            types = typeManager.scheduleTypesAll();
         } catch (Exception e) {
             e.printStackTrace();
         }

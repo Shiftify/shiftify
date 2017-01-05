@@ -2,6 +2,10 @@ package cz.cvut.fit.shiftify.data;
 
 import org.junit.Test;
 
+import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
+import cz.cvut.fit.shiftify.data.models.ScheduleType;
+
 import static org.junit.Assert.assertEquals;
 
 /**

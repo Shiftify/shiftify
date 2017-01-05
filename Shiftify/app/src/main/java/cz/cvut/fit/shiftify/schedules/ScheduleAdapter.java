@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.Schedule;
+import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,7 @@ import java.util.List;
 
 import cz.cvut.fit.shiftify.PersonDetailActivity;
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.Schedule;
+import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
@@ -115,7 +116,9 @@ public class ScheduleListActivity extends AppCompatActivity {
             Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
             Schedule schedule = mScheduleAdapter.getItem(position);
             intent.putExtra(SCHEDULE_ID, schedule.getId());
-            intent.putExtra(USER_ID, ((ScheduleListActivity)getActivity()).mUser.getId());
+            long userId = ((ScheduleListActivity)getActivity()).mUser.getId();
+            Log.d("USER_ID", String.valueOf(userId));
+            intent.putExtra(USER_ID, userId);
             startActivity(intent);
         }
     }

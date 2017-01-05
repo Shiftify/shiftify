@@ -109,7 +109,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
         allWorkers = new ArrayList<>();
 
         try {
-            allWorkers = userManager.users();
+            allWorkers = userManager.allUsers();
 
         } catch (Exception e) {
             System.err.println("Nepovedlo se nacist uzivatele z DB.");
