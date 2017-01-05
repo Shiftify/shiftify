@@ -9,6 +9,14 @@ import java.util.Date;
  */
 
 public class Schedule {
+
+    protected Long id;
+    protected Long userId;
+    protected Long scheduleTypeId;
+    protected Date from;
+    protected Date to;
+    protected Integer startingDayOfScheduleCycle;
+
     public Schedule() { }
     public Schedule(Long userId, Integer scheduleTypeId, Date from, Date to, Integer startingDayOfScheduleCycle) {
         setUserId(userId);
@@ -17,13 +25,6 @@ public class Schedule {
         setTo(to);
         setStartingDayOfScheduleCycle(startingDayOfScheduleCycle);
     }
-
-    protected Long id;
-    protected Long userId;
-    protected Integer scheduleTypeId;
-    protected Date from;
-    protected Date to;
-    protected Integer startingDayOfScheduleCycle;
 
     // getters and setters
     public Long getId() {
@@ -38,10 +39,10 @@ public class Schedule {
     public void setUserId(@NotNull Long userId) {
         this.userId = userId;
     }
-    public Integer getScheduleTypeId() {
+    public Long getScheduleTypeId() {
         return this.scheduleTypeId;
     }
-    public void setScheduleTypeId(Integer scheduleTypeId) {
+    public void setScheduleTypeId(long scheduleTypeId) {
         this.scheduleTypeId = scheduleTypeId;
     }
     public Date getFrom() {

@@ -8,23 +8,24 @@ import java.util.List;
  */
 
 public class ExceptionInSchedule {
-    public ExceptionInSchedule() {
-    }
-
-    public ExceptionInSchedule(Date date, Integer scheduleId) {
-        this(date, scheduleId, null);
-    }
-
-    public ExceptionInSchedule(Date date, Integer scheduleId, String description) {
-        setDate(date);
-        setScheduleId(scheduleId);
-        setDescription(description);
-    }
 
     protected Long id;
     protected Long scheduleId;
     protected Date date;
     protected String description;
+
+    public ExceptionInSchedule() {
+    }
+
+    public ExceptionInSchedule(Date date, Long scheduleId) {
+        this(date, scheduleId, null);
+    }
+
+    public ExceptionInSchedule(Date date, Long scheduleId, String description) {
+        setDate(date);
+        setScheduleId(scheduleId);
+        setDescription(description);
+    }
 
     protected List<ExceptionShift> shifts;
 

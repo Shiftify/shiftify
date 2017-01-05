@@ -7,6 +7,12 @@ import java.util.List;
  */
 
 public class ScheduleType {
+
+    protected Long id;
+    protected String name;
+    protected Integer daysOfScheduleCycle;
+    protected String description;
+
     public ScheduleType() { }
     public ScheduleType(String name, Integer daysOfScheduleCycle) {
         this(name, daysOfScheduleCycle, null);
@@ -16,11 +22,6 @@ public class ScheduleType {
         setDaysOfScheduleCycle(daysOfScheduleCycle);
         setDescription(description);
     }
-
-    protected Long id;
-    protected String name;
-    protected Integer daysOfScheduleCycle;
-    protected String description;
 
     protected List<ScheduleShift> shifts;
 

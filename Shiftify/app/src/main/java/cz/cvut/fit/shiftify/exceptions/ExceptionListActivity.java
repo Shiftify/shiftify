@@ -102,7 +102,7 @@ public class ExceptionListActivity extends AppCompatActivity {
         public void onListItemClick(ListView l, View v, int position, long id) {
             ExceptionNew exception = mExceptionAdapter.getItem(position);
             Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
-            intent.putExtra(EXCEPTION_ID, (int) exception.getId());
+            intent.putExtra(EXCEPTION_ID, exception.getId());
             intent.putExtra(USER_ID, mUser.getId());
             startActivity(intent);
         }

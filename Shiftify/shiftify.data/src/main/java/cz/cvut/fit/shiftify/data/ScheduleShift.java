@@ -7,6 +7,13 @@ import java.sql.Time;
  */
 
 public class ScheduleShift extends Shift {
+
+    protected Long id;
+    protected Long scheduleTypeId;
+    protected String name;
+    protected Integer dayOfScheduleCycle;
+
+
     public ScheduleShift() { }
     public ScheduleShift(String name, Time from, Time duration, Integer scheduleTypeId, Integer dayOfScheduleCycle) {
         this(name, from, duration, scheduleTypeId, dayOfScheduleCycle, null);
@@ -18,11 +25,6 @@ public class ScheduleShift extends Shift {
         setDayOfScheduleCycle(dayOfScheduleCycle);
     }
 
-    protected Integer id;
-    protected Integer scheduleTypeId;
-    protected String name;
-    protected Integer dayOfScheduleCycle;
-
     // getters and setters
     public String getName() {
         return name;
@@ -30,16 +32,16 @@ public class ScheduleShift extends Shift {
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public Integer getScheduleTypeId() {
+    public Long getScheduleTypeId() {
         return scheduleTypeId;
     }
-    public void setScheduleTypeId(Integer scheduleTypeId) {
+    public void setScheduleTypeId(long scheduleTypeId) {
         this.scheduleTypeId = scheduleTypeId;
     }
     public Integer getDayOfScheduleCycle() {

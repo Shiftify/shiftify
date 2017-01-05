@@ -12,12 +12,12 @@ import cz.cvut.fit.shiftify.data.models.User;
 
 public class ExceptionNew {
 
+    private Long id;
     private String name;
     private Calendar start;
     private Calendar end;
     private User user;
     private ExceptionNewType type;
-    private Integer id;
 
     public ExceptionNew(ExceptionNewType type, String name, Calendar start, Calendar end, User user) {
         this.type = type;
@@ -67,12 +67,12 @@ public class ExceptionNew {
         this.type = type;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

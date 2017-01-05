@@ -13,6 +13,11 @@ package cz.cvut.fit.shiftify.data;
  */
 
 abstract public class Shift {
+
+    protected Time from;
+    protected Time duration;
+    protected String description;
+
     public Shift() { }
     public Shift(Time from, Time duration) {
         this(from, duration, null);
@@ -22,10 +27,6 @@ abstract public class Shift {
         setDuration(duration);
         setDescription(description);
     }
-
-    protected Time from;
-    protected Time duration;
-    protected String description;
 
     // getters and setters
     public Time getFrom() {

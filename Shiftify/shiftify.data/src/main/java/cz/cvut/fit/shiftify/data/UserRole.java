@@ -5,33 +5,34 @@ package cz.cvut.fit.shiftify.data;
  */
 
 public class UserRole {
+
+    protected Long id;
+    protected Long userId;
+    protected Long roleId;
+
     public UserRole() { }
     public UserRole(Integer userId, Integer roleId) {
         setUserId(userId);
         setRoleId(roleId);
     }
 
-    protected Integer id;
-    protected Integer userId;
-    protected Integer roleId;
-
     // getters and setters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
-    public Integer getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
 }

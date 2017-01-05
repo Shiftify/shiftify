@@ -7,6 +7,11 @@ import java.sql.Time;
  */
 
 public class ExceptionShift extends Shift {
+
+    protected Long id;
+    protected Long exceptionInScheduleId;
+    protected Boolean isWorking;
+
     public ExceptionShift() { }
     public ExceptionShift(Time from, Time duration, Long exceptionInScheduleId, Boolean isWorking) {
         this(from, duration, exceptionInScheduleId, isWorking, null);
@@ -16,10 +21,6 @@ public class ExceptionShift extends Shift {
         setExceptionInScheduleId(exceptionInScheduleId);
         setIsWorking(isWorking);
     }
-
-    protected Long id;
-    protected Long exceptionInScheduleId;
-    protected Boolean isWorking;
 
     // getters and setters
     public Long getId() {
