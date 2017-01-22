@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimeLineView">
+        <attr name="colorFree" format="color" />
+        <attr name="colorShift" format="color" />
+    </declare-styleable>
+</resources>
