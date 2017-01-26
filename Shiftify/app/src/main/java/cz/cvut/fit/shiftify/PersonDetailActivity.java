@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cz.cvut.fit.shiftify.data.ExceptionNew;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;

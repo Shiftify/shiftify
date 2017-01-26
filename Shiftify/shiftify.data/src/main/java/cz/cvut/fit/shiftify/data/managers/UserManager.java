@@ -128,7 +128,7 @@ public class UserManager {
     /**
      * Gets schedule that has id equal to scheduleId.
      */
-    public Schedule schedule(long scheduleId){
+    public Schedule schedule(long scheduleId) {
         return scheduleDao.load(scheduleId);
     }
 
@@ -168,7 +168,7 @@ public class UserManager {
         List<Schedule> schedules = new ArrayList<>();
         schedules.add(new Schedule(userId, 1L, from, to, 1));
         schedules.add(new Schedule(userId, 1L, to, null, 1));
-        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId((long)i);
+        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId((long) i);
         return schedules;
     }
 
@@ -187,7 +187,7 @@ public class UserManager {
         exceptionInSchedule.setId(4L);
         exceptionInSchedule.setScheduleId(scheduleId);
         for (int i = 1; i <= exceptionInSchedule.getShifts().size(); ++i)
-            exceptionInSchedule.getShifts().get(i - 1).setId((long)i);
+            exceptionInSchedule.getShifts().get(i - 1).setId((long) i);
     }
 
     /**
@@ -211,7 +211,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), exceptionInScheduleId, true, "Staff meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), exceptionInScheduleId, true, "Management meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), exceptionInScheduleId, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long)i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
         exceptionInSchedule.setId(exceptionInScheduleId);
         //exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
@@ -226,7 +226,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Staff meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Management meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long)i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
         exceptionInSchedule.setId(1L);
         //exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
@@ -242,7 +242,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), 1L, true));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true, "Management meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long)i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
@@ -251,7 +251,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Staff meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Management meating"));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true));
-        for (int i = 4; i <= shifts.size(); ++i) shifts.get(i - 4).setId((long)i);
+        for (int i = 4; i <= shifts.size(); ++i) shifts.get(i - 4).setId((long) i);
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds second exception in schedule
@@ -268,7 +268,7 @@ public class UserManager {
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), 1L, true));
         shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true, "Staff meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long)i);
+        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
@@ -337,5 +337,14 @@ public class UserManager {
             tmp.setTime(tmp.getTime() + 24 * 60 * 60 * 1000);
         }
         return workDays;
+    }
+
+    public List<ExceptionShift> getAllExceptionShifts(long userId) {
+        User user = userDao.load(userId);
+        List<ExceptionShift> shifts = new ArrayList<>();
+        for (ExceptionInSchedule e : user.getExceptionInSchedules()) {
+            shifts.addAll(e.getShifts());
+        }
+        return shifts;
     }
 }

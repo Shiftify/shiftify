@@ -114,9 +114,9 @@ public class DataSeeder {
         for (User user : userManager.allUsers()) {
             List<Schedule> schedules = new ArrayList<>();
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(0).getId(),
-                    new GregorianCalendar(116, 10, 2), new GregorianCalendar(116, 10, 10), 1));
+                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 1));
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(1).getId(),
-                    new GregorianCalendar(116, 10, 2), new GregorianCalendar(116, 10, 10), 2));
+                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 2));
             for (Schedule schedule : schedules) {
                 try {
                     userManager.addSchedule(schedule);
