@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by lukas on 08.12.2016.
@@ -25,9 +26,9 @@ public abstract class Utilities {
     }
     public static String GregCalToStr(GregorianCalendar calendar, CalType type) {
         if (type == CalType.DATE)
-            return GregCalToStr(calendar, "yyyy-MM-dd");
+            return GregCalToStr(GregCalDateOnly(calendar), "yyyy-MM-dd");
         if (type == CalType.TIME)
-            return GregCalToStr(calendar, "HH:mm:ss.SSS");
+            return GregCalToStr(GregCalTimeOnly(calendar), "HH:mm:ss.SSS");
         if (type == CalType.DATETIME)
             return GregCalToStr(calendar, "yyyy-MM-dd HH:mm:ss.SSS");
         return null;
@@ -64,6 +65,63 @@ public abstract class Utilities {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(1000 * ((minutes * 60) + (hours * 3600)));
         return calendar;
+    }
+    public static GregorianCalendar GregCalFrom(int hours, int minutes, int seconds, int milliseconds) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(milliseconds + 1000 * (seconds + (minutes * 60) + (hours * 3600)));
+        return calendar;
+    }
+    public static GregorianCalendar GregCalFromMillis(long milliseconds) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(milliseconds);
+        return calendar;
+    }
+    public static GregorianCalendar GregCalFromGregCal(GregorianCalendar orig) {
+        if (orig == null)
+            return null;
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(orig.getTimeInMillis());
+        return calendar;
+    }
+
+    public static GregorianCalendar GregCalSimplifyToType(GregorianCalendar cal, CalType type) {
+        if (type == CalType.DATETIME && cal != null)
+            return GregCalFromMillis(cal.getTimeInMillis());
+        if (type == CalType.DATE)
+            return GregCalDateOnly(cal);
+        if (type == CalType.TIME)
+            return GregCalTimeOnly(cal);
+        return null;
+    }
+    public static GregorianCalendar GregCalDateOnly(GregorianCalendar cal) {
+        if (cal == null) return null;
+        return GregCalFromMillis(StrToGregCal(GregCalToStr(cal, CalType.DATE), CalType.DATE).getTimeInMillis());
+    }
+    public static GregorianCalendar GregCalTimeOnly(GregorianCalendar cal) {
+        if (cal == null) return null;
+        return GregCalFromMillis(StrToGregCal(GregCalToStr(cal, CalType.TIME), CalType.TIME).getTimeInMillis());
+    }
+
+    public static GregorianCalendar GregCalSubtractionToGregCal(GregorianCalendar cal1, GregorianCalendar cal2, CalType type) {
+        return GregCalSubtractionToGregCal(cal1, type, cal2, type);
+    }
+    public static GregorianCalendar GregCalSubtractionToGregCal(GregorianCalendar cal1, CalType type1, GregorianCalendar cal2, CalType type2) {
+        GregorianCalendar calendar1 = GregCalSimplifyToType(cal1, type1),
+            calendar2 = GregCalSimplifyToType(cal2, type2);
+        if (calendar1 != null && calendar2 != null)
+            return GregCalSimplifyToType(GregCalFromMillis(Math.abs(calendar1.getTimeInMillis() - calendar2.getTimeInMillis())), type1);
+        return null;
+    }
+
+    public static GregorianCalendar GregCalAdditionToGregCal(GregorianCalendar cal1, GregorianCalendar cal2, CalType type) {
+        return GregCalAdditionToGregCal(cal1, type, cal2, type);
+    }
+    public static GregorianCalendar GregCalAdditionToGregCal(GregorianCalendar cal1, CalType type1, GregorianCalendar cal2, CalType type2) {
+        GregorianCalendar calendar1 = GregCalSimplifyToType(cal1, type1),
+                calendar2 = GregCalSimplifyToType(cal2, type2);
+        if (calendar1 != null && calendar2 != null)
+            return GregCalSimplifyToType(GregCalFromMillis(Math.abs(calendar1.getTimeInMillis() - calendar2.getTimeInMillis())), type1);
+        return null;
     }
 
     public static String[] concatStrArrays(String[] first, String[] second) {

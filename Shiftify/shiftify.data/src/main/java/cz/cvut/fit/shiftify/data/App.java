@@ -5,8 +5,6 @@ import android.content.Context;
 
 import org.greenrobot.greendao.database.Database;
 
-import cz.cvut.fit.shiftify.data.DataSeeder;
-import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.DaoMaster;
 import cz.cvut.fit.shiftify.data.models.DaoSession;
 

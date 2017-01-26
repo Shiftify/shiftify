@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,7 +51,8 @@ public class UtilitiesTests {
         GregorianCalendar calendar = new GregorianCalendar();
         String initStr = Utilities.GregCalToStr(calendar);
         long init = calendar.getTimeInMillis();
-        calendar.setTimeInMillis(0);
-        String nextStr = Utilities.GregCalToStr(calendar);
+        calendar.setTimeInMillis(-3600000L); // 1970-01-01 00:00:00.000
+        calendar.setTimeInMillis(0L);        // 1970-01-01 01:00:00.000
+        String nextStr = Utilities.GregCalToStr(calendar, Utilities.CalType.TIME);
     }
 }

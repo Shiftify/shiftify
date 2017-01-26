@@ -22,7 +22,6 @@ public class DataSeeder {
     private static final int USERS_COUNT = 8;
     private static final int SCHEDULE_TYPES_COUNT = 2;
 
-
     public static void initAll() {
         initUsers();
         initScheduleTypesAndScheduleShifts();
@@ -84,7 +83,6 @@ public class DataSeeder {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         shifts.clear();
         shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2l, 1, "To se bude blbě vstávat."));

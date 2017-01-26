@@ -70,7 +70,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         fullname = (TextView) findViewById(R.id.person_detail_fullname);
         scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
 
-        fullname.setText(u.getFullNameNick());
+        fullname.setText(u.getFullNameWithNick());
         if (u.getEmail() != null) {
             emailView.setText(u.getEmail().toString());
         }
