@@ -17,6 +17,8 @@ public class UserManagerTests {
     public void dummyMethods_dontThrowException() throws Exception {
         UserManager um = new UserManager();
         User u = new User("John", "Doe", null, "john.doe@gmail.com");
+        um.add(u);
+
 //        try { um.add(u); }
 //        catch(Exception ex) { assert("UserManager add method throws exception." == null); }
 //        try { um.edit(u); }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
@@ -130,13 +131,13 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         }
 
         if (mSchedule.getFrom() != null) {
-            Calendar calendarFrom = Calendar.getInstance();
-            calendarFrom.setTime(mSchedule.getFrom());
+            GregorianCalendar calendarFrom = (GregorianCalendar) GregorianCalendar.getInstance();
+            calendarFrom.setTime(mSchedule.getFrom().getTime());
             mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendarFrom));
         }
         if (mSchedule.getTo() != null) {
             Calendar calendarTo = Calendar.getInstance();
-            calendarTo.setTime(mSchedule.getTo());
+            calendarTo.setTime(mSchedule.getTo().getTime());
             mDateToEditText.setText(CalendarUtils.calendarToDateString(calendarTo));
         }
     }

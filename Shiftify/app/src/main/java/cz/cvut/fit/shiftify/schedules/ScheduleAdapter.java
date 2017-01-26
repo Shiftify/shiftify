@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.models.Schedule;
@@ -40,14 +41,14 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
     }
 
     private String getScheduleTitle(Schedule schedule) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(schedule.getFrom());
+        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        calendar.setTime(schedule.getFrom().getTime());
 //        TODO After upgraded managers -> schedule.getScheduleType.getName();
 //        String res = schedule.getScheduleType.getName();
         String res = "";
         res += CalendarUtils.calendarToDateString(calendar) + " - ";
         if (schedule.getTo() != null) {
-            calendar.setTime(schedule.getTo());
+            calendar.setTime(schedule.getTo().getTime());
             res += CalendarUtils.calendarToDateString(calendar);
         } else {
             res += mContext.getString(R.string.undefinite_time);

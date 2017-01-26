@@ -19,6 +19,11 @@ public class ExceptionNew {
     private User user;
     private ExceptionNewType type;
 
+    public enum ExceptionNewType {
+        REST,
+        WORK
+    }
+
     public ExceptionNew(ExceptionNewType type, String name, Calendar start, Calendar end, User user) {
         this.type = type;
         this.name = name;

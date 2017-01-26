@@ -2,28 +2,35 @@ package cz.cvut.fit.shiftify.data.models;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Date_Converter;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by lukas on 11.11.2016.
  */
 
-@Entity(nameInDb = "Schedule",
-        generateConstructors = false,
+@Entity(nameInDb = "ExceptionInSchedule",
         generateGettersSetters = false,
-        indexes = { @Index(name = "Unique_Schedule_UserScheduleTypeFrom", unique = true, value = "userId,scheduleTypeId,from") })
-public class Schedule {
+        generateConstructors = false,
+        indexes = { @Index(name = "Unique_ExceptionInSchedule_UserDate", unique = true, value = "userId,date") })
+public class ExceptionInSchedule {
+    //TODO: delete setShifts method after getting rid of dummy implementation in UserManager
+    public void setShifts(List<ExceptionShift> exceptionShifts) {
+        this.shifts = exceptionShifts;
+    }
+
     // Columns
     @Id(autoincrement = true)
     @Property(nameInDb = "Id")
@@ -31,42 +38,42 @@ public class Schedule {
     @NotNull
     @Property(nameInDb = "UserId")
     protected Long userId;
+    @Property(nameInDb = "ScheduleId")
+    protected Long scheduleId;
     @NotNull
-    @Property(nameInDb = "ScheduleTypeId")
-    protected Long scheduleTypeId;
-    @NotNull
-    @Property(nameInDb = "From")
+    @Property(nameInDb = "Date")
     @Convert(converter = GregCal_Date_Converter.class, columnType = String.class)
-    protected GregorianCalendar from;
-    @Property(nameInDb = "To")
-    @Convert(converter = GregCal_Date_Converter.class, columnType = String.class)
-    protected GregorianCalendar to;
-    @NotNull
-    @Property(nameInDb = "StartingDayOfScheduleCycle")
-    protected Integer startingDayOfScheduleCycle;
+    protected GregorianCalendar date;
+    @Property(nameInDb = "Description")
+    protected String description;
 
     // Relationships
     @ToOne(joinProperty = "userId")
     protected User user;
-    @ToOne(joinProperty = "scheduleTypeId")
-    protected ScheduleType scheduleType;
+    @ToOne(joinProperty = "scheduleId")
+    protected Schedule schedule;
+    @ToMany(referencedJoinProperty = "exceptionInScheduleId")
+    protected List<ExceptionShift> shifts;
 
     // Constructors
-    public Schedule() {
-        this(null, null, null, null, null, null);
+    public ExceptionInSchedule() {
+        this(null, null, null, null, null);
     }
-    public Schedule(@NotNull Long userId, @NotNull Long scheduleTypeId, @NotNull GregorianCalendar from,
-                    GregorianCalendar to, @NotNull Integer startingDayOfScheduleCycle) {
-        this(null, userId, scheduleTypeId, from, to, startingDayOfScheduleCycle);
+    public ExceptionInSchedule(GregorianCalendar date, Long userId) {
+        this(null, date, userId, null, null);
     }
-    public Schedule(Long id, @NotNull Long userId, @NotNull Long scheduleTypeId, @NotNull GregorianCalendar from,
-                    GregorianCalendar to, @NotNull Integer startingDayOfScheduleCycle) {
+    public ExceptionInSchedule(GregorianCalendar date, Long userId, Long scheduleId) {
+        this(null, date, userId, scheduleId, null);
+    }
+    public ExceptionInSchedule(GregorianCalendar date, Long userId, Long scheduleId, String description) {
+        this(null, date, userId, scheduleId, description);
+    }
+    public ExceptionInSchedule(Long id, GregorianCalendar date, Long userId, Long scheduleId, String description) {
         setId(id);
+        setDate(date);
         setUserId(userId);
-        setScheduleTypeId(scheduleTypeId);
-        setFrom(from);
-        setTo(to);
-        setStartingDayOfScheduleCycle(startingDayOfScheduleCycle);
+        setScheduleId(scheduleId);
+        setDescription(description);
     }
 
     // Getters and setters
@@ -76,35 +83,25 @@ public class Schedule {
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getUserId() {
-        return this.userId;
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getScheduleId() {
+        return scheduleId;
     }
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setScheduleId(long scheduleId) {
+        this.scheduleId = scheduleId;
     }
-    public Long getScheduleTypeId() {
-        return this.scheduleTypeId;
+    public GregorianCalendar getDate() {
+        return date;
     }
-    public void setScheduleTypeId(Long scheduleTypeId) {
-        this.scheduleTypeId = scheduleTypeId;
+    public void setDate(GregorianCalendar date) {
+        this.date = date;
     }
-    public GregorianCalendar getFrom() {
-        return this.from;
+    public String getDescription() {
+        return description;
     }
-    public void setFrom(GregorianCalendar from) {
-        this.from = from;
-    }
-    public GregorianCalendar getTo() {
-        return this.to;
-    }
-    public void setTo(GregorianCalendar to) {
-        this.to = to;
-    }
-    public Integer getStartingDayOfScheduleCycle() {
-        return this.startingDayOfScheduleCycle;
-    }
-    public void setStartingDayOfScheduleCycle(Integer startingDayOfScheduleCycle) {
-        this.startingDayOfScheduleCycle = startingDayOfScheduleCycle;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // GreenDAO generated attributes
@@ -112,12 +109,12 @@ public class Schedule {
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
     /** Used for active entity operations. */
-    @Generated(hash = 1493574644)
-    private transient ScheduleDao myDao;
+    @Generated(hash = 1009773590)
+    private transient ExceptionInScheduleDao myDao;
     @Generated(hash = 251390918)
     private transient Long user__resolvedKey;
-    @Generated(hash = 128607475)
-    private transient Long scheduleType__resolvedKey;
+    @Generated(hash = 1233392285)
+    private transient Long schedule__resolvedKey;
 
     // GreenDAO generated methods
     /** To-one relationship, resolved on first access. */
@@ -151,34 +148,57 @@ public class Schedule {
         }
     }
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 118813034)
-    public ScheduleType getScheduleType() {
-        Long __key = this.scheduleTypeId;
-        if (scheduleType__resolvedKey == null || !scheduleType__resolvedKey.equals(__key)) {
+    @Generated(hash = 1337236917)
+    public Schedule getSchedule() {
+        Long __key = this.scheduleId;
+        if (schedule__resolvedKey == null || !schedule__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            ScheduleTypeDao targetDao = daoSession.getScheduleTypeDao();
-            ScheduleType scheduleTypeNew = targetDao.load(__key);
+            ScheduleDao targetDao = daoSession.getScheduleDao();
+            Schedule scheduleNew = targetDao.load(__key);
             synchronized (this) {
-                scheduleType = scheduleTypeNew;
-                scheduleType__resolvedKey = __key;
+                schedule = scheduleNew;
+                schedule__resolvedKey = __key;
             }
         }
-        return scheduleType;
+        return schedule;
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1453467165)
-    public void setScheduleType(@NotNull ScheduleType scheduleType) {
-        if (scheduleType == null) {
-            throw new DaoException("To-one property 'scheduleTypeId' has not-null constraint; cannot set to-one to null");
-        }
+    @Generated(hash = 1716393727)
+    public void setSchedule(Schedule schedule) {
         synchronized (this) {
-            this.scheduleType = scheduleType;
-            scheduleTypeId = scheduleType.getId();
-            scheduleType__resolvedKey = scheduleTypeId;
+            this.schedule = schedule;
+            scheduleId = schedule == null ? null : schedule.getId();
+            schedule__resolvedKey = scheduleId;
         }
+    }
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1323019868)
+    public List<ExceptionShift> getShifts() {
+        if (shifts == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ExceptionShiftDao targetDao = daoSession.getExceptionShiftDao();
+            List<ExceptionShift> shiftsNew = targetDao._queryExceptionInSchedule_Shifts(id);
+            synchronized (this) {
+                if (shifts == null) {
+                    shifts = shiftsNew;
+                }
+            }
+        }
+        return shifts;
+    }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 2027901155)
+    public synchronized void resetShifts() {
+        shifts = null;
     }
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
@@ -214,9 +234,9 @@ public class Schedule {
         myDao.update(this);
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 502317300)
+    @Generated(hash = 1168379760)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getScheduleDao() : null;
+        myDao = daoSession != null ? daoSession.getExceptionInScheduleDao() : null;
     }
 }
