@@ -8,7 +8,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
+import cz.cvut.fit.shiftify.data.App;
 import cz.cvut.fit.shiftify.data.Utilities;
+import cz.cvut.fit.shiftify.data.models.DaoSession;
 import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.data.models.Role;
@@ -32,9 +34,9 @@ public class UserManager {
     private ScheduleDao scheduleDao;
 
     public UserManager() {
-        //DaoSession daoSession = App.getNewDaoSession();
-        //userDao = daoSession.getUserDao();
-        //scheduleDao = daoSession.getScheduleDao();
+        DaoSession daoSession = App.getNewDaoSession();
+        userDao = daoSession.getUserDao();
+        scheduleDao = daoSession.getScheduleDao();
     }
 
     /**

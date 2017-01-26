@@ -27,7 +27,6 @@ public class DataSeeder {
         initUsers();
         initScheduleTypesAndScheduleShifts();
         initSchedules();
-
     }
 
     private static void initUsers() {

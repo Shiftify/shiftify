@@ -5,6 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.Index;
 
@@ -22,18 +23,22 @@ import org.greenrobot.greendao.DaoException;
 public class User {
     // Columns
     @Id(autoincrement = true)
+    @Property(nameInDb = "Id")
     private Long id;
     @NotNull
-    @Index(name = "Unique_User_Name", unique = true)
+    @Property(nameInDb = "FirstName")
     private String firstName;
     @NotNull
-    @Index(name = "Unique_User_Name", unique = true)
+    @Property(nameInDb = "Surname")
     private String surname;
     @NotNull
-    @Index(name = "Unique_User_Name", unique = true)
+    @Property(nameInDb = "Nickname")
     private String nickname;
+    @Property(nameInDb = "PhoneNumber")
     private String phoneNumber;
+    @Property(nameInDb = "Email")
     private String email;
+    @Property(nameInDb = "PicturePath")
     private String picturePath;
 
     // Relationships
