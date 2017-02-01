@@ -29,8 +29,8 @@ import cz.cvut.fit.shiftify.R;
  * android:id="@+id/super_genial_id"
  * android:layout_width="match_parent"
  * android:layout_height="5dp"
- * app:color_free="@color/definedColorFromValueColor"
- * app:color_shift="@color/definedColorFromValueColor" />
+ * app:colorFree="@color/colorTimeLineFree"
+ * app:colorShift="@color/colorTimeLineShift" />
  * <p>
  * In code:
  * TimeLineView timeline = (TimeLineView) findViewById(R.id.super_genial_id);
@@ -63,7 +63,6 @@ public class TimeLineView extends View {
     private void init(Context context, AttributeSet attrs) {
         mIntervals = new ArrayList<>();
         mPaint = new Paint();
-
 
         if (attrs != null) {
             TypedArray array = context.getTheme().obtainStyledAttributes(
