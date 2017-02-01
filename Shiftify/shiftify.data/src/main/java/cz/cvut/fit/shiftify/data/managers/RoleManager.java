@@ -1,4 +1,4 @@
-package cz.cvut.fit.shiftify.data;
+package cz.cvut.fit.shiftify.data.managers;
 
 import java.util.ArrayList;
 import java.util.List;

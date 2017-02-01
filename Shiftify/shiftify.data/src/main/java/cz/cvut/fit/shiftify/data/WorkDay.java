@@ -3,6 +3,8 @@ package cz.cvut.fit.shiftify.data;
 import java.util.Date;
 import java.util.List;
 
+import cz.cvut.fit.shiftify.data.models.Shift;
+
 /**
  * Created by lukas on 11.11.2016.
  */

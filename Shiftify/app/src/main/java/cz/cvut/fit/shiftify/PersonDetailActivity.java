@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cz.cvut.fit.shiftify.data.ExceptionNew;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
@@ -70,7 +69,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         fullname = (TextView) findViewById(R.id.person_detail_fullname);
         scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
 
-        fullname.setText(u.getFullNameNick());
+        fullname.setText(u.getFullNameWithNick());
         if (u.getEmail() != null) {
             emailView.setText(u.getEmail().toString());
         }

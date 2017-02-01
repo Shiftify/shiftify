@@ -9,18 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.ExceptionNew;
+import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 
 /**
  * Created by petr on 11/14/16.
  */
 
-public class ExceptionAdapter extends ArrayAdapter<ExceptionNew> {
+public class ExceptionAdapter extends ArrayAdapter<ExceptionShift> {
 
 
     private Context mContext;
 
-    public ExceptionAdapter(Context context, int resource, ExceptionNew[] objects) {
+    public ExceptionAdapter(Context context, int resource, ExceptionShift[] objects) {
         super(context, resource, objects);
         mContext = context;
     }
@@ -28,7 +28,7 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionNew> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ExceptionNew exception = getItem(position);
+        ExceptionShift exception = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_item_exception, parent, false);
 
@@ -37,7 +37,7 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionNew> {
     }
 
 //    TODO After upgraded DB - set view of exception item in list
-    private String getExceptionTitle(ExceptionNew exception) {
+    private String getExceptionTitle(ExceptionShift exception) {
         return "Vyjimka - ID: " + String.valueOf(exception.getId());
     }
 }

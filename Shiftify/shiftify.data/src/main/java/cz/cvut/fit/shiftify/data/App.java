@@ -5,8 +5,6 @@ import android.content.Context;
 
 import org.greenrobot.greendao.database.Database;
 
-import cz.cvut.fit.shiftify.data.managers.FillDataManager;
-import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.DaoMaster;
 import cz.cvut.fit.shiftify.data.models.DaoSession;
 
@@ -32,7 +30,7 @@ public class App extends Application {
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
-        FillDataManager.initAll();
+        DataSeeder.initAll();
     }
 
     public static Context getsContext() {
