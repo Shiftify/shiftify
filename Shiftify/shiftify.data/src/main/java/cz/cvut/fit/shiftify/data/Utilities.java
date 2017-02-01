@@ -26,9 +26,9 @@ public abstract class Utilities {
     }
     public static String GregCalToStr(GregorianCalendar calendar, CalType type) {
         if (type == CalType.DATE)
-            return GregCalToStr(GregCalDateOnly(calendar), "yyyy-MM-dd");
+            return GregCalToStr(calendar, "yyyy-MM-dd");
         if (type == CalType.TIME)
-            return GregCalToStr(GregCalTimeOnly(calendar), "HH:mm:ss.SSS");
+            return GregCalToStr(calendar, "HH:mm:ss.SSS");
         if (type == CalType.DATETIME)
             return GregCalToStr(calendar, "yyyy-MM-dd HH:mm:ss.SSS");
         return null;
