@@ -46,6 +46,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
         Intent i = getIntent();
         long userId = i.getLongExtra("userId", -1);
 
@@ -86,6 +87,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.overflow_person_detail, menu);
         return true;
     }
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

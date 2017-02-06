@@ -101,8 +101,10 @@ public class PersonEditActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done_item:
                 personEditSave( this.findViewById(android.R.id.content) );
+                break;
             case android.R.id.home:
                 finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -4,6 +4,7 @@ package cz.cvut.fit.shiftify;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import cz.cvut.fit.shiftify.data.managers.UserManager;
  */
 
 
-public class PersonsListFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class PersonsListFragment extends ListFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
 
 
     /* Vojta:
@@ -59,7 +60,9 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_persons, container, false);
+        View view = inflater.inflate(R.layout.fragment_default_list, container, false);
+        FloatingActionButton addPersonBtn = (FloatingActionButton) view.findViewById(R.id.float_add_button);
+        addPersonBtn.setOnClickListener(this);
         return view;
     }
 
@@ -91,30 +94,34 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
     private void makeArray(List<User> list) {
 
         int index = 0;
-        String firstname, surname, nickname;
 
         for (User u :
                 list) {
 
-            firstname = u.getFirstName();
-            surname = u.getSurname();
-            nickname = (u.getNickname() == null ? " " : " \"" + u.getNickname() + "\" ");
-
-
-            personsArray[index] = firstname + nickname + surname;
+            personsArray[index] = u.getFullNameWithNick();
             index++;
         }
-
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
 
-        Intent i = new Intent(PersonsListFragment.this.getActivity(), PersonDetailActivity.class);
+        Intent i = new Intent(this.getActivity(), PersonDetailActivity.class);
         i.putExtra("userId", userList.get(position).getId());
 
         startActivity(i);
 
     }
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.float_add_button:
+
+                Intent intent = new Intent(this.getActivity(), PersonAddActivity.class);
+                startActivity(intent);
+        }
+    }
+
 }

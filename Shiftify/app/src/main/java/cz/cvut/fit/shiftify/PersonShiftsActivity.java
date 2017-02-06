@@ -48,7 +48,7 @@ public class PersonShiftsActivity extends AppCompatActivity {
         }
 
         fullname = (TextView) findViewById(R.id.person_shifts_fullname);
-        fullname.setText(u.getFirstName() + (u.getNickname() == null ? "" : " \"" + u.getNickname() + "\"") + " " + u.getSurname());
+        fullname.setText(u.getFullNameWithNick());
 
 
 

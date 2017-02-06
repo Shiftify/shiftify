@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import cz.cvut.fit.shiftify.views.TimeLineView;
+
 /**
  * Created by Vojta on 17.11.2016.
  */
@@ -40,6 +42,9 @@ public class CustomShiftListAdapter extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.person_image);
 
         imageView.setImageResource(imageId[position]);
+
+        TimeLineView timeline = (TimeLineView) rowView.findViewById(R.id.timeline);
+        timeline.addInterval(8 * 3600,16 * 3600);
 
         TextView shiftDescr = (TextView) rowView.findViewById(R.id.shift_description);
         shiftDescr.setText(personsArray[position]);

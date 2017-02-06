@@ -45,6 +45,10 @@
         <activity
             android:name=".PersonShiftsActivity"
             android:label="@string/title_activity_person_shifts"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PersonAddActivity"
+            android:label="@string/title_activity_person_add"
             android:theme="@style/AppTheme"></activity>
     </application>
 

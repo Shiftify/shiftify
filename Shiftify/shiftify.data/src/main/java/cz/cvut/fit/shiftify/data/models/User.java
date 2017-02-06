@@ -102,7 +102,7 @@ public class User {
         this.surname = surname;
     }
     public String getNickname() {
-        return (nickname == null || nickname.length() == 0) ? null : this.nickname;
+        return (this.nickname == null ? (this.nickname = "") : this.nickname);
     }
     public void setNickname(String nickname) {
         this.nickname = (nickname == null ? "" : nickname);
@@ -130,7 +130,7 @@ public class User {
     public String getFullNameWithNick() {
         String nick = getNickname();
         return getFirstName()
-                + (nick == null ? " " : " \"" + nick + "\" ")
+                + (nick.length() == 0 ? " " : " \"" + nick + "\" ")
                 + getSurname();
     }
 

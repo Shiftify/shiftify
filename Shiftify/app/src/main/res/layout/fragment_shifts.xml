@@ -16,6 +16,8 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/shift_list_header"/>
+            android:layout_below="@id/shift_list_header"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1px"/>
 
 </RelativeLayout>

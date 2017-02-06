@@ -90,6 +90,7 @@
     <string name="work_time">Práce</string>
 
     <string name="unknown">Neznámo</string>
+    <string name="title_activity_person_add">Vytvořit pracovníka</string>
 
 
 </resources>

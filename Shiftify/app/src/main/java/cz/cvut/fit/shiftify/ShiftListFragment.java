@@ -154,17 +154,11 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     private void makeArray(List<User> list) {
 
         int index = 0;
-        String firstname, surname, nickname;
 
         for (User u :
                 list) {
 
-            firstname = u.getFirstName();
-            surname = u.getSurname();
-            nickname = (u.getNickname() == null ? " " : " \"" + u.getNickname() + "\" ");
-
-
-            personsArray[index] = firstname + nickname + surname;
+            personsArray[index] = u.getFullNameWithNick();
             index++;
         }
 
