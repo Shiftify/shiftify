@@ -16,11 +16,14 @@ import cz.cvut.fit.shiftify.data.managers.UserManager;
 
 public class PersonDeleteDialogFragment extends DialogFragment {
 
+
     UserManager userManager;
 
-    public static PersonDeleteDialogFragment newInstance() {
+
+    public static PersonDeleteDialogFragment newInstance(long userID) {
         PersonDeleteDialogFragment frag = new PersonDeleteDialogFragment();
         Bundle args = new Bundle();
+        args.putLong("userId",userID);
         frag.setArguments(args);
         return frag;
     }
@@ -37,7 +40,7 @@ public class PersonDeleteDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
 
                 Bundle bundle = getArguments();
-                int userId = bundle.getInt("userId");
+                long userId = bundle.getLong("userId");
                 userManager = new UserManager();
 
                 try {
@@ -62,5 +65,6 @@ public class PersonDeleteDialogFragment extends DialogFragment {
 
         return builder.create();
     }
+
 
 }

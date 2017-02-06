@@ -136,21 +136,17 @@ public class PersonEditActivity extends AppCompatActivity {
         u. setFirstName( firstname.getText().toString() );
         u. setSurname( surname.getText().toString() );
         u. setNickname( nickname.getText().toString() );
-        u. setPhoneNumber( phone.getText().toString() );
-        u. setEmail( email.getText().toString() );
 
+        if(phone.getText().toString().isEmpty())
+            u.setPhoneNumber(null);
+        else
+            u.setPhoneNumber( phone.getText().toString() );
 
-        System.out.println(u.getFirstName());
-        System.out.println(u.getSurname());
-        System.out.println(u.getNickname());
-        System.out.println(u.getPhoneNumber());
-        System.out.println(u.getEmail());
+        if(email.getText().toString().isEmpty())
+            u.setEmail(null);
+        else
+            u. setEmail( email.getText().toString() );
 
-        System.out.println(firstname.getText().toString());
-        System.out.println(surname.getText().toString());
-        System.out.println(nickname.getText().toString());
-        System.out.println(phone.getText().toString());
-        System.out.println(email.getText().toString());
 
         this.finish();
     }

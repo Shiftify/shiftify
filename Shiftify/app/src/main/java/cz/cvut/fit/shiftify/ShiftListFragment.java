@@ -49,10 +49,11 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
             R.drawable.icon_bar_example,
             R.drawable.icon_bar_example,
             R.drawable.icon_bar_example,
-            R.drawable.face,
+            R.drawable.face_obama,
+            R.drawable.icon_bar_example,
+            R.drawable.icon_bar_example,
             R.drawable.icon_bar_example,
             R.drawable.icon_bar_example
-
     };
 
     /*

@@ -47,12 +47,16 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
             R.drawable.icon_bar_example,
             R.drawable.face,
             R.drawable.icon_bar_example,
+            R.drawable.icon_bar_example,
+            R.drawable.icon_bar_example,
+            R.drawable.icon_bar_example,
+            R.drawable.icon_bar_example,
             R.drawable.icon_bar_example
-
     };
 
     private ListView personsList;
     private ArrayAdapter arrayAdapter;
+    UserManager userManager;
 
     private CustomPersonsListAdapter adapter;
     /*-----------*/
@@ -72,9 +76,13 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
 
         super.onActivityCreated(savedInstanceState);
 
-        UserManager userManager = new UserManager();
+        userManager = new UserManager();
         userList = new ArrayList<>();
 
+        loadAllUsers();
+    }
+
+    public void loadAllUsers(){
         try {
             userList = userManager.allUsers();
 
@@ -88,7 +96,6 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
         adapter = new CustomPersonsListAdapter(getActivity(), personsArray, imageId);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
-
     }
 
     private void makeArray(List<User> list) {
@@ -122,6 +129,17 @@ public class PersonsListFragment extends ListFragment implements AdapterView.OnI
                 Intent intent = new Intent(this.getActivity(), PersonAddActivity.class);
                 startActivity(intent);
         }
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Refreshes list of workers after changes
+        userList.clear();
+        loadAllUsers();
+
     }
 
 }

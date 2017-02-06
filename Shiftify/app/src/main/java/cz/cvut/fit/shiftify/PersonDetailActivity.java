@@ -21,7 +21,7 @@ import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 
-public class PersonDetailActivity extends AppCompatActivity {
+public class PersonDetailActivity extends AppCompatActivity{
 
     public static final String USER_ID = "user_id";
 
@@ -52,6 +52,18 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         mUserManager = new UserManager();
 
+        emailView = (TextView) findViewById(R.id.person_detail_email);
+        numberView = (TextView) findViewById(R.id.person_detail_phone);
+        fullname = (TextView) findViewById(R.id.person_detail_fullname);
+        scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
+
+       loadUser(userId);
+
+
+    }
+
+    public void loadUser(long userId){
+
         if (userId != -1) {
             try {
                 u = mUserManager.user(userId);
@@ -64,23 +76,20 @@ public class PersonDetailActivity extends AppCompatActivity {
             this.finish();
         }
 
-
-        emailView = (TextView) findViewById(R.id.person_detail_email);
-        numberView = (TextView) findViewById(R.id.person_detail_phone);
-        fullname = (TextView) findViewById(R.id.person_detail_fullname);
-        scheduleButton = (Button) findViewById(R.id.person_detail_schedule_button);
-
         fullname.setText(u.getFullNameWithNick());
         if (u.getEmail() != null) {
             emailView.setText(u.getEmail().toString());
         }
+        else
+            emailView.setText("...nevyplněno");
+
+
+
         if (u.getPhoneNumber() != null) {
             numberView.setText(u.getPhoneNumber().toString());
         }
-
-
+        else  numberView.setText("...nevyplněno");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,7 +116,7 @@ public class PersonDetailActivity extends AppCompatActivity {
 
             case R.id.person_delete:
                 showDialog();
-                finish();
+
                 break;
             case R.id.exception_list:
                 intent = new Intent(this, ExceptionListActivity.class);
@@ -127,11 +136,9 @@ public class PersonDetailActivity extends AppCompatActivity {
 
     public void showDialog() {
 
-        DialogFragment newFragment = PersonDeleteDialogFragment.newInstance();
-        Bundle userBundle = new Bundle();
-        userBundle.putLong("userId", u.getId());
-        newFragment.setArguments(userBundle);
+        DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(u.getId());
         newFragment.show(getFragmentManager(), "dialog");
+
     }
 
     public void showDataNotSetWarning(View view) {
@@ -216,5 +223,11 @@ public class PersonDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+       loadUser(u.getId());
+
+    }
 }
