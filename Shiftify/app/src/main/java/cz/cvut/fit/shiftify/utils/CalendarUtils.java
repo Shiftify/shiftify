@@ -25,11 +25,14 @@ public class CalendarUtils {
         return calendar;
     }
 
-    public static GregorianCalendar convertCalendarToGregorian(Calendar calendar){
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-        return new GregorianCalendar(year, month, dayOfMonth);
+    public static Calendar addDay(Calendar calendar){
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar;
+    }
+
+    public static Calendar addDay(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        return addDay(calendar);
     }
 }

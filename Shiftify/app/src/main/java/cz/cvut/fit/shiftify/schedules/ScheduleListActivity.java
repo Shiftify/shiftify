@@ -87,13 +87,14 @@ public class ScheduleListActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_default_list, container, false);
             mAddFloatingButton = (FloatingActionButton) view.findViewById(R.id.float_add_button);
             mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+                    intent.putExtra(USER_ID, getUserId());
                     startActivityForResult(intent, CREATE_SCHEDULE_REQUEST);
                 }
             });
@@ -148,7 +149,9 @@ public class ScheduleListActivity extends AppCompatActivity {
         }
 
         private long getUserId() {
-            return ((ScheduleListActivity) getActivity()).mUser.getId();
+            long userId = ((ScheduleListActivity) getActivity()).mUser.getId();
+            Log.d("TAG", "User id: " + String.valueOf(userId));
+            return userId;
         }
 
         public void updateSchedulesList() {
