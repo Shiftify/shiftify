@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
+import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.Schedule;
@@ -98,7 +101,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
                 e.printStackTrace();
             }
             mSchedule.setStartingDayOfScheduleCycle(0);
-            mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(Calendar.getInstance()));
+            mSchedule.setFrom(Utilities.GregCalDateOnly((GregorianCalendar) Calendar.getInstance()));
         } else {
             try {
                 mSchedule = mUserManager.schedule(scheduleId);
@@ -274,16 +277,28 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
         }
     }
 
+    private void setDateFrom(Calendar calendar) {
+        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
+        mSchedule.setFrom(Utilities.GregCalDateOnly((GregorianCalendar) calendar));
+        if (mSchedule.getTo() != null && mSchedule.getFrom().getTimeInMillis() > mSchedule.getTo().getTimeInMillis()) {
+            Log.d("TAG", "DateFrom is bigger then DateTo");
+            setDateTo(CalendarUtils.addDay(calendar));
+        }
+    }
+
+    private void setDateTo(Calendar calendar) {
+        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
+        mSchedule.setTo(Utilities.GregCalDateOnly((GregorianCalendar) calendar));
+    }
+
     @Override
     public void onDateSet(Calendar calendar, String datepickerType) {
         switch (datepickerType) {
             case DATE_FROM_FRAGMENT:
-                mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
-                mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(calendar));
+                setDateFrom(calendar);
                 break;
             case DATE_TO_FRAGMENT:
-                mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
-                mSchedule.setTo(CalendarUtils.convertCalendarToGregorian(calendar));
+                setDateTo(calendar);
                 break;
         }
     }

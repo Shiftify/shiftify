@@ -123,7 +123,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
     private void initException(long exceptionId, long userId) {
         if (exceptionId == -1) {
             mException = new ExceptionShift();
-            mException.setFrom(CalendarUtils.convertCalendarToGregorian(Calendar.getInstance()));
+            mException.setFrom((GregorianCalendar) Calendar.getInstance());
             mException.setIsWorking(true);
         } else {
             try {
@@ -198,7 +198,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
     @Override
     public void onDateSet(Calendar calendar, String datepickerType) {
         setDateText(calendar);
-        mException.setFrom(CalendarUtils.convertCalendarToGregorian(calendar));
+        mException.setFrom((GregorianCalendar) calendar);
     }
 
     @Override

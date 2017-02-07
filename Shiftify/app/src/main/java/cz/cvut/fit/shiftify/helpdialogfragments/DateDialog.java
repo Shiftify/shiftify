@@ -5,9 +5,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**
  * Created by petr on 11/20/16.
@@ -50,14 +53,20 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         Bundle args = getArguments();
         Calendar calendar = Calendar.getInstance();
         long milliseconds = args.getLong(DATE_MS_ARG, calendar.getTimeInMillis());
+        long minimumMilliseconds = 0;
         calendar.setTimeInMillis(milliseconds);
+        if (args.containsKey(DATE_MIN_MS_ARGS)) {
+            minimumMilliseconds = args.getLong(DATE_MIN_MS_ARGS);
+            if (milliseconds < minimumMilliseconds)
+            calendar = CalendarUtils.addDay(minimumMilliseconds);
+        }
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         dialog.getDatePicker().setTag(args.getString(DATE_TYPE_ARG));
         if (args.containsKey(DATE_MIN_MS_ARGS)) {
-            dialog.getDatePicker().setMinDate(args.getLong(DATE_MIN_MS_ARGS));
+            dialog.getDatePicker().setMinDate(minimumMilliseconds);
         }
         return dialog;
     }

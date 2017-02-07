@@ -32,6 +32,7 @@ public class ExceptionListActivity extends AppCompatActivity {
     public static final String USER_ID = "user_id";
     public static final String EXCEPTION_ID = "exception_id";
     public static final String TAG = "EXCEPTION_LIST_ACTIVITY";
+    private User mUser;
 
 
     @Override
@@ -43,15 +44,13 @@ public class ExceptionListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         long userId = intent.getLongExtra(PersonDetailActivity.USER_ID, 0);
-        User user = userManager.user(userId);
+        mUser = userManager.user(userId);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_exception_container, new ExceptionListFragment(user))
+                    .add(R.id.fragment_exception_container, new ExceptionListFragment())
                     .commit();
         }
-
-
     }
 
     @Override
@@ -72,9 +71,8 @@ public class ExceptionListActivity extends AppCompatActivity {
         private FloatingActionButton mAddFloatingButton;
 
 
-        public ExceptionListFragment(User user) {
+        public ExceptionListFragment() {
             mUserManager = new UserManager();
-            mUser = user;
         }
 
 
@@ -86,6 +84,7 @@ public class ExceptionListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
+                    intent.putExtra(USER_ID, mUser.getId());
                     startActivity(intent);
                 }
             });
@@ -95,6 +94,7 @@ public class ExceptionListActivity extends AppCompatActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+            mUser = ((ExceptionListActivity) getActivity()).mUser;
             List<ExceptionShift> exceptionNewList = new ArrayList<>(mUserManager.getAllExceptionShifts(mUser.getId()));
             ExceptionShift[] exceptions = exceptionNewList.toArray(new ExceptionShift[exceptionNewList.size()]);
             mExceptionAdapter = new ExceptionAdapter(getActivity(), R.layout.list_item_exception, exceptions);
