@@ -13,10 +13,10 @@ import cz.cvut.fit.shiftify.data.Utilities;
 public class GregCal_Time_Converter implements PropertyConverter<GregorianCalendar, String> {
     @Override
     public GregorianCalendar convertToEntityProperty(String databaseValue) {
-        return Utilities.StrToGregCal(databaseValue, Utilities.CalType.DATE);
+        return Utilities.StrToGregCal(databaseValue, Utilities.CalType.TIME);
     }
     @Override
     public String convertToDatabaseValue(GregorianCalendar entityProperty) {
-        return Utilities.GregCalToStr(entityProperty, Utilities.CalType.DATE);
+        return Utilities.GregCalToStr(entityProperty, Utilities.CalType.TIME);
     }
 }

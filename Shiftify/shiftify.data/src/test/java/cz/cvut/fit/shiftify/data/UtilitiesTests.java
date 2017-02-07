@@ -61,7 +61,7 @@ public class UtilitiesTests {
         GregorianCalendar c1Plusc2 = Utilities.GregCalTimeAddition(c1, c2);
         GregorianCalendar c1Plusc1 = Utilities.GregCalTimeAddition(c1, c1);
         GregorianCalendar c3Plusc3 = Utilities.GregCalTimeAddition(c3, c3);
-        
+
         Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(5, 30), Utilities.CalType.TIME),
                 Utilities.GregCalToStr(c1Minusc3, Utilities.CalType.TIME));
         Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(0, 0), Utilities.CalType.TIME),
