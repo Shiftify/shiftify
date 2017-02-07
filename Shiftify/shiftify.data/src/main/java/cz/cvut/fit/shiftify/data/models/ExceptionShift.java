@@ -88,7 +88,7 @@ public class ExceptionShift extends Shift {
     public Long getExceptionInScheduleId() {
         return exceptionInScheduleId;
     }
-    public void setExceptionInScheduleId(long exceptionInScheduleId) {
+    public void setExceptionInScheduleId(Long exceptionInScheduleId) {
         this.exceptionInScheduleId = exceptionInScheduleId;
     }
     public Boolean getIsWorking() {

@@ -13,6 +13,7 @@ import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.models.DaoSession;
 import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
+import cz.cvut.fit.shiftify.data.models.ExceptionShiftDao;
 import cz.cvut.fit.shiftify.data.models.Role;
 import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.models.ScheduleShift;
@@ -32,12 +33,14 @@ public class UserManager {
 
     private UserDao userDao;
     private ScheduleDao scheduleDao;
+    private ExceptionShiftDao exceptionShiftDao;
 
     public UserManager() {
         DaoSession daoSession = App.getNewDaoSession();
         daoSession.clear();
         userDao = daoSession.getUserDao();
         scheduleDao = daoSession.getScheduleDao();
+        exceptionShiftDao = daoSession.getExceptionShiftDao();
     }
 
     /**
@@ -346,5 +349,9 @@ public class UserManager {
             shifts.addAll(e.getShifts());
         }
         return shifts;
+    }
+
+    public ExceptionShift getExceptionShift(long exceptionId) throws Exception {
+        return exceptionShiftDao.load(exceptionId);
     }
 }

@@ -17,9 +17,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     public static final String DATE_TYPE_ARG = "date_type_fragment";
     public static final String DATE_MS_ARG = "date_seconds";
+    public static final String DATE_MIN_MS_ARGS = "date_minimum_in_seconds";
 
-    private Calendar mCalendar;
-    private String mType;
     private DateDialogCallback mCallback;
 
     public static DateDialog newInstance() {
@@ -49,21 +48,26 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
-        mCalendar = Calendar.getInstance();
-        long milliseconds = args.getLong(DATE_MS_ARG, mCalendar.getTimeInMillis());
-        mCalendar.setTimeInMillis(milliseconds);
-        String type = args.getString(DATE_TYPE_ARG);
-        mType = type;
+        Calendar calendar = Calendar.getInstance();
+        long milliseconds = args.getLong(DATE_MS_ARG, calendar.getTimeInMillis());
+        calendar.setTimeInMillis(milliseconds);
+
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
-                mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        dialog.getDatePicker().setTag(args.getString(DATE_TYPE_ARG));
+        if (args.containsKey(DATE_MIN_MS_ARGS)) {
+            dialog.getDatePicker().setMinDate(args.getLong(DATE_MIN_MS_ARGS));
+        }
         return dialog;
     }
+
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(i, i1, i2);
-        mCallback.onDateSet(calendar, mType);
+        mCallback.onDateSet(calendar, (String) datePicker.getTag());
     }
 
     public interface DateDialogCallback {

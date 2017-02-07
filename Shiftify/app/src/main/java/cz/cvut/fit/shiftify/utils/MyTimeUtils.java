@@ -10,6 +10,10 @@ public class MyTimeUtils {
 
     private static final String TAG = "MY_TIME_UTILS";
 
+    public static String timeToString(int minutes) {
+        return timeToString(getHour(minutes), getMinutes(minutes));
+    }
+
     public static String timeToString(int hour, int minute) {
         String res = "";
         if (hour < 10) {
@@ -23,17 +27,36 @@ public class MyTimeUtils {
         return res;
     }
 
-    public static Calendar StringToTime(String time) {
+    public static int StringToTime(String time) {
         Calendar calendar = Calendar.getInstance();
         String[] nums = time.split(":");
         if (nums.length == 2) {
             int h = Integer.parseInt(nums[0], 10);
             int m = Integer.parseInt(nums[1], 10);
-            calendar.set(Calendar.HOUR_OF_DAY, h);
-            calendar.set(Calendar.MINUTE, m);
+            return h * 60 + m;
         } else {
             throw new IllegalArgumentException("Bad time format");
         }
-        return calendar;
     }
+
+    public static int getHour(int minutes) {
+        return minutes / 60;
+    }
+
+    public static int getMinutes(int minutes) {
+        int hours = minutes / 60;
+        return minutes - 60 * hours;
+    }
+
+    public int getTimeDuration(int start, int stop) {
+        if (start < stop) {
+            return stop - start;
+        } else if (start == start) {
+            return 0;
+        } else {
+            return 24 * 60 - start + stop;
+        }
+    }
+
+
 }

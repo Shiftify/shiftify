@@ -28,6 +28,7 @@ import cz.cvut.fit.shiftify.helpdialogfragments.DateDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
+import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_MIN_MS_ARGS;
 import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_MS_ARG;
 import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_TYPE_ARG;
 
@@ -154,40 +155,34 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
         mFirstShiftSpinner.setSelection(getScheduleShiftSelection());
     }
 
+    private void showDateDialog(String type, Calendar calendar, Calendar minumumCalendar) {
+        DialogFragment dialogFragment = DateDialog.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString(DATE_TYPE_ARG, type);
+        try {
+            bundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
+        } catch (Exception ex) {
+            dialogFragment = DateDialog.newInstance();
+        }
+        if (minumumCalendar != null) {
+            bundle.putLong(DATE_MIN_MS_ARGS, minumumCalendar.getTimeInMillis());
+        }
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(), type);
+    }
+
     private void setDateListeners() {
         mDateFromEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialogFragment;
-                try {
-                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateFromEditText.getText().toString());
-                    dialogFragment = DateDialog.newInstance();
-                    Bundle userBundle = new Bundle();
-                    userBundle.putString(DATE_TYPE_ARG, DATE_FROM_FRAGMENT);
-                    userBundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
-                    dialogFragment.setArguments(userBundle);
-                } catch (Exception ex) {
-                    dialogFragment = DateDialog.newInstance();
-                }
-                dialogFragment.show(getFragmentManager(), DATE_FROM_FRAGMENT);
+                showDateDialog(DATE_FROM_FRAGMENT, mSchedule.getFrom(), null);
             }
         });
 
         mDateToEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialogFragment;
-                try {
-                    Calendar calendar = mSchedule.getTo();
-                    dialogFragment = DateDialog.newInstance();
-                    Bundle userBundle = new Bundle();
-                    userBundle.putString(DATE_TYPE_ARG, DATE_TO_FRAGMENT);
-                    userBundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
-                    dialogFragment.setArguments(userBundle);
-                } catch (Exception ex) {
-                    dialogFragment = DateDialog.newInstance();
-                }
-                dialogFragment.show(getFragmentManager(), DATE_TO_FRAGMENT);
+                showDateDialog(DATE_TO_FRAGMENT, mSchedule.getTo(), mSchedule.getFrom());
             }
         });
 
@@ -278,12 +273,15 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
 
     @Override
     public void onDateSet(Calendar calendar, String datepickerType) {
-        if (datepickerType.equals(DATE_FROM_FRAGMENT)){
-            mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
-            mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(calendar));
-        } else if(datepickerType.equals(DATE_TO_FRAGMENT)){
-            mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
-            mSchedule.setTo(CalendarUtils.convertCalendarToGregorian(calendar));
+        switch (datepickerType) {
+            case DATE_FROM_FRAGMENT:
+                mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
+                mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(calendar));
+                break;
+            case DATE_TO_FRAGMENT:
+                mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
+                mSchedule.setTo(CalendarUtils.convertCalendarToGregorian(calendar));
+                break;
         }
     }
 }
