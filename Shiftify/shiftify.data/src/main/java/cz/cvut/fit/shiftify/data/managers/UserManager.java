@@ -284,10 +284,14 @@ public class UserManager {
      * Gets a workDay of a user. This workDay can have a scheduleShift and if it has,
      * it can also have an exceptionShift. This workDay has a date given as parameter.
      */
-    public WorkDay shiftsForDate(int userId, Date date) throws Exception {
+    public WorkDay shiftsForDate(long userId, GregorianCalendar date) throws Exception {
+        User user = userDao.load(userId);
+
         List<Shift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("2. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 2L, 5,
-                "Kdo usne, ma padaka!"));
+        ScheduleShift shift = new ScheduleShift("2. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5,
+                "Kdo usne, ma padaka!");
+        shift.setScheduleTypeId(2L);
+        shifts.add(shift);
         WorkDay workDay = new WorkDay(date, shifts);
         return workDay;
     }
@@ -297,16 +301,16 @@ public class UserManager {
      * can also have an exceptionShift. These workDays have dates between from and to, for each
      * date in the period there is a workDay in the returned list.
      */
-    public List<WorkDay> shiftsForPeriod(int userId, Date from, Date to) throws Exception {
+    public List<WorkDay> shiftsForPeriod(long userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
         if (from == null || to == null) throw new Exception("From nor to date must be null.");
         if (from.after(to)) throw new Exception("From date cannot be after to date.");
         List<WorkDay> workDays = new ArrayList<>();
-        int count = (int) (to.getTime() - from.getTime()) / (60 * 60 * 24 * 1000) + 1;
-        Date tmp = from;
+        int count = (int) (to.getTimeInMillis() - from.getTimeInMillis()) / (60 * 60 * 24 * 1000) + 1;
+        GregorianCalendar tmp = from;
         List<Shift> list;
         for (int i = 0; i < count; ++i) {
             list = new ArrayList<>();
-            switch (new Random().nextInt(5)) {
+            switch (new Random().nextInt(6)) {
                 case 0:
                     list.add(new ExceptionShift(Utilities.GregCalFrom(8, 0), Utilities.GregCalFrom(4, 0), 1L, true, "Uteču dřív."));
                     list.add(new ExceptionShift(Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(2, 0), 1L, false, "Uteču dřív."));
@@ -314,27 +318,27 @@ public class UserManager {
                     break;
                 case 1:
                     list.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0),
-                            Utilities.GregCalFrom(1, 0), 1L, 4, "Kdo usne, má padáka!"));
+                            Utilities.GregCalFrom(1, 0), 4, "Kdo usne, má padáka!"));
                     list.add(new ExceptionShift(Utilities.GregCalFrom(15, 0), Utilities.GregCalFrom(2, 0), 1L, false));
                     list.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(17, 0),
-                            Utilities.GregCalFrom(5, 0), 1L, 4, "Kdo usne, má padáka!"));
+                            Utilities.GregCalFrom(5, 0), 4, "Kdo usne, má padáka!"));
                     list.add(new ExceptionShift(Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(2, 0), 5L, true));
                     workDays.add(new WorkDay(tmp, list));
                     break;
                 case 2:
                     list.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0),
-                            Utilities.GregCalFrom(8, 0), 2L, 1));
+                            Utilities.GregCalFrom(8, 0), 1));
                     workDays.add(new WorkDay(tmp, list));
                     break;
                 case 3:
                     list.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0),
-                            Utilities.GregCalFrom(8, 0), 1L, 3));
+                            Utilities.GregCalFrom(8, 0), 3));
                     workDays.add(new WorkDay(tmp, list));
                     break;
                 default:
                     workDays.add(new WorkDay(tmp));
             }
-            tmp.setTime(tmp.getTime() + 24 * 60 * 60 * 1000);
+            tmp.setTimeInMillis(tmp.getTimeInMillis() + 24 * 60 * 60 * 1000);
         }
         return workDays;
     }

@@ -33,7 +33,8 @@ public class ScheduleTypeManager {
      */
     public void add(ScheduleType scheduleType) throws Exception {
         scheduleTypeDao.insert(scheduleType);
-        scheduleShiftDao.insertInTx(scheduleType.getShifts());
+        for (ScheduleShift shift : scheduleType.getShifts())
+            addShift(scheduleType.getId(), shift);
     }
 
     /**
@@ -41,19 +42,26 @@ public class ScheduleTypeManager {
      * Beware of the list of scheduleShifts. U edit them here the same way as well.
      */
     public void edit(ScheduleType scheduleType) throws Exception {
+        if (scheduleType.getId() != null)
+            throw new DaoException("Trying to update a scheduleType that has no id.");
         ScheduleType tmp = scheduleTypeDao.load(scheduleType.getId());
         boolean found;
         for (ScheduleShift sh : tmp.getShifts()) {
             found = false;
             for (ScheduleShift shift : scheduleType.getShifts())
                 if (sh.getId() == shift.getId()) {
-                    scheduleShiftDao.save(shift);
                     found = true;
+                    break;
                 }
             if (!found)
                 scheduleShiftDao.delete(sh);
         }
         scheduleTypeDao.save(scheduleType);
+        for (ScheduleShift shift : scheduleType.getShifts())
+            if (shift.getId() == null)
+                addShift(scheduleType.getId(), shift);
+            else
+                editShift(shift);
     }
 
     /**

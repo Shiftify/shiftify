@@ -55,21 +55,20 @@ public class ScheduleShift extends Shift {
 
     // Constructors
     public ScheduleShift() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null);
     }
     public ScheduleShift(@NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                         @NotNull Long scheduleTypeId, @NotNull Integer dayOfScheduleCycle) {
-        this(null, name, from, duration, scheduleTypeId, dayOfScheduleCycle, null);
+                         @NotNull Integer dayOfScheduleCycle) {
+        this(null, name, from, duration, dayOfScheduleCycle, null);
     }
     public ScheduleShift(@NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                         @NotNull Long scheduleTypeId, @NotNull Integer dayOfScheduleCycle, String description) {
-        this(null, name, from, duration, scheduleTypeId, dayOfScheduleCycle, description);
+                         @NotNull Integer dayOfScheduleCycle, String description) {
+        this(null, name, from, duration, dayOfScheduleCycle, description);
     }
     public ScheduleShift(Long id, @NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                         @NotNull Long scheduleTypeId, @NotNull Integer dayOfScheduleCycle, String description) {
+                         @NotNull Integer dayOfScheduleCycle, String description) {
         super(id, from, duration, description);
         setName(name);
-        setScheduleTypeId(scheduleTypeId);
         setDayOfScheduleCycle(dayOfScheduleCycle);
     }
 

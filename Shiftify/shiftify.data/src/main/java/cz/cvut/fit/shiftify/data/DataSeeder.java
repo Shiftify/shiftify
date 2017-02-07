@@ -69,36 +69,31 @@ public class DataSeeder {
 
         ScheduleType scheduleType = new ScheduleType("Železárny", 7, "Slouží jako rozpis pro vrátnýho.");
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1l, 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 1l, 3));
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1l, 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 1l, 6));
+        shifts.add(new ScheduleShift("1. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 3));
+        shifts.add(new ScheduleShift("2. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 5, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 6));
         scheduleType.setShifts(shifts);
 
         try {
+            // shifts are added as in the add method as well
             scheduleTypeManager.add(scheduleType);
-            for (ScheduleShift shift : scheduleType.getShifts()) {
-                scheduleTypeManager.addShift(scheduleType.getId(), shift);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         shifts.clear();
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2l, 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2l, 2));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 2l, 3));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 2l, 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 2l, 5));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 2l, 6, "komentář"));
+        shifts.add(new ScheduleShift("1. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("2. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2));
+        shifts.add(new ScheduleShift("1. odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
+        shifts.add(new ScheduleShift("2. odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("1. nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5));
+        shifts.add(new ScheduleShift("2. nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 6, "komentář"));
         scheduleType = new ScheduleType("Železárny_hasič", 8);
-        scheduleType.setId(2L);
         scheduleType.setShifts(shifts);
         try {
+            // shifts are added as in the add method as well
             scheduleTypeManager.add(scheduleType);
-            for (ScheduleShift shift : scheduleType.getShifts()) {
-                scheduleTypeManager.addShift(scheduleType.getId(), shift);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,8 +103,13 @@ public class DataSeeder {
         UserManager userManager = new UserManager();
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         userManager.deleteScheduleAll();
+        List<ScheduleType> scheduleTypes = new ArrayList<ScheduleType>();
 
-        List<ScheduleType> scheduleTypes = scheduleTypeManager.scheduleTypesAll();
+        try {
+            scheduleTypes = scheduleTypeManager.scheduleTypes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         for (User user : userManager.allUsers()) {
             List<Schedule> schedules = new ArrayList<>();
