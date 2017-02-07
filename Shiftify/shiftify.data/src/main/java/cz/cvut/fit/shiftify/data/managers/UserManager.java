@@ -43,7 +43,7 @@ public class UserManager {
      * Adds user, and sets the id.
      */
     public void add(User user) throws Exception {
-        user.setId(userDao.insert(user));
+        userDao.insert(user);
     }
 
     /**

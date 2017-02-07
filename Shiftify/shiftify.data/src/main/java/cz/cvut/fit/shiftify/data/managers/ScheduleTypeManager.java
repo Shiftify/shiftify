@@ -1,5 +1,7 @@
 package cz.cvut.fit.shiftify.data.managers;
 
+import org.greenrobot.greendao.DaoException;
+
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.App;
@@ -25,11 +27,13 @@ public class ScheduleTypeManager {
         scheduleShiftDao = daoSession.getScheduleShiftDao();
     }
 
+    // ScheduleTypes
     /**
      * Adds a scheduleType. This instance has a list of scheduleShifts.
      */
     public void add(ScheduleType scheduleType) throws Exception {
         scheduleTypeDao.insert(scheduleType);
+        scheduleShiftDao.insertInTx(scheduleType.getShifts());
     }
 
     /**
@@ -37,6 +41,18 @@ public class ScheduleTypeManager {
      * Beware of the list of scheduleShifts. U edit them here the same way as well.
      */
     public void edit(ScheduleType scheduleType) throws Exception {
+        ScheduleType tmp = scheduleTypeDao.load(scheduleType.getId());
+        boolean found;
+        for (ScheduleShift sh : tmp.getShifts()) {
+            found = false;
+            for (ScheduleShift shift : scheduleType.getShifts())
+                if (sh.getId() == shift.getId()) {
+                    scheduleShiftDao.save(shift);
+                    found = true;
+                }
+            if (!found)
+                scheduleShiftDao.delete(sh);
+        }
         scheduleTypeDao.save(scheduleType);
     }
 
@@ -45,61 +61,62 @@ public class ScheduleTypeManager {
      * Deletes all its scheduleShifts automatically as well.
      */
     public void delete(long scheduleTypeId) throws Exception {
-        deleteShift(scheduleTypeId);
+        deleteShifts(scheduleTypeId);
         scheduleTypeDao.deleteByKey(scheduleTypeId);
     }
 
+    /**
+     * Deletes all scheduleTypes in the database.
+     */
     public void deleteAll() throws Exception {
-        for (ScheduleType type : scheduleTypeDao.loadAll()) {
-            delete(type.getId());
-        }
+        scheduleTypeDao.deleteInTx(scheduleTypeDao.loadAll());
     }
 
     /**
      * Gets a scheduleType with an id equal to scheduleTypeId.
      * This instance has a list of its scheduleShifts.
      */
-    public ScheduleType scheduleType(long scheduleTypeId){
+    public ScheduleType scheduleType(long scheduleTypeId) throws Exception {
         return scheduleTypeDao.load(scheduleTypeId);
     }
 
     /**
      * Gets a list of all scheduleTypesAll.
      */
-    public List<ScheduleType> scheduleTypesAll() {
+    public List<ScheduleType> scheduleTypes() throws Exception {
         return scheduleTypeDao.loadAll();
     }
 
-    public void addShift(long scheduleTypeId, ScheduleShift scheduleShift) throws Exception {
+    // ScheduleShifts
+    private void addShift(long scheduleTypeId, ScheduleShift scheduleShift) throws Exception {
         scheduleShift.setScheduleTypeId(scheduleTypeId);
-        scheduleShiftDao.insert(scheduleShift);
+        scheduleShift.setId(scheduleShiftDao.insert(scheduleShift));
     }
 
-    public void editShift(long scheduleTypeId, ScheduleShift scheduleShift) throws Exception {
-        scheduleShift.setScheduleTypeId(scheduleTypeId);
+    private void editShift(ScheduleShift scheduleShift) throws Exception {
+        if (scheduleShift.getId() != null)
+            throw new DaoException("Trying to update a scheduleShift that has no id.");
         scheduleShiftDao.save(scheduleShift);
     }
 
-    public void deleteShift(Long scheduleShiftId) throws Exception {
+    private void deleteShift(long scheduleShiftId) throws Exception {
         scheduleShiftDao.deleteByKey(scheduleShiftId);
     }
 
-    public ScheduleShift shift(long scheduleShiftId) throws Exception {
+    private void deleteShifts(long scheduleTypeId) throws Exception {
+        scheduleShiftDao.deleteInTx(scheduleTypeDao.load(scheduleTypeId).getShifts());
+    }
+
+    private ScheduleShift shift(long scheduleShiftId) throws Exception {
         return scheduleShiftDao.load(scheduleShiftId);
 
     }
 
-    public List<ScheduleShift> shifts(long scheduleTypeId) {
+    private List<ScheduleShift> shifts(long scheduleTypeId) throws Exception {
         return scheduleTypeDao.load(scheduleTypeId).getShifts();
     }
 
-    public List<ScheduleShift> shiftsAll() throws Exception {
+    private List<ScheduleShift> shifts() throws Exception {
         return scheduleShiftDao.loadAll();
-    }
-
-    public void deleteShifts(long scheduleTypeId) throws Exception {
-        for (ScheduleShift shift : scheduleTypeDao.load(scheduleTypeId).getShifts()) {
-            deleteShift(shift.getId());
-        }
     }
 }
