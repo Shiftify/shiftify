@@ -23,7 +23,7 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <!-- The navigation drawer that comes from the left -->
+    <!-- The navigation drawer that comes date the left -->
     <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view_drawer"

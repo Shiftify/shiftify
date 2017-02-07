@@ -58,7 +58,7 @@ public class TimeLineView extends View {
      * Init and set default variables
      *
      * @param context context of activity
-     * @param attrs   Attributes from xml
+     * @param attrs   Attributes date xml
      */
     private void init(Context context, AttributeSet attrs) {
         mIntervals = new ArrayList<>();

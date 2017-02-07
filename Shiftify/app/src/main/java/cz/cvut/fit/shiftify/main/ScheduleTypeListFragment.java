@@ -37,7 +37,7 @@ public class ScheduleTypeListFragment extends ListFragment implements AdapterVie
         ScheduleTypeManager typeManager = new ScheduleTypeManager();
         List<ScheduleType> types = new ArrayList<>();
         try {
-            types = typeManager.scheduleTypesAll();
+            types = typeManager.scheduleTypes();
         } catch (Exception e) {
             e.printStackTrace();
         }

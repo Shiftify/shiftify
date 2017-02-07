@@ -69,10 +69,10 @@ public class DataSeeder {
 
         ScheduleType scheduleType = new ScheduleType("Železárny", 7, "Slouží jako rozpis pro vrátnýho.");
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 3));
-        shifts.add(new ScheduleShift("2. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 6));
+        shifts.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 3));
+        shifts.add(new ScheduleShift("2. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 5, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0),  6));
         scheduleType.setShifts(shifts);
 
         try {
@@ -81,15 +81,15 @@ public class DataSeeder {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         shifts.clear();
-        shifts.add(new ScheduleShift("1. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("2. ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2));
-        shifts.add(new ScheduleShift("1. odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
-        shifts.add(new ScheduleShift("2. odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("1. nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5));
-        shifts.add(new ScheduleShift("2. nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 6, "komentář"));
-        scheduleType = new ScheduleType("Železárny_hasič", 8);
+
+        shifts.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("2. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2));
+        shifts.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
+        shifts.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("1. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5));
+        shifts.add(new ScheduleShift("2. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 6, "komentář"));
+        scheduleType = new ScheduleType("Železárny hasič", 8);
         scheduleType.setShifts(shifts);
         try {
             // shifts are added as in the add method as well
@@ -114,9 +114,9 @@ public class DataSeeder {
         for (User user : userManager.allUsers()) {
             List<Schedule> schedules = new ArrayList<>();
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(0).getId(),
-                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 1));
+                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 6));
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(1).getId(),
-                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 2));
+                    new GregorianCalendar(2017, 10, 2), new GregorianCalendar(2017, 10, 10), 1));
             for (Schedule schedule : schedules) {
                 try {
                     userManager.addSchedule(schedule);

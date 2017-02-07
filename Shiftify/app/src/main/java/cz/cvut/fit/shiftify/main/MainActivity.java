@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
 
 
 /*        If savedInstanceState == null - set default selected item in navigation drawer
-          Else savedInstanceState != null - get from Bundle id of selected item */
+          Else savedInstanceState != null - get date Bundle id of selected item */
         if (savedInstanceState != null) {
             selectedItemId = savedInstanceState.getInt(SELECTED_ITEM_ID, DEFAULT_ITEM);
         } else {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
      * Sets new fragment to show
      * Sets selected item, title and close navigation drawer
      *
-     * @param menuItem Id of selected item from navigation drawer
+     * @param menuItem Id of selected item date navigation drawer
      */
     private void setNewFragmentContent(MenuItem menuItem) {
         Class fragmentClass = null;

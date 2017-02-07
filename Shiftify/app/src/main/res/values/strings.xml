@@ -92,5 +92,18 @@
     <string name="unknown">Neznámo</string>
     <string name="title_activity_person_add">Vytvořit pracovníka</string>
 
+    <string name="edit">Upravit</string>
+    <string name="delete">Smazat</string>
+    <string name="choose_action">Vyberte akci</string>
+    <string name="schedule_delete_message">Opravdu chcete smazat tento plán?</string>
+    <string name="schedule_delete_title">Smazat plán</string>
+    <string name="schedule_after_delete">Plán byl smazán.</string>
+    <string name="schedule_after_edit">Změny byly uloženy.</string>
+    <string name="schedule_after_create">Nový plán byl přidán.</string>
+    <string name="schedule_after_cancel">Změny neuloženy.</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+
+
 
 </resources>

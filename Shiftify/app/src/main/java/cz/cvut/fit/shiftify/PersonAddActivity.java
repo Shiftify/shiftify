@@ -16,6 +16,7 @@ import java.util.List;
 
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
+import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
 
 public class PersonAddActivity extends AppCompatActivity {
 
