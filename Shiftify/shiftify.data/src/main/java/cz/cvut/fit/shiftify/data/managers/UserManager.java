@@ -35,6 +35,7 @@ public class UserManager {
 
     public UserManager() {
         DaoSession daoSession = App.getNewDaoSession();
+        daoSession.clear();
         userDao = daoSession.getUserDao();
         scheduleDao = daoSession.getScheduleDao();
     }
@@ -104,14 +105,13 @@ public class UserManager {
      */
     public void addSchedule(Schedule schedule) throws Exception {
         scheduleDao.insert(schedule);
-//        schedule.setId(5);
     }
 
     /**
      * Edits a schedule. This schedule instance needs to have an id.
      */
     public void editSchedule(Schedule schedule) throws Exception {
-        scheduleDao.save(schedule);
+        scheduleDao.update(schedule);
     }
 
     /**

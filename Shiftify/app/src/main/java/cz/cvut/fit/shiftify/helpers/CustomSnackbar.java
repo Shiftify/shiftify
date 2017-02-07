@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.helpers;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
@@ -14,12 +15,17 @@ import android.widget.TextView;
 public class CustomSnackbar{
 
     private View view;
-    Snackbar snack;
-    String text;
+    private Snackbar snack;
+    private String text;
 
     public CustomSnackbar(View v,String t) {
         this.text = t;
         this.view = v;
+    }
+
+    public CustomSnackbar(Activity activity, int resourceId) {
+        this.text = activity.getString(resourceId);
+        this.view = activity.findViewById(android.R.id.content);
     }
 
     public void show(){

@@ -9,56 +9,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
+import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
+import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 import cz.cvut.fit.shiftify.data.models.ScheduleType;
-import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
-import cz.cvut.fit.shiftify.data.managers.UserManager;
-import cz.cvut.fit.shiftify.helpdialogfragments.DateFromDialog;
-import cz.cvut.fit.shiftify.helpdialogfragments.DateToDialog;
+import cz.cvut.fit.shiftify.helpdialogfragments.DateDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
+
+import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_MS_ARG;
+import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_TYPE_ARG;
 
 /**
  * Created by Petr on 11/13/16.
  */
 
-public class ScheduleEditActivity extends AppCompatActivity implements DateToDialog.DateToDialogCallback, DateFromDialog.DateFromDialogCallback {
+public class ScheduleEditActivity extends AppCompatActivity implements DateDialog.DateDialogCallback {
 
-    private Spinner mScheduleSpinner;
+    private Spinner mScheduleTypeSpinner;
     private Spinner mFirstShiftSpinner;
     private TextView mDateFromEditText;
     private Button mDateToRemoveButton;
     private TextView mDateToEditText;
-    private ArrayAdapter<ScheduleType> mScheduleTypeSpinAdapter;
 
     private Schedule mSchedule;
     private UserManager mUserManager;
+    private ScheduleTypeManager mScheduleTypeManager;
 
-    private ScheduleType mScheduleType;
     private ScheduleShift mFirstShift;
 
     private static final String DATE_FROM_FRAGMENT = "date_from_fragment";
     private static final String DATE_TO_FRAGMENT = "date_to_fragment";
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_edit);
         mUserManager = new UserManager();
+        mScheduleTypeManager = new ScheduleTypeManager();
 
         Intent intent = getIntent();
         long scheduleId = intent.getLongExtra(ScheduleListActivity.SCHEDULE_ID, -1);
@@ -70,34 +69,53 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             ToolbarUtils.setToolbar(this);
         }
 
-        mScheduleSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
+        initSchedule(scheduleId, userId);
+
+
+        mScheduleTypeSpinner = (Spinner) findViewById(R.id.spinner_schedule_type);
         mFirstShiftSpinner = (Spinner) findViewById(R.id.spinner_first_shift);
 
         mDateFromEditText = (TextView) findViewById(R.id.date_from_text);
         mDateToRemoveButton = (Button) findViewById(R.id.date_to_remove_button);
         mDateToEditText = (TextView) findViewById(R.id.date_to_text);
 
+        mScheduleTypeSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
+
+
+        mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(this, R.layout.spinner_item, getScheduleShifts(mSchedule.getScheduleType())));
+        setDateListeners();
+        fillFields();
+        setSpinnerListeners();
+    }
+
+    private void initSchedule(long scheduleId, long userId) {
         if (scheduleId == -1) {
             mSchedule = new Schedule(userId, null, null, null, null);
+            mSchedule.setScheduleType(mScheduleTypeManager.scheduleTypesAll().get(0));
+            mSchedule.setStartingDayOfScheduleCycle(0);
+            mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(Calendar.getInstance()));
         } else {
-            UserManager userManager = new UserManager();
             try {
-                mSchedule = userManager.schedule(scheduleId);
+                mSchedule = mUserManager.schedule(scheduleId);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        for (ScheduleShift shift : mSchedule.getScheduleType().getShifts()) {
+            if (shift.getDayOfScheduleCycle().equals(mSchedule.getStartingDayOfScheduleCycle())) {
+                mFirstShift = shift;
+                break;
+            }
+        }
+    }
 
-
-        mScheduleSpinner.setAdapter(new ScheduleTypeAdapter(this, R.layout.spinner_item, getScheduleTypes()));
-
-        mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
-        setDateListeners();
-
-        mScheduleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setSpinnerListeners() {
+        mScheduleTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                mScheduleType = getScheduleTypes()[position];
-                mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(ScheduleEditActivity.this, R.layout.spinner_item, getScheduleShifts(mScheduleType)));
+                mSchedule.setScheduleType(getScheduleTypes()[position]);
+                mFirstShiftSpinner.setAdapter(new ScheduleShiftAdapter(ScheduleEditActivity.this, R.layout.spinner_item, getScheduleShifts(mSchedule.getScheduleType())));
+                mFirstShiftSpinner.setSelection(getScheduleShiftSelection());
                 mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
             }
 
@@ -110,7 +128,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         mFirstShiftSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                mFirstShift = mScheduleType.getShifts().get(position);
+                mFirstShift = getScheduleShifts(mSchedule.getScheduleType())[position];
+                mSchedule.setStartingDayOfScheduleCycle(mFirstShift.getDayOfScheduleCycle());
             }
 
             @Override
@@ -118,18 +137,9 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
             }
         });
-
-        fillScheduleContent();
     }
 
-    private void fillScheduleContent() {
-        if (mSchedule.getScheduleTypeId() != null || mSchedule.getStartingDayOfScheduleCycle() != null) {
-////            TODO select scheduleType and firstShift in Spinner
-        } else {
-            mScheduleType = (ScheduleType) mScheduleSpinner.getSelectedItem();
-            mFirstShift = (ScheduleShift) mFirstShiftSpinner.getSelectedItem();
-        }
-
+    private void fillFields() {
         if (mSchedule.getFrom() != null) {
             GregorianCalendar calendarFrom = (GregorianCalendar) GregorianCalendar.getInstance();
             calendarFrom.setTime(mSchedule.getFrom().getTime());
@@ -140,6 +150,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             calendarTo.setTime(mSchedule.getTo().getTime());
             mDateToEditText.setText(CalendarUtils.calendarToDateString(calendarTo));
         }
+        mScheduleTypeSpinner.setSelection(getScheduleTypeSelection());
+        mFirstShiftSpinner.setSelection(getScheduleShiftSelection());
     }
 
     private void setDateListeners() {
@@ -149,9 +161,13 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
                 DialogFragment dialogFragment;
                 try {
                     Calendar calendar = CalendarUtils.getCalendarFromDate(mDateFromEditText.getText().toString());
-                    dialogFragment = new DateFromDialog(calendar);
-                } catch (ParseException e) {
-                    dialogFragment = new DateFromDialog();
+                    dialogFragment = DateDialog.newInstance();
+                    Bundle userBundle = new Bundle();
+                    userBundle.putString(DATE_TYPE_ARG, DATE_FROM_FRAGMENT);
+                    userBundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
+                    dialogFragment.setArguments(userBundle);
+                } catch (Exception ex) {
+                    dialogFragment = DateDialog.newInstance();
                 }
                 dialogFragment.show(getFragmentManager(), DATE_FROM_FRAGMENT);
             }
@@ -162,10 +178,14 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             public void onClick(View view) {
                 DialogFragment dialogFragment;
                 try {
-                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDateToEditText.getText().toString());
-                    dialogFragment = new DateToDialog(calendar);
-                } catch (ParseException e) {
-                    dialogFragment = new DateToDialog();
+                    Calendar calendar = mSchedule.getTo();
+                    dialogFragment = DateDialog.newInstance();
+                    Bundle userBundle = new Bundle();
+                    userBundle.putString(DATE_TYPE_ARG, DATE_TO_FRAGMENT);
+                    userBundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
+                    dialogFragment.setArguments(userBundle);
+                } catch (Exception ex) {
+                    dialogFragment = DateDialog.newInstance();
                 }
                 dialogFragment.show(getFragmentManager(), DATE_TO_FRAGMENT);
             }
@@ -175,17 +195,35 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
             @Override
             public void onClick(View view) {
                 mDateToEditText.setText(getString(R.string.date_to));
+                mSchedule.setTo(null);
             }
         });
     }
 
+    private int getScheduleTypeSelection() {
+        ScheduleType[] types = getScheduleTypes();
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].getId() == mSchedule.getScheduleTypeId())
+                return i;
+        }
+        return 0;
+    }
+
+    private int getScheduleShiftSelection() {
+        ScheduleShift[] types = getScheduleShifts(mSchedule.getScheduleType());
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].getDayOfScheduleCycle() == mSchedule.getStartingDayOfScheduleCycle())
+                return i;
+        }
+        return 0;
+    }
+
 
     private ScheduleType[] getScheduleTypes() {
-        ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         List<ScheduleType> scheduleTypesList = new ArrayList<>();
 
         try {
-            scheduleTypesList.addAll(scheduleTypeManager.scheduleTypesAll());
+            scheduleTypesList.addAll(mScheduleTypeManager.scheduleTypesAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -197,7 +235,8 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
         List<ScheduleShift> scheduleShiftsList = new ArrayList<>();
 
         try {
-            scheduleShiftsList.addAll(scheduleType.getShifts());
+
+            scheduleShiftsList.addAll(mScheduleTypeManager.shifts(scheduleType.getId()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,35 +252,38 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateToDia
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        UserManager userManager = new UserManager();
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(RESULT_CANCELED);
                 this.finish();
                 return true;
             case R.id.done_item:
                 try {
                     if (mSchedule.getId() == null) {
-                        userManager.addSchedule(mSchedule);
+                        mUserManager.addSchedule(mSchedule);
                     } else {
-                        userManager.editSchedule(mSchedule);
+                        mUserManager.editSchedule(mSchedule);
                     }
+                    setResult(RESULT_OK);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                this.finish();
+                finish();
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                setResult(RESULT_CANCELED);
+                return false;
         }
     }
 
     @Override
-    public void setDateFrom(Calendar calendar) {
-        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
-    }
-
-    @Override
-    public void setDateTo(Calendar calendar) {
-        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
+    public void onDateSet(Calendar calendar, String datepickerType) {
+        if (datepickerType.equals(DATE_FROM_FRAGMENT)){
+            mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
+            mSchedule.setFrom(CalendarUtils.convertCalendarToGregorian(calendar));
+        } else if(datepickerType.equals(DATE_TO_FRAGMENT)){
+            mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
+            mSchedule.setTo(CalendarUtils.convertCalendarToGregorian(calendar));
+        }
     }
 }

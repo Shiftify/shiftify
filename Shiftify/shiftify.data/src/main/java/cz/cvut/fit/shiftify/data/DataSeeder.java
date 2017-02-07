@@ -69,15 +69,16 @@ public class DataSeeder {
 
         ScheduleType scheduleType = new ScheduleType("Železárny", 7, "Slouží jako rozpis pro vrátnýho.");
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1l, 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 1l, 3));
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1l, 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 1l, 6));
+        shifts.add(new ScheduleShift("ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), null, 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), null, 3));
+        shifts.add(new ScheduleShift("ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), null, 5, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), null, 6));
         scheduleType.setShifts(shifts);
 
         try {
             scheduleTypeManager.add(scheduleType);
             for (ScheduleShift shift : scheduleType.getShifts()) {
+                shift.setScheduleType(scheduleType);
                 scheduleTypeManager.addShift(scheduleType.getId(), shift);
             }
         } catch (Exception e) {
@@ -85,18 +86,18 @@ public class DataSeeder {
         }
 
         shifts.clear();
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2l, 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("ranni", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2l, 2));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 2l, 3));
-        shifts.add(new ScheduleShift("odpoledni", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 2l, 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 2l, 5));
-        shifts.add(new ScheduleShift("nocni", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 2l, 6, "komentář"));
-        scheduleType = new ScheduleType("Železárny_hasič", 8);
-        scheduleType.setId(2L);
+        shifts.add(new ScheduleShift("ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), null, 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), null, 2));
+        shifts.add(new ScheduleShift("odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), null, 3));
+        shifts.add(new ScheduleShift("odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), null, 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), null, 5));
+        shifts.add(new ScheduleShift("noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), null, 6, "komentář"));
+        scheduleType = new ScheduleType("Železárny hasič", 8);
         scheduleType.setShifts(shifts);
         try {
             scheduleTypeManager.add(scheduleType);
             for (ScheduleShift shift : scheduleType.getShifts()) {
+                shift.setScheduleType(scheduleType);
                 scheduleTypeManager.addShift(scheduleType.getId(), shift);
             }
         } catch (Exception e) {
@@ -114,9 +115,9 @@ public class DataSeeder {
         for (User user : userManager.allUsers()) {
             List<Schedule> schedules = new ArrayList<>();
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(0).getId(),
-                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 1));
+                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 6));
             schedules.add(new Schedule(user.getId(), scheduleTypes.get(1).getId(),
-                    new GregorianCalendar(2016, 10, 2), new GregorianCalendar(2016, 10, 10), 2));
+                    new GregorianCalendar(2017, 10, 2), new GregorianCalendar(2017, 10, 10), 1));
             for (Schedule schedule : schedules) {
                 try {
                     userManager.addSchedule(schedule);

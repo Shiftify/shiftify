@@ -23,6 +23,7 @@ public class ScheduleTypeManager {
 
     public ScheduleTypeManager() {
         DaoSession daoSession = App.getNewDaoSession();
+        daoSession.clear();
         scheduleTypeDao = daoSession.getScheduleTypeDao();
         scheduleShiftDao = daoSession.getScheduleShiftDao();
     }

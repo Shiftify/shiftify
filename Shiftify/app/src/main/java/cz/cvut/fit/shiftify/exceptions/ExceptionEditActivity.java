@@ -14,8 +14,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.helpdialogfragments.DateFromDialog;
-import cz.cvut.fit.shiftify.helpdialogfragments.DateToDialog;
+import cz.cvut.fit.shiftify.helpdialogfragments.DateDialog;
 import cz.cvut.fit.shiftify.helpdialogfragments.TimeFromDialog;
 import cz.cvut.fit.shiftify.helpdialogfragments.TimeToDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -26,7 +25,7 @@ import cz.cvut.fit.shiftify.utils.ToolbarUtils;
  * Created by petr on 12/6/16.
  */
 
-public class ExceptionEditActivity extends AppCompatActivity implements DateFromDialog.DateFromDialogCallback, TimeFromDialog.TimeFromDialogCallback, TimeToDialog.TimeToDialogCallback {
+public class ExceptionEditActivity extends AppCompatActivity implements DateDialog.DateDialogCallback, TimeFromDialog.TimeFromDialogCallback, TimeToDialog.TimeToDialogCallback {
 
     private TextView mDate;
     private TextView mTimeFromEditText;
@@ -65,11 +64,11 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
                 DialogFragment dialogFragment;
                 try {
                     Calendar calendar = CalendarUtils.getCalendarFromDate(mDate.getText().toString());
-                    dialogFragment = new DateFromDialog(calendar);
+//                    dialogFragment = new DateDialog(calendar);
                 } catch (ParseException e) {
-                    dialogFragment = new DateFromDialog();
+//                    dialogFragment = new DateDialog();
                 }
-                dialogFragment.show(getFragmentManager(), DATE_FRAGMENT);
+//               dialogFragment.show(getFragmentManager(), DATE_FRAGMENT);
             }
         });
 
@@ -138,10 +137,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void setDateFrom(Calendar calendar) {
-        mDate.setText(CalendarUtils.calendarToDateString(calendar));
-    }
+//    @Override
+//    public void onDateSet(Calendar calendar) {
+//        mDate.setText(CalendarUtils.calendarToDateString(calendar));
+//    }
 
     @Override
     public void setTimeFrom(int hour, int minute) {
@@ -151,5 +150,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateFrom
     @Override
     public void setTimeTo(int hour, int minute) {
         mTimeToEditText.setText(MyTimeUtils.timeToString(hour, minute));
+    }
+
+    @Override
+    public void onDateSet(Calendar calendar, String datepickerType) {
+
     }
 }
