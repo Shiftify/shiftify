@@ -1,7 +1,5 @@
 package cz.cvut.fit.shiftify.data.managers;
 
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.App;

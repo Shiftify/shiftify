@@ -1,5 +1,7 @@
 package cz.cvut.fit.shiftify.data;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -48,11 +50,34 @@ public class UtilitiesTests {
 
     @Test
     public void GregCal_ComputationTest() throws Exception {
-        GregorianCalendar calendar = new GregorianCalendar();
-        String initStr = Utilities.GregCalToStr(calendar);
-        long init = calendar.getTimeInMillis();
-        calendar.setTimeInMillis(-3600000L); // 1970-01-01 00:00:00.000
-        calendar.setTimeInMillis(0L);        // 1970-01-01 01:00:00.000
-        String nextStr = Utilities.GregCalToStr(calendar, Utilities.CalType.TIME);
+        GregorianCalendar c1 = Utilities.GregCalFrom(5, 30),
+                c2 = Utilities.GregCalFrom(8, 0),
+                c3 = Utilities.GregCalFrom(0, 0);
+        GregorianCalendar c1Minusc3 = Utilities.GregCalTimeSubtraction(c1, c3);
+        GregorianCalendar c1Minusc1 = Utilities.GregCalTimeSubtraction(c1, c1);
+        GregorianCalendar c3Minusc3 = Utilities.GregCalTimeSubtraction(c3, c3);
+        GregorianCalendar c2Minusc1 = Utilities.GregCalTimeSubtraction(c2, c1);
+        GregorianCalendar c1Minusc2 = Utilities.GregCalTimeSubtraction(c1, c2);
+        GregorianCalendar c1Plusc2 = Utilities.GregCalTimeAddition(c1, c2);
+        GregorianCalendar c1Plusc1 = Utilities.GregCalTimeAddition(c1, c1);
+        GregorianCalendar c3Plusc3 = Utilities.GregCalTimeAddition(c3, c3);
+        
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(5, 30), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c1Minusc3, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(0, 0), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c1Minusc1, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(0, 0), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c3Minusc3, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(2, 30), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c2Minusc1, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(-2, -30), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c1Minusc2, Utilities.CalType.TIME));
+
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(13, 30), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c1Plusc2, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(11, 0), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c1Plusc1, Utilities.CalType.TIME));
+        Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(0, 0), Utilities.CalType.TIME),
+                Utilities.GregCalToStr(c3Plusc3, Utilities.CalType.TIME));
     }
 }

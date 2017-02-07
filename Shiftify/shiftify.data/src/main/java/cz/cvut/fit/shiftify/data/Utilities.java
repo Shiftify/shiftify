@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by lukas on 08.12.2016.
@@ -63,12 +62,18 @@ public abstract class Utilities {
     }
     public static GregorianCalendar GregCalFrom(int hours, int minutes) {
         GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(1000 * ((minutes * 60) + (hours * 3600)));
+        calendar.setTimeInMillis(0);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
         return calendar;
     }
     public static GregorianCalendar GregCalFrom(int hours, int minutes, int seconds, int milliseconds) {
         GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(milliseconds + 1000 * (seconds + (minutes * 60) + (hours * 3600)));
+        calendar.setTimeInMillis(0);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
+        calendar.set(Calendar.MILLISECOND, milliseconds);
         return calendar;
     }
     public static GregorianCalendar GregCalFromMillis(long milliseconds) {
@@ -86,7 +91,7 @@ public abstract class Utilities {
 
     public static GregorianCalendar GregCalSimplifyToType(GregorianCalendar cal, CalType type) {
         if (type == CalType.DATETIME && cal != null)
-            return GregCalFromMillis(cal.getTimeInMillis());
+            return cal;
         if (type == CalType.DATE)
             return GregCalDateOnly(cal);
         if (type == CalType.TIME)
@@ -95,33 +100,40 @@ public abstract class Utilities {
     }
     public static GregorianCalendar GregCalDateOnly(GregorianCalendar cal) {
         if (cal == null) return null;
-        return GregCalFromMillis(StrToGregCal(GregCalToStr(cal, CalType.DATE), CalType.DATE).getTimeInMillis());
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(0);
+        calendar.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+        return calendar;
     }
     public static GregorianCalendar GregCalTimeOnly(GregorianCalendar cal) {
         if (cal == null) return null;
-        return GregCalFromMillis(StrToGregCal(GregCalToStr(cal, CalType.TIME), CalType.TIME).getTimeInMillis());
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(0);
+        calendar.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, cal.get(Calendar.SECOND));
+        return calendar;
     }
 
-    public static GregorianCalendar GregCalSubtractionToGregCal(GregorianCalendar cal1, GregorianCalendar cal2, CalType type) {
-        return GregCalSubtractionToGregCal(cal1, type, cal2, type);
+    public static GregorianCalendar GregCalTimeSubtraction(GregorianCalendar cal1, GregorianCalendar cal2) {
+        int hours1 = cal1.get(Calendar.HOUR_OF_DAY),
+            minutes1 = cal1.get(Calendar.MINUTE),
+            hours2 = cal2.get(Calendar.HOUR_OF_DAY),
+            minutes2 = cal2.get(Calendar.MINUTE),
+            mDiff = minutes1 - minutes2,
+            hDiff = hours1 - hours2;
+        return GregCalFrom(hDiff - (mDiff < 0 ? 1 : 0), (mDiff < 0 ? 60 + mDiff : mDiff));
     }
-    public static GregorianCalendar GregCalSubtractionToGregCal(GregorianCalendar cal1, CalType type1, GregorianCalendar cal2, CalType type2) {
-        GregorianCalendar calendar1 = GregCalSimplifyToType(cal1, type1),
-            calendar2 = GregCalSimplifyToType(cal2, type2);
-        if (calendar1 != null && calendar2 != null)
-            return GregCalSimplifyToType(GregCalFromMillis(Math.abs(calendar1.getTimeInMillis() - calendar2.getTimeInMillis())), type1);
-        return null;
-    }
-
-    public static GregorianCalendar GregCalAdditionToGregCal(GregorianCalendar cal1, GregorianCalendar cal2, CalType type) {
-        return GregCalAdditionToGregCal(cal1, type, cal2, type);
-    }
-    public static GregorianCalendar GregCalAdditionToGregCal(GregorianCalendar cal1, CalType type1, GregorianCalendar cal2, CalType type2) {
-        GregorianCalendar calendar1 = GregCalSimplifyToType(cal1, type1),
-                calendar2 = GregCalSimplifyToType(cal2, type2);
-        if (calendar1 != null && calendar2 != null)
-            return GregCalSimplifyToType(GregCalFromMillis(Math.abs(calendar1.getTimeInMillis() - calendar2.getTimeInMillis())), type1);
-        return null;
+    public static GregorianCalendar GregCalTimeAddition(GregorianCalendar cal1, GregorianCalendar cal2) {
+        int hours1 = cal1.get(Calendar.HOUR_OF_DAY),
+                minutes1 = cal1.get(Calendar.MINUTE),
+                hours2 = cal2.get(Calendar.HOUR_OF_DAY),
+                minutes2 = cal2.get(Calendar.MINUTE),
+                hDiff = hours1 + hours2,
+                mDiff = minutes1 + minutes2;
+        return GregCalFrom(hDiff + (mDiff > 59 ? 1 : 0), (mDiff > 59 ? mDiff - 60 : mDiff));
     }
 
     public static String[] concatStrArrays(String[] first, String[] second) {
