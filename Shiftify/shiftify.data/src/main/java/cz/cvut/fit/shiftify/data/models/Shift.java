@@ -15,6 +15,7 @@ package cz.cvut.fit.shiftify.data.models;
         import java.util.TimeZone;
 
         import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Time_Converter;
+        import cz.cvut.fit.shiftify.data.Utilities;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -64,6 +65,13 @@ abstract public class Shift {
     }
 
     // Methods
+    public GregorianCalendar getTo() {
+        return Utilities.GregCalTimeAddition(getFrom(), getDuration());
+    }
+    public String getFromToString() {
+        return getFrom().get(Calendar.HOUR_OF_DAY) + "." + getFrom().get(Calendar.MINUTE) + " - "
+                + getTo().get(Calendar.HOUR_OF_DAY) + "." + getTo().get(Calendar.MINUTE);
+    }
     public boolean persistsIntoNextDay() throws Exception {
         if (getFrom() == null || getDuration() == null)
             throw new Exception("Null attribute (From or Duration or both) in Shift object.");
