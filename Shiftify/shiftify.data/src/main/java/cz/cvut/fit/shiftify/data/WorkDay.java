@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
+import cz.cvut.fit.shiftify.data.models.ExceptionShift;
+import cz.cvut.fit.shiftify.data.models.Schedule;
+import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 import cz.cvut.fit.shiftify.data.models.Shift;
 
 /**
@@ -26,6 +30,16 @@ public class WorkDay implements Comparator<WorkDay>, Comparable<WorkDay> {
     public WorkDay(GregorianCalendar date, List<Shift> shifts) {
         setDate(date);
         setShifts(shifts);
+    }
+    public static WorkDay calculateWorkDays(GregorianCalendar date, List<Schedule> schedules, List<ExceptionInSchedule> exceptionInSchedules) {
+        //TODO: calculate this.shifts from schedule- and exceptionShifts
+
+        return new WorkDay();
+    }
+    public static List<WorkDay> calculateWorkDays(GregorianCalendar from, GregorianCalendar to, List<Schedule> schedules, List<ExceptionInSchedule> exceptionInSchedules) {
+        //TODO: calculate this.shifts from schedule- and exceptionShifts
+
+        return new ArrayList<WorkDay>();
     }
 
     protected GregorianCalendar date;

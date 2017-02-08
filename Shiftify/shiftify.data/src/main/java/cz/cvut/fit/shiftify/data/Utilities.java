@@ -136,6 +136,21 @@ public abstract class Utilities {
         return GregCalFrom(hDiff + (mDiff > 59 ? 1 : 0), (mDiff > 59 ? mDiff - 60 : mDiff));
     }
 
+    public static GregorianCalendar GregCalPrevDay(GregorianCalendar cal) {
+        return GregCalDateOnly(GregCalFromMillis(cal.getTimeInMillis() - 1000*60*60*24));
+    }
+    public static GregorianCalendar GregCalNextDay(GregorianCalendar cal) {
+        return GregCalDateOnly(GregCalFromMillis(cal.getTimeInMillis() + 1000*60*60*24));
+    }
+
+    public static long GregCalSubtractDates(GregorianCalendar cal1, GregorianCalendar cal2) {
+        long c1 = cal1.getTimeInMillis(),
+            c2 = cal2.getTimeInMillis(),
+            c1Minusc2 = c1 - c2,
+            days = c1Minusc2 / (1000*60*60*24);
+        return days;
+    }
+
     public static String[] concatStrArrays(String[] first, String[] second) {
         List<String> both = new ArrayList<String>(first.length + second.length);
         Collections.addAll(both, first);

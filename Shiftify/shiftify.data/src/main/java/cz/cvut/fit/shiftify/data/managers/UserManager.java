@@ -1,6 +1,5 @@
 package cz.cvut.fit.shiftify.data.managers;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,9 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 import cz.cvut.fit.shiftify.data.App;
+import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Date_Converter;
 import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.models.DaoSession;
 import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
+import cz.cvut.fit.shiftify.data.models.ExceptionInScheduleDao;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.data.models.ExceptionShiftDao;
 import cz.cvut.fit.shiftify.data.models.Role;
@@ -22,6 +23,7 @@ import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.ScheduleDao;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.models.UserDao;
+import cz.cvut.fit.shiftify.data.models.UserRoleDao;
 
 
 /**
@@ -32,14 +34,18 @@ import cz.cvut.fit.shiftify.data.models.UserDao;
 public class UserManager {
 
     private UserDao userDao;
+    private UserRoleDao userRoleDao;
     private ScheduleDao scheduleDao;
+    private ExceptionInScheduleDao exceptionInScheduleDao;
     private ExceptionShiftDao exceptionShiftDao;
 
     public UserManager() {
         DaoSession daoSession = App.getNewDaoSession();
         daoSession.clear();
         userDao = daoSession.getUserDao();
+        userRoleDao = daoSession.getUserRoleDao();
         scheduleDao = daoSession.getScheduleDao();
+        exceptionInScheduleDao = daoSession.getExceptionInScheduleDao();
         exceptionShiftDao = daoSession.getExceptionShiftDao();
     }
 
@@ -211,12 +217,15 @@ public class UserManager {
     public ExceptionInSchedule exceptionInSchedule(long exceptionInScheduleId) throws Exception {
         ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L, 2L, "Need to finish some stuff.");
         List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), exceptionInScheduleId, true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), exceptionInScheduleId, true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), exceptionInScheduleId, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
+        for (int i = 1; i <= shifts.size(); ++i) {
+            shifts.get(i - 1).setId((long) i);
+            shifts.get(i - 1).setExceptionInScheduleId(exceptionInScheduleId);
+        }
         exceptionInSchedule.setId(exceptionInScheduleId);
-        //exceptionInSchedule.setShifts(shifts);
+        exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
     }
 
@@ -226,10 +235,13 @@ public class UserManager {
     public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, Date date) throws Exception {
         ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L, 2L, "Need to finish some stuff.");
         List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
+        for (int i = 1; i <= shifts.size(); ++i) {
+            shifts.get(i - 1).setId((long) i);
+            shifts.get(i-1).setExceptionInScheduleId(1L);
+        }
         exceptionInSchedule.setId(1L);
         //exceptionInSchedule.setShifts(shifts);
         return exceptionInSchedule;
@@ -242,19 +254,25 @@ public class UserManager {
         List<ExceptionInSchedule> exceptions = new ArrayList<>();
         ExceptionInSchedule exception = new ExceptionInSchedule(from, 1L);
         List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), 1L, true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true, "Management meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true, "Management meating"));
+        for (int i = 1; i <= shifts.size(); ++i) {
+            shifts.get(i - 1).setId((long) i);
+            shifts.get(i-1).setExceptionInScheduleId(1L);
+        }
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
         exception = new ExceptionInSchedule(to, 1L, null, "Need to finish some stuff.");
         shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), 1L, true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true));
-        for (int i = 4; i <= shifts.size(); ++i) shifts.get(i - 4).setId((long) i);
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
+        for (int i = 4; i <= shifts.size(); ++i) {
+            shifts.get(i - 4).setId((long) i);
+            shifts.get(i-4).setExceptionInScheduleId(1L);
+        }
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds second exception in schedule
@@ -268,10 +286,13 @@ public class UserManager {
         List<ExceptionInSchedule> exceptions = new ArrayList<>();
         ExceptionInSchedule exception = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L);
         List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), 1L, true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), 1L, true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), 1L, true, "Staff meating"));
-        for (int i = 1; i <= shifts.size(); ++i) shifts.get(i - 1).setId((long) i);
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), true));
+        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true, "Staff meating"));
+        for (int i = 1; i <= shifts.size(); ++i) {
+            shifts.get(i - 1).setId((long) i);
+            shifts.get(i-1).setExceptionInScheduleId(1L);
+        }
         exception.setId(1L);
         exception.setShifts(shifts);
         exceptions.add(exception); // adds first exception in schedule
@@ -288,15 +309,11 @@ public class UserManager {
      * it can also have an exceptionShift. This workDay has a date given as parameter.
      */
     public WorkDay shiftsForDate(long userId, GregorianCalendar date) throws Exception {
-        User user = userDao.load(userId);
-
-        List<Shift> shifts = new ArrayList<>();
-        ScheduleShift shift = new ScheduleShift("2. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5,
-                "Kdo usne, ma padaka!");
-        shift.setScheduleTypeId(2L);
-        shifts.add(shift);
-        WorkDay workDay = new WorkDay(date, shifts);
-        return workDay;
+        String dateStr = new GregCal_Date_Converter().convertToDatabaseValue(date);
+        String prevDateStr = new GregCal_Date_Converter().convertToDatabaseValue(Utilities.GregCalPrevDay(date));
+        List<Schedule> schedules = getSchedulesFor(userId, prevDateStr, dateStr);
+        List<ExceptionInSchedule> exceptionInSchedules = getExceptionSchedulesFor(userId, dateStr, dateStr);
+        return WorkDay.calculateWorkDays(date, schedules, exceptionInSchedules);
     }
 
     /**
@@ -305,45 +322,34 @@ public class UserManager {
      * date in the period there is a workDay in the returned list.
      */
     public List<WorkDay> shiftsForPeriod(long userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
-        if (from == null || to == null) throw new Exception("From nor to date must be null.");
-        if (from.after(to)) throw new Exception("From date cannot be after to date.");
-        List<WorkDay> workDays = new ArrayList<>();
-        int count = (int) (to.getTimeInMillis() - from.getTimeInMillis()) / (60 * 60 * 24 * 1000) + 1;
-        GregorianCalendar tmp = from;
-        List<Shift> list;
-        for (int i = 0; i < count; ++i) {
-            list = new ArrayList<>();
-            switch (new Random().nextInt(6)) {
-                case 0:
-                    list.add(new ExceptionShift(Utilities.GregCalFrom(8, 0), Utilities.GregCalFrom(4, 0), 1L, true, "Uteču dřív."));
-                    list.add(new ExceptionShift(Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(2, 0), 1L, false, "Uteču dřív."));
-                    workDays.add(new WorkDay(tmp, list));
-                    break;
-                case 1:
-                    list.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0),
-                            Utilities.GregCalFrom(1, 0), 4, "Kdo usne, má padáka!"));
-                    list.add(new ExceptionShift(Utilities.GregCalFrom(15, 0), Utilities.GregCalFrom(2, 0), 1L, false));
-                    list.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(17, 0),
-                            Utilities.GregCalFrom(5, 0), 4, "Kdo usne, má padáka!"));
-                    list.add(new ExceptionShift(Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(2, 0), 5L, true));
-                    workDays.add(new WorkDay(tmp, list));
-                    break;
-                case 2:
-                    list.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0),
-                            Utilities.GregCalFrom(8, 0), 1));
-                    workDays.add(new WorkDay(tmp, list));
-                    break;
-                case 3:
-                    list.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0),
-                            Utilities.GregCalFrom(8, 0), 3));
-                    workDays.add(new WorkDay(tmp, list));
-                    break;
-                default:
-                    workDays.add(new WorkDay(tmp));
-            }
-            tmp.setTimeInMillis(tmp.getTimeInMillis() + 24 * 60 * 60 * 1000);
-        }
-        return workDays;
+        String prevFromStr = new GregCal_Date_Converter().convertToDatabaseValue(Utilities.GregCalPrevDay(from));
+        String fromStr = new GregCal_Date_Converter().convertToDatabaseValue(from);
+        String toStr = new GregCal_Date_Converter().convertToDatabaseValue(to);
+        List<Schedule> schedules = getSchedulesFor(userId, prevFromStr, toStr);
+        List<ExceptionInSchedule> exceptionInSchedules = getExceptionSchedulesFor(userId, fromStr, toStr);
+        return WorkDay.calculateWorkDays(from, to, schedules, exceptionInSchedules);
+    }
+
+    private List<Schedule> getSchedulesFor(long userId, String from, String to) {
+        return scheduleDao.queryBuilder().where(
+                scheduleDao.queryBuilder().and(
+                        ScheduleDao.Properties.UserId.eq(userId),
+                        ScheduleDao.Properties.From.le(to),
+                        scheduleDao.queryBuilder().or(
+                                ScheduleDao.Properties.To.isNull(),
+                                ScheduleDao.Properties.To.ge(from)
+                        )
+                )
+        ).list();
+    }
+    private List<ExceptionInSchedule> getExceptionSchedulesFor(long userId, String from, String to) {
+        return exceptionInScheduleDao.queryBuilder().where(
+            exceptionInScheduleDao.queryBuilder().and(
+                ExceptionInScheduleDao.Properties.UserId.eq(userId),
+                ExceptionInScheduleDao.Properties.Date.le(to),
+                ExceptionInScheduleDao.Properties.Date.ge(from)
+            )
+        ).list();
     }
 
     public List<ExceptionShift> getAllExceptionShifts(long userId) {

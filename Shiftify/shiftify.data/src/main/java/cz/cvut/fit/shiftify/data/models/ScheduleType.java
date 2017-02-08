@@ -24,7 +24,6 @@ import org.greenrobot.greendao.DaoException;
         generateGettersSetters = false,
         indexes = { @Index(name = "Unique_ScheduleType_Name", unique = true, value = "name") })
 public class ScheduleType {
-    //TODO: delete setShifts method after getting rid of dummy implementation in UserManager
     public void setShifts(List<ScheduleShift> shifts) {
         this.shifts = shifts;
     }

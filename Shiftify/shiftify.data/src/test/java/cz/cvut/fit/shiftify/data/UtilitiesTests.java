@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import cz.cvut.fit.shiftify.data.models.ExceptionInScheduleDao;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -79,5 +81,13 @@ public class UtilitiesTests {
                 Utilities.GregCalToStr(c1Plusc1, Utilities.CalType.TIME));
         Assert.assertEquals(Utilities.GregCalToStr(Utilities.GregCalFrom(0, 0), Utilities.CalType.TIME),
                 Utilities.GregCalToStr(c3Plusc3, Utilities.CalType.TIME));
+    }
+
+    @Test
+    public void GregCal_DateSubtractionTest() throws Exception {
+        GregorianCalendar c1 = new GregorianCalendar(2016, 8, 12),
+                c2 = new GregorianCalendar(2016, 9, 12);
+        long c2Minusc1 = Utilities.GregCalSubtractDates(c2, c1);
+        Assert.assertEquals(30L, c2Minusc1);
     }
 }

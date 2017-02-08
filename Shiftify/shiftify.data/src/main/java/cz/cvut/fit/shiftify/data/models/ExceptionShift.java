@@ -54,19 +54,18 @@ public class ExceptionShift extends Shift {
     protected ExceptionInSchedule exceptionInSchedule;
 
     // Constructors
-    public ExceptionShift() { this(null, null, null, null, null, null); }
+    public ExceptionShift() { this(null, null, null, null, null); }
     public ExceptionShift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                          @NotNull Long exceptionInScheduleId, Boolean isWorking) {
-        this(null, from, duration, exceptionInScheduleId, isWorking, null);
+                          Boolean isWorking) {
+        this(null, from, duration, isWorking, null);
     }
     public ExceptionShift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                          @NotNull Long exceptionInScheduleId, @NotNull Boolean isWorking, String description) {
-        this(null, from, duration, exceptionInScheduleId, isWorking, description);
+                          @NotNull Boolean isWorking, String description) {
+        this(null, from, duration, isWorking, description);
     }
     public ExceptionShift(Long id, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
-                          @NotNull Long exceptionInScheduleId, @NotNull Boolean isWorking, String description) {
+                          @NotNull Boolean isWorking, String description) {
         super(id, from, duration, description);
-        setExceptionInScheduleId(exceptionInScheduleId);
         setIsWorking(isWorking);
     }
 

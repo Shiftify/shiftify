@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Shiftify.iml" filepath="$PROJECT_DIR$/Shiftify.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shiftify.iml" filepath="$PROJECT_DIR$/shiftify.iml" />
       <module fileurl="file://$PROJECT_DIR$/shiftify.data/shiftify.data.iml" filepath="$PROJECT_DIR$/shiftify.data/shiftify.data.iml" />
     </modules>
   </component>
