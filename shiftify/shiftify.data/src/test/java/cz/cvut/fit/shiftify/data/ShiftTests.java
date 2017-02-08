@@ -29,4 +29,13 @@ public class ShiftTests {
         String fromToStr = shift.getFromToString();
         Assert.assertEquals("16.00 - 6.30", fromToStr);
     }
+
+    @Test
+    public void GetToOrFromInSecondsTest() throws Exception {
+        ScheduleShift shift = new ScheduleShift("name", Utilities.GregCalFrom(16, 0), Utilities.GregCalFrom(14, 30), 8);
+        int from = shift.getFromInSeconds(),
+            to = shift.getToInSeconds();
+        Assert.assertEquals(16*60*60, from);
+        Assert.assertEquals(24*60*60 + 6*60*60 + 30*60, to);
+    }
 }

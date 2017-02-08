@@ -65,6 +65,14 @@ abstract public class Shift {
     }
 
     // Methods
+    public int getFromInSeconds() {
+        return getFrom().get(Calendar.HOUR_OF_DAY) * 3600 + getFrom().get(Calendar.MINUTE) * 60;
+    }
+    public int getToInSeconds() {
+        boolean persists = false;
+        try { persists = persistsIntoNextDay(); } catch (Exception ex) { }
+        return (persists ? 3600 * 24 : 0) + getTo().get(Calendar.HOUR_OF_DAY) * 3600 + getTo().get(Calendar.MINUTE) * 60;
+    }
     public GregorianCalendar getTo() {
         return Utilities.GregCalTimeAddition(getFrom(), getDuration());
     }
