@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -238,6 +240,20 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
 
         try {
             scheduleShiftsList.addAll(scheduleType.getShifts());
+            Collections.sort(scheduleShiftsList, new Comparator<ScheduleShift>() {
+                @Override
+                public int compare(ScheduleShift o1, ScheduleShift o2) {
+                    return o1.getDayOfScheduleCycle().compareTo(o2.getDayOfScheduleCycle());
+                }
+            });
+            for(int i = 1 ; i <= scheduleType.getDaysOfScheduleCycle(); i++){
+                if (i - 1 < scheduleShiftsList.size() &&
+                        scheduleShiftsList.get(i - 1).getDayOfScheduleCycle().compareTo(i) != 0){
+                    scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                } else if (i - 1 >= scheduleShiftsList.size()){
+                    scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
