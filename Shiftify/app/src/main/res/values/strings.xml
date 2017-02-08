@@ -104,6 +104,13 @@
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
 
+    <string name="exception_delete_message">Opravdu chcete smazat tuto vyjímku?</string>
+    <string name="exception_delete_title">Smazat vyjímku</string>
+    <string name="exception_after_delete">Vyjímka byla smazána.</string>
+    <string name="exception_after_edit">Změny byly uloženy.</string>
+    <string name="exception_after_create">Nová vyjímka byla přidána.</string>
+    <string name="exception_after_cancel">Změny neuloženy.</string>
+    <string name="feature_in_dev">Tato funkcionalita je zatím ve fázi vývoje.</string>
 
 
 </resources>

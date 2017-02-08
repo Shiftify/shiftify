@@ -34,7 +34,7 @@ public class CalendarUtils {
         return (GregorianCalendar)calendar;
     }
 
-    public static Calendar substractDay(Calendar calendar){
+    public static Calendar substractDay(Calendar calendar) {
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         return calendar;
     }

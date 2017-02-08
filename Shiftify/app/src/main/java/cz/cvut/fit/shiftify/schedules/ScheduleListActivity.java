@@ -82,6 +82,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
         private ScheduleAdapter mScheduleAdapter;
         private FloatingActionButton mAddFloatingButton;
+        private User mUser;
 
         public ScheduleListFragment() {
         }
@@ -94,7 +95,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-                    intent.putExtra(USER_ID, getUserId());
+                    intent.putExtra(USER_ID, mUser.getId());
                     startActivityForResult(intent, CREATE_SCHEDULE_REQUEST);
                 }
             });
@@ -104,6 +105,7 @@ public class ScheduleListActivity extends AppCompatActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+            mUser = ((ScheduleListActivity) getActivity()).mUser;
             mScheduleAdapter = new ScheduleAdapter(getActivity(), R.layout.list_item_schedule);
             setListAdapter(mScheduleAdapter);
             registerForContextMenu(getListView());
@@ -143,21 +145,14 @@ public class ScheduleListActivity extends AppCompatActivity {
         void startEditActivity(Schedule schedule) {
             Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
             intent.putExtra(SCHEDULE_ID, schedule.getId());
-            long userId = getUserId();
-            intent.putExtra(USER_ID, userId);
+            intent.putExtra(USER_ID, mUser.getId());
             startActivityForResult(intent, EDIT_SCHEDULE_REQUEST);
-        }
-
-        private long getUserId() {
-            long userId = ((ScheduleListActivity) getActivity()).mUser.getId();
-            Log.d("TAG", "User id: " + String.valueOf(userId));
-            return userId;
         }
 
         public void updateSchedulesList() {
             List<Schedule> schedules = new ArrayList<>();
             try {
-                schedules.addAll(new UserManager().schedules(getUserId()));
+                schedules.addAll(new UserManager().schedules(mUser.getId()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
