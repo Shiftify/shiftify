@@ -110,6 +110,7 @@
     <string name="exception_after_edit">Změny byly uloženy.</string>
     <string name="exception_after_create">Nová vyjímka byla přidána.</string>
     <string name="exception_after_cancel">Změny neuloženy.</string>
+    <string name="feature_in_dev">Tato funkcionalita je zatím ve fázi vývoje.</string>
 
 
 </resources>

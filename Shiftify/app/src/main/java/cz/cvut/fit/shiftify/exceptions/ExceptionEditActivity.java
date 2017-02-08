@@ -13,17 +13,16 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import cz.cvut.fit.shiftify.R;
-import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.helpdialogfragments.DateDialog;
 import cz.cvut.fit.shiftify.helpdialogfragments.TimeDialog;
+import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.MyTimeUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
@@ -184,8 +183,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_item:
-//          TODO: Save exception shift
-                finish();
+//          TODO: Save exception shift into exceptionInSchedule after created methods in user manager
+                new CustomSnackbar(this, R.string.feature_in_dev).show();
+//                finish();
                 return true;
             case android.R.id.home:
                 finish();
@@ -194,7 +194,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public void onDateSet(Calendar calendar, String datepickerType) {
         setDateText(calendar);
@@ -203,7 +202,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
 
     @Override
     public void onTimeSet(int minutes, String timeType) {
-        Log.d("TAG", timeType);
         switch (timeType) {
             case TIME_FROM_FRAGMENT:
                 mTimeFrom = minutes;

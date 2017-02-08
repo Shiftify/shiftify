@@ -282,11 +282,11 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
                         mUserManager.editSchedule(mSchedule);
                     }
                     setResult(RESULT_OK);
+                    finish();
+                    return true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                finish();
-                return true;
             default:
                 setResult(RESULT_CANCELED);
                 return false;

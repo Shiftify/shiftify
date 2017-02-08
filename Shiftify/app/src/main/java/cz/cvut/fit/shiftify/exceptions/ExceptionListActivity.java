@@ -113,7 +113,7 @@ public class ExceptionListActivity extends AppCompatActivity {
             Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
             intent.putExtra(EXCEPTION_ID, exception.getId());
             intent.putExtra(USER_ID, mUser.getId());
-            startActivity(intent);
+            startActivityForResult(intent, EDIT_EXCEPTION_REQUEST);
         }
 
         @Override
