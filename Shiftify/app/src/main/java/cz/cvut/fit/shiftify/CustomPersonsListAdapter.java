@@ -34,12 +34,12 @@ public class CustomPersonsListAdapter extends ArrayAdapter<String>{
 
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView= inflater.inflate(R.layout.persons_list_single, null, true);
+
         TextView txtTitle = (TextView) rowView.findViewById(R.id.person_name);
+        txtTitle.setText(personsArray[position]);
         txtTitle.setPadding(50,0,0,0);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.person_image);
-        txtTitle.setText(personsArray[position]);
-
         imageView.setImageResource(imageId[position]);
         return rowView;
     }

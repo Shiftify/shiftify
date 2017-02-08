@@ -1,25 +1,44 @@
 package cz.cvut.fit.shiftify;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 
-public class PersonShiftsActivity extends AppCompatActivity {
+public class PersonShiftsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener{
 
     User u;
+    UserManager userManager;
     TextView fullname;
+    ListView shiftListView;
+    private CustomPersonShiftsAdapter adapter;
+    ArrayList<WorkDay> workDayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_shifts);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        shiftListView = (ListView) findViewById(R.id.shift_list_view);
+
 
         //allows for back arrow in toolbar to be created
         setSupportActionBar(toolbar);
@@ -33,7 +52,7 @@ public class PersonShiftsActivity extends AppCompatActivity {
         Intent i = getIntent();
         long userId = i.getLongExtra("userId", -1);
 
-        UserManager userManager = new UserManager();
+        userManager = new UserManager();
 
         if (userId != -1) {
             try {
@@ -51,10 +70,29 @@ public class PersonShiftsActivity extends AppCompatActivity {
         fullname.setText(u.getFullNameWithNick());
 
 
+        loadShifts();
 
 
-        /*nacteni sichet pracovnika a zobrazeni - zjistit jak se to dela pres UserManager
-        * + vytvoreni noveho Custom adapteru pro tento list*/
+        adapter = new CustomPersonShiftsAdapter(this,workDayList);
+        shiftListView.setAdapter(adapter);
+
+    }
+
+    private void loadShifts(){
+
+        // NACITA ZATIM JEN SICHTY NA 30 DNI DOPREDU - FIX THIS BY IMPLEMENTING AN INFINITE SCROLLABLE LAYOUT
+
+        GregorianCalendar to = new GregorianCalendar();
+        GregorianCalendar from = new GregorianCalendar();
+        to.add(Calendar.DATE,30);
+        System.out.println(to.getTime().toString());
+
+        try {
+            workDayList = (ArrayList<WorkDay>) userManager.shiftsForPeriod(u.getId(),from, to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -66,4 +104,13 @@ public class PersonShiftsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
 }

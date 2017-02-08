@@ -29,10 +29,25 @@ public class CalendarUtils {
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         return calendar;
     }
+    public static GregorianCalendar addDay(GregorianCalendar calendar){
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return (GregorianCalendar)calendar;
+    }
+
+    public static Calendar substractDay(Calendar calendar){
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return calendar;
+    }
+
+    public static GregorianCalendar substractDay(GregorianCalendar calendar){
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return (GregorianCalendar) calendar;
+    }
 
     public static Calendar addDay(long ms){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(ms);
         return addDay(calendar);
     }
+
 }

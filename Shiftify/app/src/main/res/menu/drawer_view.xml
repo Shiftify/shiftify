@@ -9,15 +9,17 @@
             android:id="@+id/nav_item_persons_list"
             android:icon="@drawable/icon_bar_example"
             android:title="@string/persons_list" />
-        <item
-            android:id="@+id/nav_item_about_project"
-            android:icon="@drawable/icon_bar_example"
-            android:title="@string/project_about" />
 
         <item
             android:id="@+id/nav_item_schedule_types_list"
             android:icon="@drawable/icon_bar_example"
             android:title="@string/schedule_types_manage" />
+
+        <item
+            android:id="@+id/nav_item_about_project"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/project_about" />
+
         <item
             android:id="@+id/nav_item_feedback"
             android:icon="@drawable/icon_bar_example"
