@@ -69,8 +69,14 @@ abstract public class Shift {
         return Utilities.GregCalTimeAddition(getFrom(), getDuration());
     }
     public String getFromToString() {
-        return getFrom().get(Calendar.HOUR_OF_DAY) + "." + getFrom().get(Calendar.MINUTE) + " - "
-                + getTo().get(Calendar.HOUR_OF_DAY) + "." + getTo().get(Calendar.MINUTE);
+        return getFrom().get(Calendar.HOUR_OF_DAY) + "." + minutesInTwoDecimals(getFrom().get(Calendar.MINUTE)) + " - "
+                + getTo().get(Calendar.HOUR_OF_DAY) + "." + minutesInTwoDecimals(getTo().get(Calendar.MINUTE));
+    }
+    private String minutesInTwoDecimals(int minutes) {
+        String ret = String.valueOf(minutes);
+        if (ret.length() == 1)
+            ret = "0" + ret;
+        return ret;
     }
     public boolean persistsIntoNextDay() throws Exception {
         if (getFrom() == null || getDuration() == null)
