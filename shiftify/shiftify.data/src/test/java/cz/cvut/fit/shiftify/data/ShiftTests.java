@@ -17,9 +17,16 @@ import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 
 public class ShiftTests {
     @Test
-    public void GetFromToString() throws Exception {
+    public void GetFromToStringTest() throws Exception {
         ScheduleShift shift = new ScheduleShift("name", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(14, 30), 8);
         String fromToStr = shift.getFromToString();
         Assert.assertEquals("6.00 - 20.30", fromToStr);
+    }
+
+    @Test
+    public void GetToTest() throws Exception {
+        ScheduleShift shift = new ScheduleShift("name", Utilities.GregCalFrom(16, 0), Utilities.GregCalFrom(14, 30), 8);
+        String fromToStr = shift.getFromToString();
+        Assert.assertEquals("16.00 - 6.30", fromToStr);
     }
 }
