@@ -23,6 +23,7 @@ import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.ScheduleDao;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.models.UserDao;
+import cz.cvut.fit.shiftify.data.models.UserRole;
 import cz.cvut.fit.shiftify.data.models.UserRoleDao;
 
 
@@ -92,21 +93,28 @@ public class UserManager {
      * Adds a relation between a user and a role.
      */
     public void addRole(long userId, long roleId) throws Exception {
+        userRoleDao.insert(new UserRole(userId, roleId));
     }
 
     /**
      * Deletes a relation between a user and a role.
      */
     public void deleteRole(long userId, long roleId) throws Exception {
+        userRoleDao.deleteInTx(
+            userRoleDao.queryBuilder().where(
+                userRoleDao.queryBuilder().and(
+                    UserRoleDao.Properties.UserId.eq(userId),
+                    UserRoleDao.Properties.RoleId.eq(roleId)
+                )
+            ).list()
+        );
     }
 
     /**
      * Gets all the roles that a user has.
      */
     public List<Role> roles(long userId) throws Exception {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role("administrator"));
-        return roles;
+        return userDao.load(userId).getRoles();
     }
 
     /**
@@ -146,16 +154,10 @@ public class UserManager {
      * Return null, if no schedule has met the requirements.
      */
     public Schedule currentSchedule(long userId) throws Exception {
-//        Schedule schedule = new Schedule(userId, 2, new Date(116, 10, 2), null, 3);
-//        schedule.setId(2);
-//        return schedule;
-        User user = userDao.load(userId);
-        Date today = Calendar.getInstance().getTime();
-        for (Schedule schedule : user.getSchedules()) {
-            if (schedule.getFrom().before(today) && (schedule.getTo() == null || schedule.getTo().after(today)))
-                return schedule;
-        }
-        return null;
+        List<Schedule> schedules = SchedulesForPeriod(userId, (GregorianCalendar)GregorianCalendar.getInstance(), (GregorianCalendar)GregorianCalendar.getInstance());
+        if (schedules.size() == 0)
+            return null;
+        return schedules.get(0);
     }
 
     /**
@@ -163,145 +165,99 @@ public class UserManager {
      */
     // returns the last schedule, even if not current, or null if the user never had a schedule
     public Schedule lastSchedule(long userId) throws Exception {
-        Schedule schedule = new Schedule(userId, 1L, new GregorianCalendar(116, 10, 2), new GregorianCalendar(116, 10, 10), 1);
-        schedule.setId(4L);
-        return schedule;
+        List<Schedule> schedules = scheduleDao.queryBuilder().where(
+            ScheduleDao.Properties.UserId.eq(userId)
+        ).orderDesc(ScheduleDao.Properties.From).list();
+        if (schedules.size() == 0)
+            return null;
+        return schedules.get(0);
     }
 
     /**
      * Gets schedules that are current in some of the dates between from and to.
      */
     public List<Schedule> SchedulesForPeriod(long userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
-        if (from == null || to == null) throw new Exception("From nor to date must be null.");
-        if (from.after(to)) throw new Exception("From date cannot be after to date.");
-        List<Schedule> schedules = new ArrayList<>();
-        schedules.add(new Schedule(userId, 1L, from, to, 1));
-        schedules.add(new Schedule(userId, 1L, to, null, 1));
-        for (int i = 1; i <= schedules.size(); ++i) schedules.get(i - 1).setId((long) i);
-        return schedules;
+        return scheduleDao.queryBuilder().where(
+            scheduleDao.queryBuilder().and(
+                ScheduleDao.Properties.UserId.eq(userId),
+                scheduleDao.queryBuilder().or(
+                    ScheduleDao.Properties.From.le(new GregCal_Date_Converter().convertToDatabaseValue(to)),
+                    ScheduleDao.Properties.To.ge(new GregCal_Date_Converter().convertToDatabaseValue(from))
+                )
+            )
+        ).list();
     }
 
     /**
      * Gets all schedules of a user.
      */
     public List<Schedule> schedules(long userId) throws Exception {
-        return userDao.load(userId).getSchedules();
+        return scheduleDao.queryBuilder().where(
+            ScheduleDao.Properties.UserId.eq(userId)
+        ).list();
     }
 
     /**
      * Adds an exceptionInSchedule. This instance needs to have a scheduleId
      * and a list of exceptionSchedules.
      */
-    public void addExceptionInSchedule(long scheduleId, ExceptionInSchedule exceptionInSchedule) throws Exception {
-        exceptionInSchedule.setId(4L);
-        exceptionInSchedule.setScheduleId(scheduleId);
-        for (int i = 1; i <= exceptionInSchedule.getShifts().size(); ++i)
-            exceptionInSchedule.getShifts().get(i - 1).setId((long) i);
+    public void addExceptionInSchedule(ExceptionInSchedule exceptionInSchedule) throws Exception {
+        exceptionInScheduleDao.insert(exceptionInSchedule);
     }
 
     /**
      * Edits an exceptionInSchedule. This instance needs to have an id.
      */
     public void editExceptionInSchedule(ExceptionInSchedule exceptionInSchedule) throws Exception {
+        exceptionInScheduleDao.update(exceptionInSchedule);
     }
 
     /**
      * Deletes an exceptionInSchedule with an id equal to exceptionInScheduleId.
      */
     public void deleteExceptionInSchedule(long exceptionInScheduleId) throws Exception {
+        exceptionInScheduleDao.delete(exceptionInScheduleDao.load(exceptionInScheduleId));
     }
 
     /**
      * Gets an ExceptionInSchedule that has an id equal to exceptionInScheduleId.
      */
     public ExceptionInSchedule exceptionInSchedule(long exceptionInScheduleId) throws Exception {
-        ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L, 2L, "Need to finish some stuff.");
-        List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
-        for (int i = 1; i <= shifts.size(); ++i) {
-            shifts.get(i - 1).setId((long) i);
-            shifts.get(i - 1).setExceptionInScheduleId(exceptionInScheduleId);
-        }
-        exceptionInSchedule.setId(exceptionInScheduleId);
-        exceptionInSchedule.setShifts(shifts);
-        return exceptionInSchedule;
+        return exceptionInScheduleDao.load(exceptionInScheduleId);
     }
 
     /**
      * Gets an ExceptionInSchedule of a schedule that has a date set to the date in parameter.
      */
-    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, Date date) throws Exception {
-        ExceptionInSchedule exceptionInSchedule = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L, 2L, "Need to finish some stuff.");
-        List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
-        for (int i = 1; i <= shifts.size(); ++i) {
-            shifts.get(i - 1).setId((long) i);
-            shifts.get(i-1).setExceptionInScheduleId(1L);
-        }
-        exceptionInSchedule.setId(1L);
-        //exceptionInSchedule.setShifts(shifts);
-        return exceptionInSchedule;
+    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, GregorianCalendar date) throws Exception {
+        List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
+            exceptionInScheduleDao.queryBuilder().and(
+                ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId),
+                ExceptionInScheduleDao.Properties.Date.eq(new GregCal_Date_Converter().convertToDatabaseValue(date))
+            )
+        ).list();
+        if (exceptionInSchedules.size() == 0)
+            return null;
+        return exceptionInSchedules.get(0);
     }
 
     /**
      * Gets a list of exceptionInSchedule of a user with a date between from and to.
      */
     public List<ExceptionInSchedule> exceptionInScheduleForPeriod(int userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
-        List<ExceptionInSchedule> exceptions = new ArrayList<>();
-        ExceptionInSchedule exception = new ExceptionInSchedule(from, 1L);
-        List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(9, 0), Utilities.GregCalFrom(2, 0), true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true, "Management meating"));
-        for (int i = 1; i <= shifts.size(); ++i) {
-            shifts.get(i - 1).setId((long) i);
-            shifts.get(i-1).setExceptionInScheduleId(1L);
-        }
-        exception.setId(1L);
-        exception.setShifts(shifts);
-        exceptions.add(exception); // adds first exception in schedule
-        exception = new ExceptionInSchedule(to, 1L, null, "Need to finish some stuff.");
-        shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true, "Staff meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), true, "Management meating"));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true));
-        for (int i = 4; i <= shifts.size(); ++i) {
-            shifts.get(i - 4).setId((long) i);
-            shifts.get(i-4).setExceptionInScheduleId(1L);
-        }
-        exception.setId(1L);
-        exception.setShifts(shifts);
-        exceptions.add(exception); // adds second exception in schedule
-        return exceptions;
+        return exceptionInScheduleDao.queryBuilder().where(
+            exceptionInScheduleDao.queryBuilder().and(
+                ExceptionInScheduleDao.Properties.Date.ge(new GregCal_Date_Converter().convertToDatabaseValue(from)),
+                ExceptionInScheduleDao.Properties.Date.le(new GregCal_Date_Converter().convertToDatabaseValue(to))
+            )
+        ).list();
     }
 
     /**
      * Gets a list of exceptionInSchedule of a schedule.
      */
     public List<ExceptionInSchedule> exceptionInSchedules(int scheduleId) throws Exception {
-        List<ExceptionInSchedule> exceptions = new ArrayList<>();
-        ExceptionInSchedule exception = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 4), 1L);
-        List<ExceptionShift> shifts = new ArrayList<>();
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(2, 0), true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(10, 0), Utilities.GregCalFrom(2, 0), true));
-        shifts.add(new ExceptionShift(Utilities.GregCalFrom(13, 0), Utilities.GregCalFrom(5, 0), true, "Staff meating"));
-        for (int i = 1; i <= shifts.size(); ++i) {
-            shifts.get(i - 1).setId((long) i);
-            shifts.get(i-1).setExceptionInScheduleId(1L);
-        }
-        exception.setId(1L);
-        exception.setShifts(shifts);
-        exceptions.add(exception); // adds first exception in schedule
-        exception = new ExceptionInSchedule(new GregorianCalendar(2016, 10, 8), 1L, null, "Need to finish some stuff.");
-        shifts = new ArrayList<>(); // empty = no work this day
-        exception.setId(1L);
-        exception.setShifts(shifts);
-        exceptions.add(exception); // adds second exception in schedule
-        return exceptions;
+        return exceptionInScheduleDao.queryBuilder().where(ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId)).list();
     }
 
     /**
