@@ -89,7 +89,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        userShiftsList = new ArrayList<UserWorkdayWrapper>();
+
         userManager = new UserManager();
 
         // why does this work??
@@ -98,7 +98,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
         loadWorkersAndShifts();
 
-        // TODO sortWorkersByShifts();
+        // TODO sortWorkersByShifts(); // ...tricky shit
 
 
         adapter = new CustomShiftListAdapter(getActivity(), userShiftsList, imageId);
@@ -110,6 +110,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     private void loadWorkersAndShifts() {
 
         List<User> allWorkers = new ArrayList<User>();
+        userShiftsList = new ArrayList<UserWorkdayWrapper>();
         WorkDay dayShifts;
 
         try {
@@ -133,7 +134,8 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
             }
 
         }
-
+        adapter = new CustomShiftListAdapter(getActivity(), userShiftsList, imageId);
+        setListAdapter(adapter);
     }
 
     private void initHeaderDate() {
@@ -156,19 +158,6 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
         intent.putExtra("userId", userShiftsList.get(position).getUser().getId());
         startActivity(intent);
-    }
-
-    private void makeArray(List<User> list) {
-
-        int index = 0;
-
-        for (User u :
-                list) {
-
-            personsArray[index] = u.getFullNameWithNick();
-            index++;
-        }
-
     }
 
     @Override
