@@ -94,22 +94,13 @@ public class TimeLineView extends View {
 
     /**
      * Add intervals from WorkDay's shifts
-     * 
+     *
      * @param wDay WorkDay
      */
     public void addIntervalsFromWorkDay(WorkDay wDay) {
         if (wDay.hasShifts()) {
-            GregorianCalendar wDate = Utilities.GregCalDateOnly(wDay.getDate());
             for (Shift shift : wDay.getShifts()) {
-                GregorianCalendar from = Utilities.GregCalDateOnly(shift.getFrom());
-                GregorianCalendar to = Utilities.GregCalDateOnly(shift.getTo());
-                if (from.getTimeInMillis() == to.getTimeInMillis()) {
-                    addInterval(shift.getFromInSeconds(), shift.getToInSeconds());
-                } else if (wDate.getTimeInMillis() == from.getTimeInMillis()) {
-                    addInterval(shift.getFromInSeconds(), 24 * 3600);
-                } else if (wDate.getTimeInMillis() == to.getTimeInMillis()) {
-                    addInterval(0, shift.getToInSeconds());
-                }
+                addInterval(shift.getFromInSeconds(), shift.getToInSeconds());
             }
         }
     }
