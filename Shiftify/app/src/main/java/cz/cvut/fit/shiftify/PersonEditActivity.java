@@ -26,6 +26,8 @@ import java.util.Date;
 
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
+import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
+import cz.cvut.fit.shiftify.helpers.Validator;
 
 public class PersonEditActivity extends AppCompatActivity {
 
@@ -36,6 +38,7 @@ public class PersonEditActivity extends AppCompatActivity {
     private EditText email;
     private ImageView image;
     private User u;
+    private UserManager userManager;
 
     // put this somewhere else
     String mCurrentPhotoPath;
@@ -65,7 +68,7 @@ public class PersonEditActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.person_edit_image);
 
 
-        UserManager userManager = new UserManager();
+        userManager = new UserManager();
 
         long userId = getIntent().getLongExtra("userId",-1);
 
@@ -133,6 +136,9 @@ public class PersonEditActivity extends AppCompatActivity {
             this.finish();
         }
 
+        if(!validateUserData())
+            return;
+
         u. setFirstName( firstname.getText().toString() );
         u. setSurname( surname.getText().toString() );
         u. setNickname( nickname.getText().toString() );
@@ -148,7 +154,65 @@ public class PersonEditActivity extends AppCompatActivity {
             u. setEmail( email.getText().toString() );
 
 
+        try {
+            userManager.edit(u);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.finish();
+    }
+
+    public boolean validateUserData(){
+
+        if(!Validator.phoneValid(phone.getText().toString())){
+
+            phone.setError("Nevalidní číslo.");
+            phone.requestFocus();
+            return false;
+        }
+
+        if(!Validator.emailValid(email.getText().toString())){
+
+            email.setError("Nevalidní adresa.");
+            email.requestFocus();
+            return false;
+        }
+
+
+        if(firstname.getText().toString().isEmpty()) {
+
+            firstname.setError("Pole je povinné");
+            firstname.requestFocus();
+
+            return false;
+        }
+        if(surname.getText().toString().isEmpty()) {
+
+            surname.setError("Pole je povinné");
+            surname.requestFocus();
+            return false;
+        }
+
+        if( !u.getFirstName().equals(firstname.getText().toString())
+                || !u.getSurname().equals(surname.getText().toString())
+                || !u.getNickname().equals(nickname.getText().toString())){
+            // zmenila se dulezita identifikacni data - overeni  duplicity
+
+            if (Validator.duplicitUser(new User(firstname.getText().toString(),
+                    surname.getText().toString(),
+                    phone.getText().toString(),
+                    email.getText().toString(),
+                    nickname.getText().toString() )) ){
+                View v = this.findViewById(android.R.id.content);
+                CustomSnackbar c = new CustomSnackbar(v,"Duplicita - změnte Jméno/Příjmení, či přidejte přezdívku.");
+                c.show();
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
     public void personImageSelect(View view){

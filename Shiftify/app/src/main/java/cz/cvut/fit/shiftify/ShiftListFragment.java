@@ -107,25 +107,6 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     }
 
 
-//    private void loadShifts(){
-//
-//        Date d;
-//
-//        for (User u: allWorkers
-//             ) {
-//
-//            try {
-//
-//                d = dateFormat.parse(headerDate.getText().toString());
-//                //WorkDay wd = userManager.shiftsForDate(u.getId(),d);
-//
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//                System.err.println(ex.getMessage().toString());
-//            }
-//        }
-//    }
-
     private void loadWorkersAndShifts() {
 
         List<User> allWorkers = new ArrayList<User>();

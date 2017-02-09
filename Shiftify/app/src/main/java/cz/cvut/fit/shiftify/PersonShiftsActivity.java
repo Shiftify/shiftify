@@ -15,8 +15,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.User;

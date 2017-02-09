@@ -77,18 +77,19 @@ public class PersonDetailActivity extends AppCompatActivity{
         }
 
         fullname.setText(u.getFullNameWithNick());
-        if (u.getEmail() != null) {
-            emailView.setText(u.getEmail().toString());
+        if (u.getEmail() == null || u.getEmail().isEmpty()) {
+            emailView.setText("...nevyplněno");
         }
         else
-            emailView.setText("...nevyplněno");
+            emailView.setText(u.getEmail().toString());
 
 
 
-        if (u.getPhoneNumber() != null) {
-            numberView.setText(u.getPhoneNumber().toString());
+        if (u.getPhoneNumber() == null || u.getPhoneNumber().isEmpty()) {
+            numberView.setText("...nevyplněno");
         }
-        else  numberView.setText("...nevyplněno");
+        else
+            numberView.setText(u.getPhoneNumber().toString());
     }
 
     @Override

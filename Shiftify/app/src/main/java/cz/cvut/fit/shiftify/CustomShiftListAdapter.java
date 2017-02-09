@@ -52,7 +52,7 @@ public class CustomShiftListAdapter extends ArrayAdapter<UserWorkdayWrapper> {
         imageView.setImageResource(imageId[position]);
 
         TimeLineView timeline = (TimeLineView) rowView.findViewById(R.id.timeline);
-        timeline.addInterval(8 * 3600,16 * 3600);
+        timeline.addIntervalsFromWorkDay(userWorkdayList.get(position).getWorkday());
 
 
         TextView shiftDescr = (TextView) rowView.findViewById(R.id.shift_description);
