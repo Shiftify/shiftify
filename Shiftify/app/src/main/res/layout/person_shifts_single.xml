@@ -15,7 +15,7 @@
             android:textSize="20sp"
             android:text="11.10.2016"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -28,7 +28,7 @@
         android:gravity="center_vertical"
         android:textColor="@android:color/darker_gray"
         android:layout_marginLeft="10dp"
-        android:text="1.ranni"/>
+        android:text="Volno"/>
 
         <TextView
             android:id="@+id/shift_time"
@@ -36,12 +36,11 @@
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:textColor="@android:color/darker_gray"
-            android:layout_marginLeft="10dp"
-            android:text="(6.00 - 14.00)"/>
+            android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
 
-        <cz.cvut.fit.shiftify.views.TimeLineView
+    <cz.cvut.fit.shiftify.views.TimeLineView
             android:id="@+id/timeline"
             android:layout_width="match_parent"
             android:layout_height="5dp"

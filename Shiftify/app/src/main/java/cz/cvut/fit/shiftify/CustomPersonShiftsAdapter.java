@@ -17,6 +17,7 @@ import java.util.List;
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.Shift;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
+import cz.cvut.fit.shiftify.views.TimeLineView;
 
 /**
  * Created by Vojta on 07.02.2017.
@@ -54,6 +55,9 @@ public class CustomPersonShiftsAdapter extends ArrayAdapter<WorkDay> {
             tmpShiftStr += s.getName() + "  " + s.getFromToString();
         }
         shiftName.setText( tmpShiftStr );
+
+        TimeLineView timeLineView = (TimeLineView) rowView.findViewById(R.id.timeline);
+        timeLineView.addIntervalsFromWorkDay(workDayList.get(position));
 
 
         // TODO NAPLNIT TIMELINEVIEW PRES WORKDAY
