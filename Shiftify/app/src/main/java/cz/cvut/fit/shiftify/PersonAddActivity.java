@@ -17,6 +17,7 @@ import java.util.List;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
+import cz.cvut.fit.shiftify.helpers.Validator;
 
 public class PersonAddActivity extends AppCompatActivity {
 
@@ -82,14 +83,15 @@ public class PersonAddActivity extends AppCompatActivity {
 
     public void personAddSave(View view){
 
+        if(!validateUserData())
+            return;
+
         User u = new User(
                 firstname.getText().toString().trim(),
                 surname.getText().toString().trim(),
                 phone.getText().toString().trim(),
                 email.getText().toString().trim(),
-                nickname.getText().toString().trim(),
-                ""                                  // PATH TO IMAGE is empty bcs image handling is not fully implemented
-        );
+                nickname.getText().toString().trim()    );
 
         try {
             userManager.add(u);
@@ -106,6 +108,21 @@ public class PersonAddActivity extends AppCompatActivity {
 
     public boolean validateUserData(){
 
+        if(!Validator.phoneValid(phone.getText().toString())){
+
+            phone.setError("Nevalidní adresa.");
+            phone.requestFocus();
+            return false;
+        }
+
+        if(!Validator.emailValid(email.getText().toString())){
+
+            email.setError("Nevalidní číslo.");
+            email.requestFocus();
+            return false;
+        }
+
+
         if(firstname.getText().toString().isEmpty()) {
 
             firstname.setError("Pole je povinné");
@@ -120,30 +137,18 @@ public class PersonAddActivity extends AppCompatActivity {
             return false;
         }
 
-        if( duplicitUser() ){
+        if( Validator.duplicitUser(new User(firstname.getText().toString(),
+                                            surname.getText().toString(),
+                                            phone.getText().toString(),
+                                            email.getText().toString(),
+                                            nickname.getText().toString() )) ){
             View v = this.findViewById(android.R.id.content);
             CustomSnackbar c = new CustomSnackbar(v,"Duplicita - změnte Jméno/Příjmení, či přidejte přezdívku.");
             c.show();
             return false;
         }
 
-
-
         return true;
-    }
-
-    public boolean duplicitUser(){
-        String nick;
-
-        for (User u: users
-             ) {
-            nick = (nickname.getText().toString().isEmpty() ? " " : " \"" + nickname.getText().toString().trim() + "\" ");
-            if( u.getFullNameWithNick().equals(firstname.getText().toString().trim() + nick + surname.getText().toString().trim()) ){
-                return true;
-            }
-        }
-
-        return false;
     }
 
 
