@@ -90,6 +90,7 @@ public class WorkdayTests {
 
         userManager.addSchedule(schedule);
 
+        WorkDay workDay = userManager.shiftsForDate(user.getId(), new GregorianCalendar(2017, 1, 9));
         List<WorkDay> workDays = WorkDay.calculateWorkDays(new GregorianCalendar(2017, 1, 9), new GregorianCalendar(2017, 1, 11),
                 schedules, new ArrayList<ExceptionInSchedule>());
     }
