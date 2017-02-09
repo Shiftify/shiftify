@@ -23,7 +23,6 @@ import org.greenrobot.greendao.DaoException;
         createInDb = true,
         generateConstructors = false,
         generateGettersSetters = false,
-//        TODO: Date from cannot be unique
         indexes = { @Index(name = "Unique_ScheduleShift_FromSchedule", unique = false, value = "from,scheduleTypeId") })
 public class ScheduleShift extends Shift {
     // Columns
@@ -71,6 +70,12 @@ public class ScheduleShift extends Shift {
         super(id, from, duration, description);
         setName(name);
         setDayOfScheduleCycle(dayOfScheduleCycle);
+    }
+    public ScheduleShift(ScheduleShift sh) {
+        super(sh.getId(), sh.getFrom(), sh.getDuration(), sh.getDescription());
+        setName(sh.getName());
+        setDayOfScheduleCycle(sh.getDayOfScheduleCycle());
+        setScheduleTypeId(sh.getScheduleTypeId());
     }
 
     // Getters and setters

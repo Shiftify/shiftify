@@ -10,6 +10,7 @@ package cz.cvut.fit.shiftify.data.models;
         import java.sql.Date;
         import java.text.SimpleDateFormat;
         import java.util.Calendar;
+        import java.util.Comparator;
         import java.util.GregorianCalendar;
         import java.util.Locale;
         import java.util.TimeZone;
@@ -24,7 +25,7 @@ package cz.cvut.fit.shiftify.data.models;
 @Entity(createInDb = false,
         generateGettersSetters = false,
         generateConstructors = false)
-abstract public class Shift {
+abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     // Constructors
     public Shift() {
         this(null, null, null, null);
@@ -94,4 +95,15 @@ abstract public class Shift {
         return getFrom().getTimeInMillis() + getDuration().getTimeInMillis() > 24*60*60*1000;
     }
     public boolean isExceptionShift() { return false; }
+
+    @Override
+    public int compareTo(Shift shift) {
+        return compare(this, shift);
+    }
+    @Override
+    public int compare(Shift s1, Shift s2) {
+        int from1 = s1.getFromInSeconds();
+        int from2 = s2.getFromInSeconds();
+        return from1 - from2;
+    }
 }
