@@ -11,6 +11,8 @@ import java.sql.Time;
 import java.util.GregorianCalendar;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Time_Converter;
+import cz.cvut.fit.shiftify.data.Utilities;
+
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.DaoException;
@@ -116,6 +118,10 @@ public class ScheduleShift extends Shift {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static ScheduleShift getFreeShift(int dayOfScheduleCycle){
+        return new ScheduleShift("volno", Utilities.GregCalFrom(12, 0), Utilities.GregCalFrom(12, 0), dayOfScheduleCycle);
     }
 
     // GreenDAO generated attributes
