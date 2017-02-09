@@ -61,13 +61,6 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
             R.drawable.icon_bar_example
     };
 
-    /*
-    *
-    *    co predavat adapteru??
-    *    vektor Useru a Shifts ? - ale jak je spojit dohromady
-    *    nebo vektor dvojic User, String (string je ta nazev sichty) ?
-    *
-    */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -191,9 +184,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
             e.printStackTrace();
         }
         headerDate.setText(newDate);
-//        TODO dalsi veci
 
         loadWorkersAndShifts();
-        // nacist sichty na ten den
     }
 }

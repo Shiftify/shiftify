@@ -164,7 +164,7 @@ public class WorkDay implements Comparator<WorkDay>, Comparable<WorkDay> {
     }
 
     public boolean hasShifts() {
-         return shifts.isEmpty();
+         return !shifts.isEmpty();
     }
 
     // Comparator methods
