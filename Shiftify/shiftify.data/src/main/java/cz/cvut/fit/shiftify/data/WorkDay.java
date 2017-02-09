@@ -40,7 +40,7 @@ public class WorkDay implements Comparator<WorkDay>, Comparable<WorkDay> {
         List<WorkDay> workDays = new ArrayList<>();
         for (GregorianCalendar cal = Utilities.GregCalFromMillis(from.getTimeInMillis()); Utilities.GregCalSubtractDates(to, cal) >= 0; cal = Utilities.GregCalNextDay(cal))
             workDays.add(calculateWorkDays(cal, schedules, exceptionInSchedules));
-        return new ArrayList<WorkDay>();
+        return workDays;
     }
     //Schedule
     private static Schedule findSchedule(List<Schedule> schedules, GregorianCalendar date) {
