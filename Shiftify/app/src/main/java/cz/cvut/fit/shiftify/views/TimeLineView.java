@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
@@ -100,7 +101,11 @@ public class TimeLineView extends View {
     public void addIntervalsFromWorkDay(WorkDay wDay) {
         if (wDay.hasShifts()) {
             for (Shift shift : wDay.getShifts()) {
-                addInterval(shift.getFromInSeconds(), shift.getToInSeconds());
+                int toSec = SECONDS_PER_DAY - 1;
+                if (shift.getToInSeconds() != 0){
+                    toSec = shift.getToInSeconds();
+                }
+                addInterval(shift.getFromInSeconds(), toSec);
             }
         }
     }
@@ -115,7 +120,6 @@ public class TimeLineView extends View {
 
         mPaint.setColor(mColorShift);
         for (Pair<Integer, Integer> p : mIntervals) {
-
             int start = getPosition(p.first);
             int finish = getPosition(p.second);
             canvas.drawRect(start, top, finish, bottom, mPaint);
