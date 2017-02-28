@@ -7,15 +7,15 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 
-import java.sql.Time;
 import java.util.GregorianCalendar;
 
-import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Time_Converter;
+import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
 import cz.cvut.fit.shiftify.data.Utilities;
 
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.DaoException;
+import org.joda.time.LocalTime;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -25,7 +25,7 @@ import org.greenrobot.greendao.DaoException;
         createInDb = true,
         generateConstructors = false,
         generateGettersSetters = false,
-        indexes = { @Index(name = "Unique_ScheduleShift_FromSchedule", unique = false, value = "from,scheduleTypeId") })
+        indexes = {@Index(name = "Unique_ScheduleShift_FromSchedule", unique = false, value = "from,scheduleTypeId")})
 public class ScheduleShift extends Shift {
     // Columns
     @Id(autoincrement = true)
@@ -36,12 +36,12 @@ public class ScheduleShift extends Shift {
     protected Long scheduleTypeId;
     @NotNull
     @Property(nameInDb = "From")
-    @Convert(converter = GregCal_Time_Converter.class, columnType = String.class)
-    protected GregorianCalendar from;
+    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
+    protected LocalTime from;
     @NotNull
     @Property(nameInDb = "Duration")
-    @Convert(converter = GregCal_Time_Converter.class, columnType = String.class)
-    protected GregorianCalendar duration;
+    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
+    protected LocalTime duration;
     @NotNull
     @Property(nameInDb = "Name")
     protected String name;
@@ -57,22 +57,25 @@ public class ScheduleShift extends Shift {
 
     // Constructors
     public ScheduleShift() {
-        this(null, null, null, null, null, null);
     }
-    public ScheduleShift(@NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+
+    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
                          @NotNull Integer dayOfScheduleCycle) {
         this(null, name, from, duration, dayOfScheduleCycle, null);
     }
-    public ScheduleShift(@NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+
+    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
                          @NotNull Integer dayOfScheduleCycle, String description) {
         this(null, name, from, duration, dayOfScheduleCycle, description);
     }
-    public ScheduleShift(Long id, @NotNull String name, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+
+    public ScheduleShift(Long id, @NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
                          @NotNull Integer dayOfScheduleCycle, String description) {
         super(id, from, duration, description);
         setName(name);
         setDayOfScheduleCycle(dayOfScheduleCycle);
     }
+
     public ScheduleShift(ScheduleShift sh) {
         super(sh.getId(), sh.getFrom(), sh.getDuration(), sh.getDescription());
         setName(sh.getName());
@@ -81,61 +84,85 @@ public class ScheduleShift extends Shift {
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getScheduleTypeId() {
         return scheduleTypeId;
     }
+
     public void setScheduleTypeId(Long scheduleTypeId) {
         this.scheduleTypeId = scheduleTypeId;
     }
+
     public Integer getDayOfScheduleCycle() {
         return dayOfScheduleCycle;
     }
+
     public void setDayOfScheduleCycle(Integer dayOfScheduleCycle) {
         this.dayOfScheduleCycle = dayOfScheduleCycle;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public GregorianCalendar getFrom() {
+
+    public LocalTime getFrom() {
         return from;
     }
-    public void setFrom(GregorianCalendar from) {
+
+    public void setFrom(LocalTime from) {
         this.from = from;
     }
-    public GregorianCalendar getDuration() {
+
+    public LocalTime getDuration() {
         return duration;
     }
-    public void setDuration(GregorianCalendar duration) {
+
+    public void setDuration(LocalTime duration) {
         this.duration = duration;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public static ScheduleShift getFreeShift(int dayOfScheduleCycle){
-        return new ScheduleShift("volno", Utilities.GregCalFrom(12, 0), Utilities.GregCalFrom(12, 0), dayOfScheduleCycle);
+    public static ScheduleShift getFreeShift(int dayOfScheduleCycle) {
+        return new ScheduleShift("volno", new LocalTime(12, 0), new LocalTime(12, 0), dayOfScheduleCycle);
     }
 
     // GreenDAO generated attributes
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1868701852)
     private transient ScheduleShiftDao myDao;
     @Generated(hash = 128607475)
     private transient Long scheduleType__resolvedKey;
 
     // GreenDAO generated methods
-    /** To-one relationship, resolved on first access. */
+
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 118813034)
     public ScheduleType getScheduleType() {
         Long __key = this.scheduleTypeId;
@@ -153,7 +180,10 @@ public class ScheduleShift extends Shift {
         }
         return scheduleType;
     }
-    /** called by internal mechanisms, do not call yourself. */
+
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1453467165)
     public void setScheduleType(@NotNull ScheduleType scheduleType) {
         if (scheduleType == null) {
@@ -165,6 +195,7 @@ public class ScheduleShift extends Shift {
             scheduleType__resolvedKey = scheduleTypeId;
         }
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
      * Entity must attached to an entity context.
@@ -176,6 +207,7 @@ public class ScheduleShift extends Shift {
         }
         myDao.delete(this);
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
      * Entity must attached to an entity context.
@@ -187,6 +219,7 @@ public class ScheduleShift extends Shift {
         }
         myDao.refresh(this);
     }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
      * Entity must attached to an entity context.
@@ -198,6 +231,7 @@ public class ScheduleShift extends Shift {
         }
         myDao.update(this);
     }
+
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1863737805)
     public void __setDaoSession(DaoSession daoSession) {

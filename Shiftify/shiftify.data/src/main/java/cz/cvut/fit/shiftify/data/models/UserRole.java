@@ -37,33 +37,39 @@ public class UserRole {
 
     // Constructors
     public UserRole() {
-        this(null, null, null);
     }
+
     public UserRole(@NotNull Long userId, @NotNull Long roleId) {
         this(null, userId, roleId);
     }
+
     public UserRole(Long id, @NotNull Long userId, @NotNull Long roleId) {
-        setId(id);
-        setUserId(userId);
-        setRoleId(roleId);
+        this.id = id;
+        this.userId = userId;
+        this.roleId = roleId;
     }
 
     // Getters and setters
     public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Long getUserId() {
         return this.userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     public Long getRoleId() {
         return this.roleId;
     }
+
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
 import java.util.Calendar;
 
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -73,13 +76,11 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
 
     @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(i, i1, i2);
-        mCallback.onDateSet(calendar, (String) datePicker.getTag());
+    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+        mCallback.onDateSet(new DateTime(y, m, d, 0, 0), (String) datePicker.getTag());
     }
 
     public interface DateDialogCallback {
-        public void onDateSet(Calendar calendar, String datepickerType);
+        public void onDateSet(DateTime dateTime, String datepickerType);
     }
 }

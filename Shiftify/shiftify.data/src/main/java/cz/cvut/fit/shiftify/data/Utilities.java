@@ -1,5 +1,8 @@
 package cz.cvut.fit.shiftify.data;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +16,15 @@ import java.util.List;
  * Created by lukas on 08.12.2016.
  */
 
-public abstract class Utilities {
+public class Utilities {
+    public static DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    public static DateTimeFormatter DATETIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+    //Do not initialize
+    private Utilities() {
+    }
+
     public enum CalType {
         DATE,      // "yyyy-MM-dd"
         TIME,      // "HH:mm:ss.SSS"

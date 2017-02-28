@@ -1,22 +1,17 @@
 package cz.cvut.fit.shiftify.data.models;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
-
-import java.sql.Time;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Time_Converter;
-import cz.cvut.fit.shiftify.data.models.Shift;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
-import org.greenrobot.greendao.DaoException;
+import org.joda.time.LocalTime;
+
+import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -34,12 +29,12 @@ public class ExceptionShift extends Shift {
     protected Long id;
     @NotNull
     @Property(nameInDb = "From")
-    @Convert(converter = GregCal_Time_Converter.class, columnType = String.class)
-    protected GregorianCalendar from;
+    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
+    protected LocalTime from;
     @NotNull
     @Property(nameInDb = "Duration")
-    @Convert(converter = GregCal_Time_Converter.class, columnType = String.class)
-    protected GregorianCalendar duration;
+    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
+    protected LocalTime duration;
     @NotNull
     @Property(nameInDb = "ExceptionInScheduleId")
     protected Long exceptionInScheduleId;
@@ -54,35 +49,64 @@ public class ExceptionShift extends Shift {
     protected ExceptionInSchedule exceptionInSchedule;
 
     // Constructors
-    public ExceptionShift() { this(null, null, null, null, null); }
-    public ExceptionShift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+    public ExceptionShift() {
+    }
+
+    public ExceptionShift(@NotNull LocalTime from, @NotNull LocalTime duration,
                           Boolean isWorking) {
         this(null, from, duration, isWorking, null);
     }
-    public ExceptionShift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+
+    public ExceptionShift(@NotNull LocalTime from, @NotNull LocalTime duration,
                           @NotNull Boolean isWorking, String description) {
         this(null, from, duration, isWorking, description);
     }
-    public ExceptionShift(Long id, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration,
+
+    public ExceptionShift(Long id, @NotNull LocalTime from, @NotNull LocalTime duration,
                           @NotNull Boolean isWorking, String description) {
         super(id, from, duration, description);
-        setIsWorking(isWorking);
+        this.isWorking = isWorking;
     }
 
     // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public GregorianCalendar getFrom() {
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public LocalTime getFrom() {
         return from;
     }
-    public void setFrom(GregorianCalendar from) {
+
+    @Override
+    public void setFrom(LocalTime from) {
         this.from = from;
     }
-    public GregorianCalendar getDuration() {
+
+    @Override
+    public LocalTime getDuration() {
         return duration;
     }
-    public void setDuration(GregorianCalendar duration) {
+
+    @Override
+    public void setDuration(LocalTime duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
     public Long getExceptionInScheduleId() {
         return exceptionInScheduleId;
@@ -96,15 +120,11 @@ public class ExceptionShift extends Shift {
     public void setIsWorking(Boolean isWorking) {
         this.isWorking = isWorking;
     }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    // Methods
-    public boolean isExceptionShift() { return false; }
+    @Override
+    public String getName() {
+        return "";
+    }
 
     // GreenDAO generated attributes
     /** Used to resolve relations */

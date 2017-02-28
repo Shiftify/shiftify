@@ -54,7 +54,7 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionShift> {
 //    TODO After upgraded DB - set view of exception item in list
     private String getExceptionTitle(ExceptionShift exception) {
         return "ID: " + String.valueOf(exception.getId()) +
-                " - " + CalendarUtils.calendarToDateString(exception.getFrom());
+                " - " + exception.getFrom().toString(CalendarUtils.JODA_DATE_FORMATTER);
     }
 
     @Nullable

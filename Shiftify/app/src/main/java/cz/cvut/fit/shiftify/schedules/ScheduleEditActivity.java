@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -103,7 +106,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
                 e.printStackTrace();
             }
             mSchedule.setStartingDayOfScheduleCycle(0);
-            mSchedule.setFrom(Utilities.GregCalDateOnly((GregorianCalendar) Calendar.getInstance()));
+            mSchedule.setFrom(LocalDate.now());
         } else {
             try {
                 mSchedule = mUserManager.schedule(scheduleId);
@@ -151,30 +154,28 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
 
     private void fillFields() {
         if (mSchedule.getFrom() != null) {
-            GregorianCalendar calendarFrom = (GregorianCalendar) GregorianCalendar.getInstance();
-            calendarFrom.setTime(mSchedule.getFrom().getTime());
-            mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendarFrom));
+            mDateFromEditText.setText(mSchedule.getFrom().toString(CalendarUtils.JODA_DATE_FORMATTER));
         }
         if (mSchedule.getTo() != null) {
-            Calendar calendarTo = Calendar.getInstance();
-            calendarTo.setTime(mSchedule.getTo().getTime());
-            mDateToEditText.setText(CalendarUtils.calendarToDateString(calendarTo));
+            mDateToEditText.setText(mSchedule.getTo().toString(CalendarUtils.JODA_DATE_FORMATTER));
         }
         mScheduleTypeSpinner.setSelection(getScheduleTypeSelection());
         mFirstShiftSpinner.setSelection(getScheduleShiftSelection());
     }
 
-    private void showDateDialog(String type, Calendar calendar, Calendar minumumCalendar) {
+    private void showDateDialog(String type, LocalDate date, LocalDate minDate) {
         DialogFragment dialogFragment = DateDialog.newInstance();
         Bundle bundle = new Bundle();
         bundle.putString(DATE_TYPE_ARG, type);
+
         try {
-            bundle.putLong(DATE_MS_ARG, calendar.getTimeInMillis());
+            bundle.putLong(DATE_MS_ARG, date.toDate().getTime());
         } catch (Exception ex) {
             dialogFragment = DateDialog.newInstance();
         }
-        if (minumumCalendar != null) {
-            bundle.putLong(DATE_MIN_MS_ARGS, minumumCalendar.getTimeInMillis());
+
+        if (minDate != null) {
+            bundle.putLong(DATE_MIN_MS_ARGS, minDate.toDate().getTime());
         }
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(), type);
@@ -293,28 +294,38 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
         }
     }
 
-    private void setDateFrom(Calendar calendar) {
-        mDateFromEditText.setText(CalendarUtils.calendarToDateString(calendar));
-        mSchedule.setFrom(Utilities.GregCalDateOnly((GregorianCalendar) calendar));
-        if (mSchedule.getTo() != null && mSchedule.getFrom().getTimeInMillis() > mSchedule.getTo().getTimeInMillis()) {
+    private void setDateFrom(DateTime dateFrom) {
+        LocalDate date = new LocalDate(dateFrom);
+
+        mDateFromEditText.setText(date.toString(CalendarUtils.JODA_DATE_FORMATTER));
+        mSchedule.setFrom(date);
+
+        if (mSchedule.getTo() != null && date.isAfter(mSchedule.getTo())) {
             Log.d("TAG", "DateFrom is bigger then DateTo");
-            setDateTo(CalendarUtils.addDay(calendar));
+
+            setDateTo(date.plusDays(1));
         }
     }
 
-    private void setDateTo(Calendar calendar) {
-        mDateToEditText.setText(CalendarUtils.calendarToDateString(calendar));
-        mSchedule.setTo(Utilities.GregCalDateOnly((GregorianCalendar) calendar));
+    private void setDateTo(DateTime dateTo) {
+        LocalDate date = new LocalDate(dateTo);
+
+        setDateTo(date);
+    }
+
+    private void setDateTo(LocalDate dateTo) {
+        mDateToEditText.setText(dateTo.toString(CalendarUtils.JODA_DATE_FORMATTER));
+        mSchedule.setTo(dateTo);
     }
 
     @Override
-    public void onDateSet(Calendar calendar, String datepickerType) {
+    public void onDateSet(DateTime dateTime, String datepickerType) {
         switch (datepickerType) {
             case DATE_FROM_FRAGMENT:
-                setDateFrom(calendar);
+                setDateFrom(dateTime);
                 break;
             case DATE_TO_FRAGMENT:
-                setDateTo(calendar);
+                setDateTo(dateTime);
                 break;
         }
     }

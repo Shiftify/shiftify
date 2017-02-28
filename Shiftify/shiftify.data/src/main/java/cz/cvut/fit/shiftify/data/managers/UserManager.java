@@ -1,15 +1,14 @@
 package cz.cvut.fit.shiftify.data.managers;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import cz.cvut.fit.shiftify.data.App;
-import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Date_Converter;
-import cz.cvut.fit.shiftify.data.Utilities;
+import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
+import cz.cvut.fit.shiftify.data.WorkDay;
+import cz.cvut.fit.shiftify.data.WorkDayFactory;
 import cz.cvut.fit.shiftify.data.models.DaoSession;
 import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionInScheduleDao;
@@ -17,9 +16,6 @@ import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.data.models.ExceptionShiftDao;
 import cz.cvut.fit.shiftify.data.models.Role;
 import cz.cvut.fit.shiftify.data.models.Schedule;
-import cz.cvut.fit.shiftify.data.models.ScheduleShift;
-import cz.cvut.fit.shiftify.data.models.Shift;
-import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.ScheduleDao;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.models.UserDao;
@@ -154,7 +150,7 @@ public class UserManager {
      * Return null, if no schedule has met the requirements.
      */
     public Schedule currentSchedule(long userId) throws Exception {
-        List<Schedule> schedules = SchedulesForPeriod(userId, (GregorianCalendar)GregorianCalendar.getInstance(), (GregorianCalendar)GregorianCalendar.getInstance());
+        List<Schedule> schedules = SchedulesForPeriod(userId, LocalDate.now(), LocalDate.now());
         if (schedules.size() == 0)
             return null;
         return schedules.get(0);
@@ -176,13 +172,13 @@ public class UserManager {
     /**
      * Gets schedules that are current in some of the dates between from and to.
      */
-    public List<Schedule> SchedulesForPeriod(long userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
+    public List<Schedule> SchedulesForPeriod(long userId, LocalDate from, LocalDate to) throws Exception {
         return scheduleDao.queryBuilder().where(
             scheduleDao.queryBuilder().and(
                 ScheduleDao.Properties.UserId.eq(userId),
                 scheduleDao.queryBuilder().or(
-                    ScheduleDao.Properties.From.le(new GregCal_Date_Converter().convertToDatabaseValue(to)),
-                    ScheduleDao.Properties.To.ge(new GregCal_Date_Converter().convertToDatabaseValue(from))
+                    ScheduleDao.Properties.From.le(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(to)),
+                    ScheduleDao.Properties.To.ge(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from))
                 )
             )
         ).list();
@@ -229,11 +225,11 @@ public class UserManager {
     /**
      * Gets an ExceptionInSchedule of a schedule that has a date set to the date in parameter.
      */
-    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, GregorianCalendar date) throws Exception {
+    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, LocalDate date) throws Exception {
         List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
             exceptionInScheduleDao.queryBuilder().and(
                 ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId),
-                ExceptionInScheduleDao.Properties.Date.eq(new GregCal_Date_Converter().convertToDatabaseValue(date))
+                ExceptionInScheduleDao.Properties.Date.eq(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(date))
             )
         ).list();
         if (exceptionInSchedules.size() == 0)
@@ -244,11 +240,11 @@ public class UserManager {
     /**
      * Gets a list of exceptionInSchedule of a user with a date between from and to.
      */
-    public List<ExceptionInSchedule> exceptionInScheduleForPeriod(int userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
+    public List<ExceptionInSchedule> exceptionInScheduleForPeriod(int userId, LocalDate from, LocalDate to) throws Exception {
         return exceptionInScheduleDao.queryBuilder().where(
             exceptionInScheduleDao.queryBuilder().and(
-                ExceptionInScheduleDao.Properties.Date.ge(new GregCal_Date_Converter().convertToDatabaseValue(from)),
-                ExceptionInScheduleDao.Properties.Date.le(new GregCal_Date_Converter().convertToDatabaseValue(to))
+                ExceptionInScheduleDao.Properties.Date.ge(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from)),
+                ExceptionInScheduleDao.Properties.Date.le(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(to))
             )
         ).list();
     }
@@ -264,12 +260,15 @@ public class UserManager {
      * Gets a workDay of a user. This workDay can have a scheduleShift and if it has,
      * it can also have an exceptionShift. This workDay has a date given as parameter.
      */
-    public WorkDay shiftsForDate(long userId, GregorianCalendar date) throws Exception {
-        String dateStr = new GregCal_Date_Converter().convertToDatabaseValue(date);
-        String prevDateStr = new GregCal_Date_Converter().convertToDatabaseValue(Utilities.GregCalPrevDay(date));
+    public WorkDay shiftsForDate(long userId, LocalDate date) throws Exception {
+        String dateStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(date);
+        String prevDateStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(date.minusDays(1));
         List<Schedule> schedules = getSchedulesFor(userId, prevDateStr, dateStr);
         List<ExceptionInSchedule> exceptionInSchedules = getExceptionSchedulesFor(userId, dateStr, dateStr);
-        return WorkDay.calculateWorkDays(date, schedules, exceptionInSchedules);
+
+        WorkDayFactory factory = new WorkDayFactory(schedules, exceptionInSchedules);
+        WorkDay day = factory.createWorkDay(date);
+        return day;
     }
 
     /**
@@ -277,13 +276,17 @@ public class UserManager {
      * can also have an exceptionShift. These workDays have dates between from and to, for each
      * date in the period there is a workDay in the returned list.
      */
-    public List<WorkDay> shiftsForPeriod(long userId, GregorianCalendar from, GregorianCalendar to) throws Exception {
-        String prevFromStr = new GregCal_Date_Converter().convertToDatabaseValue(Utilities.GregCalPrevDay(from));
-        String fromStr = new GregCal_Date_Converter().convertToDatabaseValue(from);
-        String toStr = new GregCal_Date_Converter().convertToDatabaseValue(to);
+    public List<WorkDay> shiftsForPeriod(long userId, LocalDate from, LocalDate to) throws Exception {
+        String prevFromStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from.minusDays(1));
+        String fromStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from);
+        String toStr =  LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(to);
         List<Schedule> schedules = getSchedulesFor(userId, prevFromStr, toStr);
         List<ExceptionInSchedule> exceptionInSchedules = getExceptionSchedulesFor(userId, fromStr, toStr);
-        return WorkDay.calculateWorkDays(from, to, schedules, exceptionInSchedules);
+
+        WorkDayFactory factory = new WorkDayFactory(schedules, exceptionInSchedules);
+        List<WorkDay> workDays = factory.createWorkDayList(from, to);
+
+        return workDays;
     }
 
     private List<Schedule> getSchedulesFor(long userId, String from, String to) {

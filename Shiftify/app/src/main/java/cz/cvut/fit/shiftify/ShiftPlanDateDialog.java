@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import org.joda.time.LocalDate;
+
 import java.util.Calendar;
 
 /**
@@ -47,10 +49,9 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
     }
 
     @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(i, i1, i2);
-        mCallback.setSelectedDay(calendar);
+    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+        LocalDate date = new LocalDate(y, m, d);
+        mCallback.setSelectedDay(date);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
     }
 
     public interface ShiftPlanDialogCallback {
-        public void setSelectedDay(Calendar calendar);
+        public void setSelectedDay(LocalDate calendar);
     }
 
 }

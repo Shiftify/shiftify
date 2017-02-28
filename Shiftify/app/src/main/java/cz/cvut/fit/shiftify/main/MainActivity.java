@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.joda.time.LocalDate;
+
 import java.util.Calendar;
 
 
@@ -192,11 +194,11 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
 
 
     @Override
-    public void setSelectedDay(Calendar calendar) {
+    public void setSelectedDay(LocalDate date) {
 
         ShiftListFragment shiftListFragment = (ShiftListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
         if (shiftListFragment != null) {
-            shiftListFragment.setSelectedDate(calendar);
+            shiftListFragment.setSelectedDate(date);
         }
     }
 }

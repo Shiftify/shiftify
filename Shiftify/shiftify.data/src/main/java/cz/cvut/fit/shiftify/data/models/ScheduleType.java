@@ -49,44 +49,53 @@ public class ScheduleType {
 
     // Constructors
     public ScheduleType() {
-        this(null, null, null, null);
     }
+
     public ScheduleType(@NotNull String name, @NotNull Integer daysOfScheduleCycle) {
         this(null, name, daysOfScheduleCycle, null);
     }
+
     public ScheduleType(@NotNull String name, @NotNull Integer daysOfScheduleCycle, String description) {
         this(null, name, daysOfScheduleCycle, description);
     }
+
     public ScheduleType(Long id, @NotNull String name, @NotNull Integer daysOfScheduleCycle,
                         String description) {
-        setId(id);
-        setName(name);
-        setDaysOfScheduleCycle(daysOfScheduleCycle);
-        setDescription(description);
+        this.id = id;
+        this.name = name;
+        this.daysOfScheduleCycle = daysOfScheduleCycle;
+        this.description = description;
     }
 
     // Getters and setters
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Integer getDaysOfScheduleCycle() {
         return this.daysOfScheduleCycle;
     }
+
     public void setDaysOfScheduleCycle(Integer daysOfScheduleCycle) {
         this.daysOfScheduleCycle = daysOfScheduleCycle;
     }
+
     public String getDescription() {
         return this.description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }

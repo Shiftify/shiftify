@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -57,17 +60,16 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
     }
 
     private String getScheduleTitle(Schedule schedule) {
-        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
-        calendar.setTime(schedule.getFrom().getTime());
-        String res = schedule.getScheduleType().getName();
-        res += " " + CalendarUtils.calendarToDateString(calendar) + " - ";
-        if (schedule.getTo() != null) {
-            calendar.setTime(schedule.getTo().getTime());
-            res += CalendarUtils.calendarToDateString(calendar);
-        } else {
-            res += mContext.getString(R.string.undefinite_time);
-        }
-        return res;
+        LocalDate today = LocalDate.now();
+
+
+        String name = schedule.getScheduleType().getName();
+        String todayStr = today.toString(CalendarUtils.JODA_DATE_FORMATTER);
+        String toStr = (schedule.getTo() == null) ? "neurčito" : schedule.getTo().toString(CalendarUtils.JODA_DATE_FORMATTER);
+
+        String title = MessageFormat.format("{0} {1} - {2}", name, todayStr, toStr);
+
+        return title;
     }
 
     @Nullable

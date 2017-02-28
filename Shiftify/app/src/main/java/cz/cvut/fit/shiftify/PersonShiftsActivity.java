@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -80,10 +82,8 @@ public class PersonShiftsActivity extends AppCompatActivity implements AdapterVi
 
         // NACITA ZATIM JEN SICHTY NA 30 DNI DOPREDU - FIX THIS BY IMPLEMENTING AN INFINITE SCROLLABLE LAYOUT
 
-        GregorianCalendar to = new GregorianCalendar();
-        GregorianCalendar from = new GregorianCalendar();
-        to.add(Calendar.DATE,30);
-        System.out.println(to.getTime().toString());
+        LocalDate from = LocalDate.now();
+        LocalDate to = from.plusDays(30);
 
         try {
             workDayList = (ArrayList<WorkDay>) userManager.shiftsForPeriod(u.getId(),from, to);

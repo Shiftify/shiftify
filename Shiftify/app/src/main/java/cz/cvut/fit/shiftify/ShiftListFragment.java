@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,13 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Date_Converter;
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
-import cz.cvut.fit.shiftify.data.models.Shift;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.helpers.UserWorkdayWrapper;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -41,7 +34,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     ImageButton btnCal;
     ImageButton btnArrLeft;
     ImageButton btnArrRight;
-    GregorianCalendar cal;
+    LocalDate cal;
 
     Integer[] imageId = {
             R.drawable.face,
@@ -142,14 +135,14 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     private void initHeaderDate() {
 
-        cal = new GregorianCalendar();
-        String dateStr = CalendarUtils.calendarToDateString(cal);
+        cal = LocalDate.now();
+        String dateStr = cal.toString(CalendarUtils.JODA_DATE_FORMATTER);
         headerDate.setText(dateStr);
     }
 
     private void setHeaderDate() {
 
-        String dateStr = CalendarUtils.calendarToDateString(cal);
+        String dateStr = cal.toString(CalendarUtils.JODA_DATE_FORMATTER);
         headerDate.setText(dateStr);
     }
 
@@ -172,26 +165,23 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
                 break;
             case R.id.date_arrow_left:
                 // date --
-                cal = CalendarUtils.substractDay(cal);
+                cal = cal.minusDays(1);
                 setHeaderDate();
                 loadWorkersAndShifts();
                 break;
             case R.id.date_arrow_right:
                 // date ++
-                cal = CalendarUtils.addDay(cal);
+                cal = cal.plusDays(1);
                 setHeaderDate();
                 loadWorkersAndShifts();
                 break;
         }
     }
 
-    public void setSelectedDate(Calendar calendar) {
-        String newDate = CalendarUtils.calendarToDateString(calendar);
-        try {
-            cal = (GregorianCalendar) CalendarUtils.getCalendarFromDate(newDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setSelectedDate(LocalDate date) {
+        String newDate = date.toString(CalendarUtils.JODA_DATE_FORMATTER);
+
+        cal = date;
         headerDate.setText(newDate);
 
         loadWorkersAndShifts();

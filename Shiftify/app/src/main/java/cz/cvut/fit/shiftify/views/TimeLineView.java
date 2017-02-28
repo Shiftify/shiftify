@@ -11,6 +11,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -20,6 +22,7 @@ import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.Shift;
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**
  * View class for showing time intervals during day
@@ -102,10 +105,14 @@ public class TimeLineView extends View {
         if (wDay.hasShifts()) {
             for (Shift shift : wDay.getShifts()) {
                 int toSec = SECONDS_PER_DAY - 1;
-                if (shift.getToInSeconds() != 0){
-                    toSec = shift.getToInSeconds();
+
+                LocalTime shiftTo = shift.getTo().withMillisOfSecond(0);
+
+                if (shiftTo.isAfter(new LocalTime(0))){
+                    toSec = CalendarUtils.secondsOfDay(shiftTo);
                 }
-                addInterval(shift.getFromInSeconds(), toSec);
+
+                addInterval(CalendarUtils.secondsOfDay(shift.getFrom()), toSec);
             }
         }
     }

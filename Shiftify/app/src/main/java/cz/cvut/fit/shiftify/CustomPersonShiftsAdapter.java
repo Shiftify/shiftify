@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.Shift;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -43,17 +44,17 @@ public class CustomPersonShiftsAdapter extends ArrayAdapter<WorkDay> {
         View rowView= inflater.inflate(R.layout.person_shifts_single, null, true);
 
         TextView shiftDate = (TextView) rowView.findViewById(R.id.shift_date);
-        shiftDate.setText(CalendarUtils.calendarToDateString(workDayList.get(position).getDate()) );
+        shiftDate.setText(workDayList.get(position).getDate().toString(CalendarUtils.JODA_DATE_FORMATTER));
 
         TextView shiftName = (TextView) rowView.findViewById(R.id.shift_name);
 
         List<Shift> tmpShiftList = workDayList.get(position).getShifts();
         String tmpShiftStr = new String();
 
-        for (Shift s: tmpShiftList
-             ) {
-            tmpShiftStr += s.getName() + "  " + s.getFromToString();
+        for (Shift s: tmpShiftList) {
+            tmpShiftStr += s.getName() + "  " + s.getFrom().toString(Utilities.TIME_FORMATTER);
         }
+
         shiftName.setText( tmpShiftStr );
 
         TimeLineView timeLineView = (TimeLineView) rowView.findViewById(R.id.timeline);

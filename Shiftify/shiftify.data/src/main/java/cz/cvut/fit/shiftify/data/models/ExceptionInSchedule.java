@@ -1,21 +1,20 @@
 package cz.cvut.fit.shiftify.data.models;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
+import org.joda.time.LocalDate;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Date_Converter;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
+import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -26,11 +25,6 @@ import org.greenrobot.greendao.DaoException;
         generateConstructors = false,
         indexes = { @Index(name = "Unique_ExceptionInSchedule_UserDate", unique = true, value = "userId,date") })
 public class ExceptionInSchedule {
-    //TODO: delete setShifts method after getting rid of dummy implementation in UserManager
-    public void setShifts(List<ExceptionShift> exceptionShifts) {
-        this.shifts = exceptionShifts;
-    }
-
     // Columns
     @Id(autoincrement = true)
     @Property(nameInDb = "Id")
@@ -42,8 +36,8 @@ public class ExceptionInSchedule {
     protected Long scheduleId;
     @NotNull
     @Property(nameInDb = "Date")
-    @Convert(converter = GregCal_Date_Converter.class, columnType = String.class)
-    protected GregorianCalendar date;
+    @Convert(converter = LocalDateToStringConverter.class, columnType = String.class)
+    protected LocalDate date;
     @Property(nameInDb = "Description")
     protected String description;
 
@@ -57,49 +51,65 @@ public class ExceptionInSchedule {
 
     // Constructors
     public ExceptionInSchedule() {
-        this(null, null, null, null, null);
     }
-    public ExceptionInSchedule(GregorianCalendar date, Long userId) {
+
+    public ExceptionInSchedule(LocalDate date, Long userId) {
         this(null, date, userId, null, null);
     }
-    public ExceptionInSchedule(GregorianCalendar date, Long userId, Long scheduleId) {
+
+    public ExceptionInSchedule(LocalDate date, Long userId, Long scheduleId) {
         this(null, date, userId, scheduleId, null);
     }
-    public ExceptionInSchedule(GregorianCalendar date, Long userId, Long scheduleId, String description) {
+
+    public ExceptionInSchedule(LocalDate date, Long userId, Long scheduleId, String description) {
         this(null, date, userId, scheduleId, description);
     }
-    public ExceptionInSchedule(Long id, GregorianCalendar date, Long userId, Long scheduleId, String description) {
-        setId(id);
-        setDate(date);
-        setUserId(userId);
-        setScheduleId(scheduleId);
-        setDescription(description);
+
+    public ExceptionInSchedule(Long id, LocalDate date, Long userId, Long scheduleId, String description) {
+        this.id = id;
+        this.date = date;
+        this.userId = userId;
+        this.scheduleId = scheduleId;
+        this.description = description;
     }
 
     // Getters and setters
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public Long getScheduleId() {
         return scheduleId;
     }
+
     public void setScheduleId(long scheduleId) {
         this.scheduleId = scheduleId;
     }
-    public GregorianCalendar getDate() {
+
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(GregorianCalendar date) {
+
+    public void setDate(LocalDate date) {
         this.date = date;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }

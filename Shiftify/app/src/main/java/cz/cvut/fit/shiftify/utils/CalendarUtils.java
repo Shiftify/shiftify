@@ -1,5 +1,10 @@
 package cz.cvut.fit.shiftify.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,6 +16,7 @@ import java.util.GregorianCalendar;
  */
 
 public class CalendarUtils {
+    public static DateTimeFormatter JODA_DATE_FORMATTER = DateTimeFormat.forPattern("dd. MM. yyyy");
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 
@@ -48,6 +54,15 @@ public class CalendarUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(ms);
         return addDay(calendar);
+    }
+
+    public static int secondsOfDay(LocalTime time) {
+        int seconds = 0;
+        seconds += time.getHourOfDay() * 60 * 60;
+        seconds += time.getMinuteOfHour() * 60;
+        seconds += time.getSecondOfMinute();
+
+        return seconds;
     }
 
 }

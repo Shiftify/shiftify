@@ -1,22 +1,16 @@
 package cz.cvut.fit.shiftify.data.models;
 
-        import org.greenrobot.greendao.annotation.Convert;
-        import org.greenrobot.greendao.annotation.Entity;
-        import org.greenrobot.greendao.annotation.Id;
-        import org.greenrobot.greendao.annotation.NotNull;
-        import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.Convert;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
-        import java.sql.Time;
-        import java.sql.Date;
-        import java.text.SimpleDateFormat;
-        import java.util.Calendar;
-        import java.util.Comparator;
-        import java.util.GregorianCalendar;
-        import java.util.Locale;
-        import java.util.TimeZone;
+import java.util.Comparator;
 
-        import cz.cvut.fit.shiftify.data.DaoConverters.GregCal_Time_Converter;
-        import cz.cvut.fit.shiftify.data.Utilities;
+import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -28,73 +22,56 @@ package cz.cvut.fit.shiftify.data.models;
 abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     // Constructors
     public Shift() {
-        this(null, null, null, null);
     }
-    public Shift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration) {
+
+    public Shift(@NotNull LocalTime from, @NotNull LocalTime duration) {
         this(null, from, duration, null);
     }
-    public Shift(@NotNull GregorianCalendar from, @NotNull GregorianCalendar duration, String description) {
+    public Shift(@NotNull LocalTime from, @NotNull LocalTime duration, String description) {
         this(null, from, duration, description);
     }
-    public Shift(Long id, @NotNull GregorianCalendar from, @NotNull GregorianCalendar duration, String description) {
+
+    public Shift(Long id, @NotNull LocalTime from, @NotNull LocalTime duration, String description) {
         setId(id);
         setFrom(from);
         setDuration(duration);
         setDescription(description);
     }
 
-    // Getters and setters
-    public Long getId() { return null; }
-    public void setId(Long id) { }
-    public GregorianCalendar getFrom() {
-        return null;
-    }
-    public void setFrom(GregorianCalendar from) { }
-    public GregorianCalendar getDuration() {
-        return null;
-    }
-    public void setDuration(GregorianCalendar duration) { }
-    public String getDescription() {
-        return null;
-    }
-    public void setDescription(String description) { }
-    public String getName() {
-        return null;
-    }
-    public Boolean getIsWorking() {
-        return true;
-    }
+    public abstract Long getId();
+
+    public abstract void setId(Long id);
+
+    public abstract LocalTime getFrom();
+
+    public abstract void setFrom(LocalTime from);
+
+    public abstract LocalTime getDuration();
+
+    public abstract void setDuration(LocalTime duration);
+
+    public abstract String getDescription();
+
+    public abstract void setDescription(String description);
 
     // Methods
-    public int getFromInSeconds() {
-        return getFrom().get(Calendar.HOUR_OF_DAY) * 3600 + getFrom().get(Calendar.MINUTE) * 60;
+
+    abstract public String getName();
+
+    public LocalTime getTo() {
+        return getFrom().plus(new Duration(getDuration()).toPeriod());
     }
-    public int getToInSeconds() {
-        boolean persists = false;
-        try { persists = persistsIntoNextDay(); } catch (Exception ex) { }
-        return (persists ? 3600 * 24 : 0) + getTo().get(Calendar.HOUR_OF_DAY) * 3600 + getTo().get(Calendar.MINUTE) * 60;
+
+    public boolean persistsIntoNextDay() {
+        if (getFrom() == null || getFrom() == null) {
+            return false;
+        }
+
+        DateTime from = new DateTime(getFrom());
+        DateTime to = from.plus(new Duration(getTo()));
+
+        return to.getDayOfMonth() != from.getDayOfMonth();
     }
-    public GregorianCalendar getTo() {
-        return Utilities.GregCalTimeAddition(getFrom(), getDuration());
-    }
-    public String getFromToString() {
-        return getFrom().get(Calendar.HOUR_OF_DAY) + "." + minutesInTwoDecimals(getFrom().get(Calendar.MINUTE)) + " - "
-                + getTo().get(Calendar.HOUR_OF_DAY) + "." + minutesInTwoDecimals(getTo().get(Calendar.MINUTE));
-    }
-    private String minutesInTwoDecimals(int minutes) {
-        String ret = String.valueOf(minutes);
-        if (ret.length() == 1)
-            ret = "0" + ret;
-        return ret;
-    }
-    public boolean persistsIntoNextDay() throws Exception {
-        if (getFrom() == null || getDuration() == null)
-            throw new Exception("Null attribute (From or Duration or both) in Shift object.");
-        //TODO: implement addition and subtraction of GregorianCalendar in Utilities
-        //      so that the code is easier to read
-        return getFrom().getTimeInMillis() + getDuration().getTimeInMillis() > 24*60*60*1000;
-    }
-    public boolean isExceptionShift() { return false; }
 
     @Override
     public int compareTo(Shift shift) {
@@ -102,8 +79,6 @@ abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     }
     @Override
     public int compare(Shift s1, Shift s2) {
-        int from1 = s1.getFromInSeconds();
-        int from2 = s2.getFromInSeconds();
-        return from1 - from2;
+        return s1.getFrom().compareTo(s2.getFrom());
     }
 }

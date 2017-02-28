@@ -13,6 +13,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -122,7 +126,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
     private void initException(long exceptionId, long userId) {
         if (exceptionId == -1) {
             mException = new ExceptionShift();
-            mException.setFrom((GregorianCalendar) Calendar.getInstance());
+            mException.setFrom(LocalTime.now());
             mException.setIsWorking(true);
         } else {
             try {
@@ -145,8 +149,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
         dialogFragment.show(getFragmentManager(), type);
     }
 
-    private void setDateText(Calendar calendar) {
-        mDate.setText(CalendarUtils.calendarToDateString(calendar));
+    private void setDateText(LocalTime time) {
+        mDate.setText(time.toString());
 
     }
 
@@ -195,9 +199,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
         }
     }
     @Override
-    public void onDateSet(Calendar calendar, String datepickerType) {
-        setDateText(calendar);
-        mException.setFrom((GregorianCalendar) calendar);
+    public void onDateSet(DateTime calendar, String datepickerType) {
+        setDateText(calendar.toLocalTime());
+        mException.setFrom(calendar.toLocalTime());
     }
 
     @Override
