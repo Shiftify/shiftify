@@ -52,7 +52,7 @@ public class WorkdayTests {
         // Isn't working - need to test on device with working SQLite database
         List<ScheduleType> scheduleTypes = new ArrayList<>();
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("1. ranní", , Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
         shifts.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
         shifts.add(new ScheduleShift("2. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 5, "To se bude blbě vstávat."));
         shifts.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0),  6));

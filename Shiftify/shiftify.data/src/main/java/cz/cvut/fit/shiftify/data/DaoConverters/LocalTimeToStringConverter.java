@@ -2,8 +2,6 @@ package cz.cvut.fit.shiftify.data.DaoConverters;
 
 import org.greenrobot.greendao.converter.PropertyConverter;
 import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import cz.cvut.fit.shiftify.data.Utilities;
 
@@ -12,6 +10,7 @@ import cz.cvut.fit.shiftify.data.Utilities;
  */
 
 public class LocalTimeToStringConverter implements PropertyConverter<LocalTime, String> {
+    public static LocalTimeToStringConverter INSTANCE = new LocalTimeToStringConverter();
 
     @Override
     public LocalTime convertToEntityProperty(String databaseValue) {

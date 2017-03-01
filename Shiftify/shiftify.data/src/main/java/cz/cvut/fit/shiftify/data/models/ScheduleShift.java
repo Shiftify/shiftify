@@ -10,12 +10,14 @@ import org.greenrobot.greendao.annotation.Property;
 import java.util.GregorianCalendar;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
+import cz.cvut.fit.shiftify.data.DaoConverters.PeriodToStringConverter;
 import cz.cvut.fit.shiftify.data.Utilities;
 
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.DaoException;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -40,8 +42,8 @@ public class ScheduleShift extends Shift {
     protected LocalTime from;
     @NotNull
     @Property(nameInDb = "Duration")
-    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
-    protected LocalTime duration;
+    @Convert(converter = PeriodToStringConverter.class, columnType = String.class)
+    protected Period duration;
     @NotNull
     @Property(nameInDb = "Name")
     protected String name;
@@ -56,26 +58,21 @@ public class ScheduleShift extends Shift {
     protected ScheduleType scheduleType;
 
     // Constructors
-    public ScheduleShift() {
-    }
-
-    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
+    public ScheduleShift() { }
+    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull Period duration,
                          @NotNull Integer dayOfScheduleCycle) {
         this(null, name, from, duration, dayOfScheduleCycle, null);
     }
-
-    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
+    public ScheduleShift(@NotNull String name, @NotNull LocalTime from, @NotNull Period duration,
                          @NotNull Integer dayOfScheduleCycle, String description) {
         this(null, name, from, duration, dayOfScheduleCycle, description);
     }
-
-    public ScheduleShift(Long id, @NotNull String name, @NotNull LocalTime from, @NotNull LocalTime duration,
+    public ScheduleShift(Long id, @NotNull String name, @NotNull LocalTime from, @NotNull Period duration,
                          @NotNull Integer dayOfScheduleCycle, String description) {
         super(id, from, duration, description);
         setName(name);
         setDayOfScheduleCycle(dayOfScheduleCycle);
     }
-
     public ScheduleShift(ScheduleShift sh) {
         super(sh.getId(), sh.getFrom(), sh.getDuration(), sh.getDescription());
         setName(sh.getName());
@@ -124,11 +121,11 @@ public class ScheduleShift extends Shift {
         this.from = from;
     }
 
-    public LocalTime getDuration() {
+    public Period getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
+    public void setDuration(Period duration) {
         this.duration = duration;
     }
 
@@ -138,10 +135,6 @@ public class ScheduleShift extends Shift {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public static ScheduleShift getFreeShift(int dayOfScheduleCycle) {
-        return new ScheduleShift("volno", new LocalTime(12, 0), new LocalTime(12, 0), dayOfScheduleCycle);
     }
 
     // GreenDAO generated attributes

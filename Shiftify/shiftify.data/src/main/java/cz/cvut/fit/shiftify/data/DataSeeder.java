@@ -2,6 +2,7 @@ package cz.cvut.fit.shiftify.data;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -72,10 +73,10 @@ public class DataSeeder {
         }
 
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new LocalTime(8, 0), 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("noční", new LocalTime(22, 0), new LocalTime(8, 0), 3));
-        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new LocalTime(8, 0), 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("odpolední", new LocalTime(14, 0), new LocalTime(8, 0),  6));
+        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 3));
+        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 5, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0),  6));
         ScheduleType scheduleType = new ScheduleType("Železárny", 6, "Slouží jako rozpis pro vrátnýho.");
         scheduleType.setShifts(shifts);
 
@@ -87,12 +88,12 @@ public class DataSeeder {
         }
         shifts.clear();
 
-        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new LocalTime(8, 0), 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new LocalTime(8, 0), 2));
-        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new LocalTime(8, 0), 3));
-        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new LocalTime(8, 0), 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("1. noční", new LocalTime(22, 0), new LocalTime(8, 0), 5));
-        shifts.add(new ScheduleShift("2. noční", new LocalTime(22, 0), new LocalTime(8, 0), 6, "komentář"));
+        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2));
+        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 3));
+        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("1. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 5));
+        shifts.add(new ScheduleShift("2. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 6, "komentář"));
         scheduleType = new ScheduleType("Železárny hasič", 8);
         scheduleType.setShifts(shifts);
         try {

@@ -1,6 +1,5 @@
 package cz.cvut.fit.shiftify.data.models;
 
-import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.joda.time.DateTime;
@@ -9,8 +8,7 @@ import org.joda.time.LocalTime;
 
 import java.util.Comparator;
 
-import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
-import org.greenrobot.greendao.annotation.Generated;
+import org.joda.time.Period;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -21,17 +19,15 @@ import org.greenrobot.greendao.annotation.Generated;
         generateConstructors = false)
 abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     // Constructors
-    public Shift() {
-    }
 
-    public Shift(@NotNull LocalTime from, @NotNull LocalTime duration) {
+    public Shift() { }
+    public Shift(@NotNull LocalTime from, @NotNull Period duration) {
         this(null, from, duration, null);
     }
-    public Shift(@NotNull LocalTime from, @NotNull LocalTime duration, String description) {
+    public Shift(@NotNull LocalTime from, @NotNull Period duration, String description) {
         this(null, from, duration, description);
     }
-
-    public Shift(Long id, @NotNull LocalTime from, @NotNull LocalTime duration, String description) {
+    public Shift(Long id, @NotNull LocalTime from, @NotNull Period duration, String description) {
         setId(id);
         setFrom(from);
         setDuration(duration);
@@ -39,19 +35,15 @@ abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     }
 
     public abstract Long getId();
-
     public abstract void setId(Long id);
 
     public abstract LocalTime getFrom();
-
     public abstract void setFrom(LocalTime from);
 
-    public abstract LocalTime getDuration();
-
-    public abstract void setDuration(LocalTime duration);
+    public abstract Period getDuration();
+    public abstract void setDuration(Period duration);
 
     public abstract String getDescription();
-
     public abstract void setDescription(String description);
 
     // Methods
@@ -59,13 +51,12 @@ abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
     abstract public String getName();
 
     public LocalTime getTo() {
-        return getFrom().plus(new Duration(getDuration()).toPeriod());
+        return getFrom().plus(getDuration());
     }
 
     public boolean persistsIntoNextDay() {
-        if (getFrom() == null || getFrom() == null) {
+        if (getFrom() == null || getFrom() == null)
             return false;
-        }
 
         DateTime from = new DateTime(getFrom());
         DateTime to = from.plus(new Duration(getTo()));

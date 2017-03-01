@@ -250,9 +250,17 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
             for(int i = 1 ; i <= scheduleType.getDaysOfScheduleCycle(); i++){
                 if (i - 1 < scheduleShiftsList.size() &&
                         scheduleShiftsList.get(i - 1).getDayOfScheduleCycle().compareTo(i) != 0){
-                    scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                    // FIXME: 01.03.2017
+                    // free shift doesn't even make any sence .. if there is no shift,
+                    // there shouldn't be a shift or there should be null
+
+                    //scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
                 } else if (i - 1 >= scheduleShiftsList.size()){
-                    scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                    // FIXME: 01.03.2017
+                    // free shift doesn't even make any sence .. if there is no shift,
+                    // there shouldn't be a shift or there should be null
+
+                    //scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
                 }
             }
         } catch (Exception e) {

@@ -5,15 +5,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
@@ -97,19 +91,17 @@ public class WorkDayFactory {
 
                 if (isPrevious) {
                     LocalTime from = LocalTime.MIDNIGHT;
-                    LocalTime duration = shift.getTo();
-
+                    Period duration = shift.getDuration();
                     shiftCp.setFrom(from);
                     shiftCp.setDuration(duration);
                 } else if (shift.persistsIntoNextDay()) {
-                    LocalTime duration = new LocalTime(23, 59, 59).minus(new Period(shift.getFrom()));
+                    Period duration = new Period(24, 0, 0, 0).minus(new Period(shift.getFrom()));
                     shiftCp.setDuration(duration);
                 }
 
                 scheduleShifts.add(shiftCp);
             }
         }
-
         return scheduleShifts;
     }
 
@@ -119,7 +111,6 @@ public class WorkDayFactory {
                 return exceptionInSchedule;
             }
         }
-
         return null;
     }
 
@@ -141,9 +132,8 @@ public class WorkDayFactory {
 
             for (ExceptionShift excShift : offWorkExceptions) {
                 if (!excShift.getFrom().isAfter(schShift.getFrom()) && !excShift.getTo().isAfter(schShift.getTo())) {
-                    LocalTime duration = excShift.getFrom().minus(new Period(schShift.getFrom()));
-
-                    if (duration.isAfter(LocalTime.MIDNIGHT)) {
+                    Period duration = new Period(excShift.getFrom().minus(new Period(schShift.getFrom())));
+                    if (duration.getHours() > 24) {
                         ScheduleShift newShift = new ScheduleShift(schShift);
                         newShift.setFrom(fromTime);
                         newShift.setDuration(duration);
@@ -155,7 +145,7 @@ public class WorkDayFactory {
             }
 
             if (fromTime.isBefore(schShift.getTo())) {
-                LocalTime duration = schShift.getTo().minus(new Period(fromTime));
+                Period duration = new Period(schShift.getTo().minus(new Period(fromTime)));
 
                 ScheduleShift newShift = new ScheduleShift(schShift);
                 newShift.setFrom(fromTime);
@@ -168,5 +158,4 @@ public class WorkDayFactory {
         Collections.sort(shifts);
         return shifts;
     }
-
 }

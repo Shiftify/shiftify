@@ -10,8 +10,10 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.LocalTimeToStringConverter;
+import cz.cvut.fit.shiftify.data.DaoConverters.PeriodToStringConverter;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -33,8 +35,8 @@ public class ExceptionShift extends Shift {
     protected LocalTime from;
     @NotNull
     @Property(nameInDb = "Duration")
-    @Convert(converter = LocalTimeToStringConverter.class, columnType = String.class)
-    protected LocalTime duration;
+    @Convert(converter = PeriodToStringConverter.class, columnType = String.class)
+    protected Period duration;
     @NotNull
     @Property(nameInDb = "ExceptionInScheduleId")
     protected Long exceptionInScheduleId;
@@ -52,17 +54,17 @@ public class ExceptionShift extends Shift {
     public ExceptionShift() {
     }
 
-    public ExceptionShift(@NotNull LocalTime from, @NotNull LocalTime duration,
+    public ExceptionShift(@NotNull LocalTime from, @NotNull Period duration,
                           Boolean isWorking) {
         this(null, from, duration, isWorking, null);
     }
 
-    public ExceptionShift(@NotNull LocalTime from, @NotNull LocalTime duration,
+    public ExceptionShift(@NotNull LocalTime from, @NotNull Period duration,
                           @NotNull Boolean isWorking, String description) {
         this(null, from, duration, isWorking, description);
     }
 
-    public ExceptionShift(Long id, @NotNull LocalTime from, @NotNull LocalTime duration,
+    public ExceptionShift(Long id, @NotNull LocalTime from, @NotNull Period duration,
                           @NotNull Boolean isWorking, String description) {
         super(id, from, duration, description);
         this.isWorking = isWorking;
@@ -90,12 +92,12 @@ public class ExceptionShift extends Shift {
     }
 
     @Override
-    public LocalTime getDuration() {
+    public Period getDuration() {
         return duration;
     }
 
     @Override
-    public void setDuration(LocalTime duration) {
+    public void setDuration(Period duration) {
         this.duration = duration;
     }
 
