@@ -17,13 +17,10 @@ public enum ValidatorState {
     }
 
     private static class ValidatorComparator implements Comparator<ValidatorState> {
-
         @Override
         public int compare(ValidatorState o1, ValidatorState o2) {
-            if (o1.value == o2.value) {
+            if (o1.value == o2.value)
                 return 0;
-            }
-
             return (o1.value < o2.value) ? -1 : 1;
         }
     }

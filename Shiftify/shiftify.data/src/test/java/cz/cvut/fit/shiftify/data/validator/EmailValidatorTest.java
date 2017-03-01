@@ -1,7 +1,5 @@
 package cz.cvut.fit.shiftify.data.validator;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -30,7 +28,7 @@ public class EmailValidatorTest {
     }
 
     @Test
-    public void testOkMails() {
+    public void testValidMails() {
         for (String mail : VALID_MAILS) {
             ValidatorMessage msg = VALIDATOR.validate(NAME, mail);
             assertTrue(MessageFormat.format("Mail {0} should be valid.", mail), msg.getState() == ValidatorState.OK);
