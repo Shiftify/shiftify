@@ -149,7 +149,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-        Intent intent = new Intent(getActivity(), PersonShiftsActivity.class);  //PersonScheduleActivity
+        Intent intent = new Intent(getActivity(), PersonDetailActivity.class);
 
         intent.putExtra("userId", userShiftsList.get(position).getUser().getId());
         startActivity(intent);
