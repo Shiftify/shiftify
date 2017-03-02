@@ -96,14 +96,12 @@ public class UserManager {
      * Deletes a relation between a user and a role.
      */
     public void deleteRole(long userId, long roleId) throws Exception {
-        userRoleDao.deleteInTx(
-            userRoleDao.queryBuilder().where(
-                userRoleDao.queryBuilder().and(
-                    UserRoleDao.Properties.UserId.eq(userId),
-                    UserRoleDao.Properties.RoleId.eq(roleId)
-                )
-            ).list()
-        );
+        userRoleDao.queryBuilder().where(
+            userRoleDao.queryBuilder().and(
+                UserRoleDao.Properties.UserId.eq(userId),
+                UserRoleDao.Properties.RoleId.eq(roleId)
+            )
+        ).buildDelete().executeDeleteWithoutDetachingEntities();
     }
 
     /**
@@ -158,8 +156,8 @@ public class UserManager {
 
     /**
      * Gets schedule (of a user), that has the greatest expiration date = schedule.getTo().
+     * Returns the last schedule, even if not current, or null if the user never had a schedule.
      */
-    // returns the last schedule, even if not current, or null if the user never had a schedule
     public Schedule lastSchedule(long userId) throws Exception {
         List<Schedule> schedules = scheduleDao.queryBuilder().where(
             ScheduleDao.Properties.UserId.eq(userId)
@@ -181,7 +179,7 @@ public class UserManager {
                     ScheduleDao.Properties.To.ge(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from))
                 )
             )
-        ).list();
+        ).orderDesc(ScheduleDao.Properties.From).list();
     }
 
     /**
@@ -190,7 +188,7 @@ public class UserManager {
     public List<Schedule> schedules(long userId) throws Exception {
         return scheduleDao.queryBuilder().where(
             ScheduleDao.Properties.UserId.eq(userId)
-        ).list();
+        ).orderDesc(ScheduleDao.Properties.From).list();
     }
 
     /**
@@ -246,14 +244,16 @@ public class UserManager {
                 ExceptionInScheduleDao.Properties.Date.ge(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from)),
                 ExceptionInScheduleDao.Properties.Date.le(LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(to))
             )
-        ).list();
+        ).orderDesc(ExceptionInScheduleDao.Properties.Date).list();
     }
 
     /**
      * Gets a list of exceptionInSchedule of a schedule.
      */
     public List<ExceptionInSchedule> exceptionInSchedules(int scheduleId) throws Exception {
-        return exceptionInScheduleDao.queryBuilder().where(ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId)).list();
+        return exceptionInScheduleDao.queryBuilder().where(
+                ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId)
+        ).orderAsc(ExceptionInScheduleDao.Properties.Date).list();
     }
 
     /**
@@ -299,7 +299,7 @@ public class UserManager {
                                 ScheduleDao.Properties.To.ge(from)
                         )
                 )
-        ).list();
+        ).orderDesc(ScheduleDao.Properties.From).list();
     }
     private List<ExceptionInSchedule> getExceptionSchedulesFor(long userId, String from, String to) {
         return exceptionInScheduleDao.queryBuilder().where(
@@ -308,19 +308,20 @@ public class UserManager {
                 ExceptionInScheduleDao.Properties.Date.le(to),
                 ExceptionInScheduleDao.Properties.Date.ge(from)
             )
-        ).list();
+        ).orderDesc(ExceptionInScheduleDao.Properties.Date).list();
     }
 
     public List<ExceptionShift> getAllExceptionShifts(long userId) {
-        User user = userDao.load(userId);
-        List<ExceptionShift> shifts = new ArrayList<>();
-        for (ExceptionInSchedule e : user.getExceptionInSchedules()) {
-            shifts.addAll(e.getShifts());
-        }
-        return shifts;
+        return exceptionShiftDao.queryBuilder().where(
+            ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(
+                exceptionInScheduleDao.queryBuilder().where(
+                    ExceptionInScheduleDao.Properties.UserId.eq(userId)
+                ).orderDesc(ExceptionInScheduleDao.Properties.Date)
+            )
+        ).orderAsc(ExceptionShiftDao.Properties.From).list();
     }
 
-    public ExceptionShift getExceptionShift(long exceptionId) throws Exception {
-        return exceptionShiftDao.load(exceptionId);
+    public ExceptionShift getExceptionShift(long exceptionShiftId) throws Exception {
+        return exceptionShiftDao.load(exceptionShiftId);
     }
 }

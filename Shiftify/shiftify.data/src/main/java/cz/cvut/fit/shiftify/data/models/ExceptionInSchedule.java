@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.OrderBy;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
@@ -47,6 +48,7 @@ public class ExceptionInSchedule {
     @ToOne(joinProperty = "scheduleId")
     protected Schedule schedule;
     @ToMany(referencedJoinProperty = "exceptionInScheduleId")
+    @OrderBy(value = "from")
     protected List<ExceptionShift> shifts;
 
     // Constructors

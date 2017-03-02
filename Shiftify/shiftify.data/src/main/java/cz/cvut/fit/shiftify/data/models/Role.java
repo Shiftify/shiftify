@@ -6,6 +6,7 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.OrderBy;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
@@ -34,6 +35,7 @@ public class Role {
     // Relationships
     @ToMany
     @JoinEntity(entity = UserRole.class, sourceProperty = "roleId", targetProperty = "userId")
+    @OrderBy(value = "surname")
     private List<User> users;
 
     // Constructors
