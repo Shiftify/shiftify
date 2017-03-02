@@ -256,9 +256,23 @@ public class UserManager {
         ).orderAsc(ExceptionInScheduleDao.Properties.Date).list();
     }
 
+    public List<ExceptionShift> getAllExceptionShifts(long userId) {
+        return exceptionShiftDao.queryBuilder().where(
+            ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(
+                exceptionInScheduleDao.queryBuilder().where(
+                    ExceptionInScheduleDao.Properties.UserId.eq(userId)
+                ).orderDesc(ExceptionInScheduleDao.Properties.Date)
+            )
+        ).orderAsc(ExceptionShiftDao.Properties.From).list();
+    }
+
+    public ExceptionShift getExceptionShift(long exceptionShiftId) throws Exception {
+        return exceptionShiftDao.load(exceptionShiftId);
+    }
+
     /**
-     * Gets a workDay of a user. This workDay can have a scheduleShift and if it has,
-     * it can also have an exceptionShift. This workDay has a date given as parameter.
+     * Gets a workDay of a user. This workDay has shifts parsed for the given date.
+     * This workDay has a date given as parameter.
      */
     public WorkDay shiftsForDate(long userId, LocalDate date) throws Exception {
         String dateStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(date);
@@ -272,9 +286,9 @@ public class UserManager {
     }
 
     /**
-     * Gets a list of workDays of a user. These workDays can have a scheduleShift and those that do,
-     * can also have an exceptionShift. These workDays have dates between from and to, for each
-     * date in the period there is a workDay in the returned list.
+     * Gets a list of workDays of a user. These workDays have shifts parsed for the given dates.
+     * These workDays have dates between from and to, for each date in the period there is
+     * a workDay in the returned list.
      */
     public List<WorkDay> shiftsForPeriod(long userId, LocalDate from, LocalDate to) throws Exception {
         String prevFromStr = LocalDateToStringConverter.INSTANCE.convertToDatabaseValue(from.minusDays(1));
@@ -303,25 +317,11 @@ public class UserManager {
     }
     private List<ExceptionInSchedule> getExceptionSchedulesFor(long userId, String from, String to) {
         return exceptionInScheduleDao.queryBuilder().where(
-            exceptionInScheduleDao.queryBuilder().and(
-                ExceptionInScheduleDao.Properties.UserId.eq(userId),
-                ExceptionInScheduleDao.Properties.Date.le(to),
-                ExceptionInScheduleDao.Properties.Date.ge(from)
-            )
+                exceptionInScheduleDao.queryBuilder().and(
+                        ExceptionInScheduleDao.Properties.UserId.eq(userId),
+                        ExceptionInScheduleDao.Properties.Date.le(to),
+                        ExceptionInScheduleDao.Properties.Date.ge(from)
+                )
         ).orderDesc(ExceptionInScheduleDao.Properties.Date).list();
-    }
-
-    public List<ExceptionShift> getAllExceptionShifts(long userId) {
-        return exceptionShiftDao.queryBuilder().where(
-            ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(
-                exceptionInScheduleDao.queryBuilder().where(
-                    ExceptionInScheduleDao.Properties.UserId.eq(userId)
-                ).orderDesc(ExceptionInScheduleDao.Properties.Date)
-            )
-        ).orderAsc(ExceptionShiftDao.Properties.From).list();
-    }
-
-    public ExceptionShift getExceptionShift(long exceptionShiftId) throws Exception {
-        return exceptionShiftDao.load(exceptionShiftId);
     }
 }

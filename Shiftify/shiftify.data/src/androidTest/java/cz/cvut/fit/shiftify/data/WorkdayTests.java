@@ -7,6 +7,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ApplicationTestCase;
 
 import org.greenrobot.greendao.database.Database;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,19 +46,13 @@ public class WorkdayTests {
 
     @Test
     public void testCalculateWorkDays() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        assertEquals("cz.cvut.fit.shiftify.data.test", appContext.getPackageName());
-
-
-        /*ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
-        // Isn't working - need to test on device with working SQLite database
+        ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         List<ScheduleType> scheduleTypes = new ArrayList<>();
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranní", , Utilities.GregCalFrom(8, 0), 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
-        shifts.add(new ScheduleShift("2. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0),  6));
+        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 3));
+        shifts.add(new ScheduleShift("noční", new LocalTime(22, 0), new Period(6, 0, 0, 0), 5));
+        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0),  6));
         ScheduleType scheduleType = new ScheduleType("Test Železárny", 6, "Slouží jako rozpis pro vrátnýho.");
         scheduleType.setShifts(shifts);
         scheduleTypes.add(scheduleType);
@@ -63,12 +60,12 @@ public class WorkdayTests {
         scheduleTypeManager.add(scheduleType);
 
         shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("2. ranní", Utilities.GregCalFrom(6, 0), Utilities.GregCalFrom(8, 0), 2));
-        shifts.add(new ScheduleShift("1. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 3));
-        shifts.add(new ScheduleShift("2. odpolední", Utilities.GregCalFrom(14, 0), Utilities.GregCalFrom(8, 0), 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("1. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 5));
-        shifts.add(new ScheduleShift("2. noční", Utilities.GregCalFrom(22, 0), Utilities.GregCalFrom(8, 0), 6, "komentář"));
+        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2));
+        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 3));
+        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("1. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 5));
+        shifts.add(new ScheduleShift("2. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 6, "komentář"));
         scheduleType = new ScheduleType("Test Železárny hasič", 8);
         scheduleType.setShifts(shifts);
         scheduleTypes.add(scheduleType);
@@ -80,19 +77,18 @@ public class WorkdayTests {
         userManager.add(user);
 
         List<Schedule> schedules = new ArrayList<>();
-        Schedule schedule = new Schedule(user.getId(), scheduleTypes.get(0).getId(), new GregorianCalendar(2017, 0, 2), new GregorianCalendar(2017, 1, 9), 3);
+        Schedule schedule = new Schedule(user.getId(), scheduleTypes.get(0).getId(), new LocalDate(2017, 1, 2), new LocalDate(2017, 2, 9), 3);
         schedules.add(schedule);
 
         userManager.addSchedule(schedule);
 
-        schedule = new Schedule(user.getId(), scheduleTypes.get(1).getId(), new GregorianCalendar(2017, 1, 10), new GregorianCalendar(2017, 2, 9), 8);
+        schedule = new Schedule(user.getId(), scheduleTypes.get(1).getId(), new LocalDate(2017, 2, 10), new LocalDate(2017, 3, 9), 4);
         schedules.add(schedule);
 
         userManager.addSchedule(schedule);
 
-        WorkDay workDay = userManager.shiftsForDate(user.getId(), new GregorianCalendar(2017, 1, 9));
-        List<WorkDay> workDays = WorkDay.calculateWorkDays(new GregorianCalendar(2017, 1, 9), new GregorianCalendar(2017, 1, 11),
-                schedules, new ArrayList<ExceptionInSchedule>());*/
+        WorkDay workDay = userManager.shiftsForDate(user.getId(), new LocalDate(2017, 2, 10));
+        List<WorkDay> workDays = new WorkDayFactory(schedules, new ArrayList<ExceptionInSchedule>())
+                .createWorkDayList(new LocalDate(2017, 2, 9), new LocalDate(2017, 2, 11));
     }
-
 }

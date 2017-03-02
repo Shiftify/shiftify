@@ -58,10 +58,7 @@ abstract public class Shift implements Comparator<Shift>, Comparable<Shift> {
         if (getFrom() == null || getFrom() == null)
             return false;
 
-        DateTime from = new DateTime(getFrom());
-        DateTime to = from.plus(new Duration(getTo()));
-
-        return to.getDayOfMonth() != from.getDayOfMonth();
+        return getFrom().getMillisOfDay() + getDuration().toStandardDuration().getMillis() > new Period(24, 0, 0, 0).toStandardDuration().getMillis();
     }
 
     @Override
