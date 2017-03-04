@@ -160,7 +160,15 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
         switch (v.getId()) {
             case R.id.btn_cal:
+                //creating the new dialog fragment
                 DialogFragment newFragment = new ShiftPlanDateDialog();
+                Bundle selectedDateBundle = new Bundle();
+                //preparing the bundle for creating datePicker with selected date
+                selectedDateBundle.putString("selected_date", cal.toString(CalendarUtils.JODA_DATE_FORMATTER));
+
+                //passing the bundle to the fragment
+                newFragment.setArguments(selectedDateBundle);
+                //showing the datePicker
                 newFragment.show(getActivity().getFragmentManager(), "datePicker");
                 break;
             case R.id.date_arrow_left:

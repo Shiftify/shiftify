@@ -11,7 +11,10 @@ import android.widget.DatePicker;
 
 import org.joda.time.LocalDate;
 
+import java.text.ParseException;
 import java.util.Calendar;
+
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 /**
  * Created by Vojta on 19.11.2016.
@@ -20,14 +23,34 @@ import java.util.Calendar;
 public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private ShiftPlanDialogCallback mCallback;
+    private Calendar selectedDate;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle selectedDateBundle = getArguments();
+
+        if (selectedDateBundle != null) {
+            String dateString = selectedDateBundle.getString("selected_date");
+            selectedDate = CalendarUtils.getCalendarFromDateString(dateString);
+        } else {
+            selectedDate = null;
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        final Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int year, month, day;
+        if (selectedDate != null) {
+            year = selectedDate.get(Calendar.YEAR);
+            month = selectedDate.get(Calendar.MONTH);
+            day = selectedDate.get(Calendar.DAY_OF_MONTH);
+        } else {
+            final Calendar cal = Calendar.getInstance();
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+        }
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -50,7 +73,9 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
 
     @Override
     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-        LocalDate date = new LocalDate(y, m, d);
+        Calendar tmpCal = Calendar.getInstance();
+        tmpCal.set(y, m, d);
+        LocalDate date = LocalDate.fromCalendarFields(tmpCal);
         mCallback.setSelectedDay(date);
     }
 

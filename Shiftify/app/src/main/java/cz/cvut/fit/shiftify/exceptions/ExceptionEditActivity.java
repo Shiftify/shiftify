@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +13,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
@@ -82,12 +79,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
             public void onClick(View view) {
                 DialogFragment dialogFragment = DateDialog.newInstance();
                 Bundle bundle = new Bundle();
-                try {
-                    Calendar calendar = CalendarUtils.getCalendarFromDate(mDate.getText().toString());
-                    bundle.putLong(DateDialog.DATE_MS_ARG, calendar.getTimeInMillis());
-                } catch (ParseException e) {
-                    bundle.putLong(DateDialog.DATE_MS_ARG, Calendar.getInstance().getTimeInMillis());
-                }
+                Calendar calendar = CalendarUtils.getCalendarFromDateString(mDate.getText().toString());
+                bundle.putLong(DateDialog.DATE_MS_ARG, calendar.getTimeInMillis());
+                bundle.putLong(DateDialog.DATE_MS_ARG, Calendar.getInstance().getTimeInMillis());
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(getFragmentManager(), DATE_FRAGMENT);
             }

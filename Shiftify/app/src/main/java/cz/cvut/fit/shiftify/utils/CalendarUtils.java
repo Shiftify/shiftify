@@ -20,12 +20,17 @@ public class CalendarUtils {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 
-    public static String calendarToDateString(Calendar calendar) {
+    public static String getStringFromDateCalendar(Calendar calendar) {
         return dateFormat.format(calendar.getTime());
     }
 
-    public static Calendar getCalendarFromDate(String dateString) throws ParseException {
-        Date date = dateFormat.parse(dateString);
+    public static Calendar getCalendarFromDateString(String dateString) {
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
