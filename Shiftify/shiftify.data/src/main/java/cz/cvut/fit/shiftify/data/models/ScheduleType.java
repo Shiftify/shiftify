@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.OrderBy;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.Transient;
@@ -43,8 +44,10 @@ public class ScheduleType {
 
     // Relationships
     @ToMany(referencedJoinProperty = "scheduleTypeId")
+    @OrderBy(value = "from")
     private List<ScheduleShift> shifts;
     @ToMany(referencedJoinProperty = "scheduleTypeId")
+    @OrderBy(value = "from DESC")
     private List<Schedule> schedules;
 
     // Constructors

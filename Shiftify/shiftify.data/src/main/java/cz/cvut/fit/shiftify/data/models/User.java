@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.OrderBy;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
@@ -44,10 +45,13 @@ public class User {
     // Relationships
     @ToMany
     @JoinEntity(entity = UserRole.class, sourceProperty = "userId", targetProperty = "roleId")
+    @OrderBy(value = "name")
     private List<Role> roles;
     @ToMany(referencedJoinProperty = "userId")
+    @OrderBy(value = "from DESC")
     private List<Schedule> schedules;
     @ToMany(referencedJoinProperty = "userId")
+    @OrderBy(value = "date DESC")
     private List<ExceptionInSchedule> exceptionInSchedules;
 
     // Constructors

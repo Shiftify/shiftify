@@ -93,7 +93,7 @@ public class ScheduleTypeManager {
      * Gets a list of all scheduleTypesAll.
      */
     public List<ScheduleType> scheduleTypes() throws Exception {
-        return scheduleTypeDao.loadAll();
+        return scheduleTypeDao.queryBuilder().orderAsc(ScheduleTypeDao.Properties.Name).list();
     }
 
     // ScheduleShifts
@@ -126,6 +126,6 @@ public class ScheduleTypeManager {
     }
 
     private List<ScheduleShift> shifts() throws Exception {
-        return scheduleShiftDao.loadAll();
+        return scheduleShiftDao.queryBuilder().orderAsc(ScheduleShiftDao.Properties.From).list();
     }
 }
