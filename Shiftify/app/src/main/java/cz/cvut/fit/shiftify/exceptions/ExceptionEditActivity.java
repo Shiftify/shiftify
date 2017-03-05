@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.exceptions;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -181,11 +182,13 @@ public class ExceptionEditActivity extends AppCompatActivity implements DateDial
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_item:
-//          TODO: Save exception shift into exceptionInSchedule after created methods in user manager
-                new CustomSnackbar(this, R.string.feature_in_dev).show();
-//                finish();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(ExceptionListActivity.ExceptionListFragment.PASSED_EXCEPTION, mException);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
                 return true;
             case android.R.id.home:
+                setResult(Activity.RESULT_CANCELED);
                 finish();
                 return true;
             default:

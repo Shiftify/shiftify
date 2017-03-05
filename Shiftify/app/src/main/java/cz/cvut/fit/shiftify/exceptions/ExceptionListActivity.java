@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.exceptions;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ListFragment;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class ExceptionListActivity extends AppCompatActivity {
     public static final String TAG = "EXCEPTION_LIST_ACTIVITY";
     public static final String DELETE_DIALOG = "exception_delete_dialog";
     private User mUser;
+    private UserManager mUserManager;
 
 
     @Override
@@ -70,8 +72,9 @@ public class ExceptionListActivity extends AppCompatActivity {
 
     public static class ExceptionListFragment extends ListFragment {
 
-        private static final int CREATE_EXCEPTION_REQUEST = 0;
-        private static final int EDIT_EXCEPTION_REQUEST = 1;
+        public static final int CREATE_EXCEPTION_REQUEST = 0;
+        public static final int EDIT_EXCEPTION_REQUEST = 1;
+        public static final String PASSED_EXCEPTION = "passed_exception";
         private ExceptionAdapter mExceptionAdapter;
         private User mUser;
         private UserManager mUserManager;
@@ -81,7 +84,6 @@ public class ExceptionListActivity extends AppCompatActivity {
         public ExceptionListFragment() {
             mUserManager = new UserManager();
         }
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +98,21 @@ public class ExceptionListActivity extends AppCompatActivity {
                 }
             });
             return view;
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == Activity.RESULT_OK) {
+                ExceptionShift recievedException = data.getParcelableExtra(PASSED_EXCEPTION);
+                if (requestCode == CREATE_EXCEPTION_REQUEST) {
+                    //TODO create exception via UserManager
+                } else if (requestCode == EDIT_EXCEPTION_REQUEST) {
+                    //TODO edit existing exception
+                } else {
+                    throw new RuntimeException("Unexpected result code recieved from ExceptionEditActivity!");
+                }
+            }
         }
 
         @Override
