@@ -17,19 +17,21 @@ import android.widget.TextView;
 
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.exceptions.ExceptionEditActivity;
 import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 
 public class PersonDetailActivity extends AppCompatActivity{
 
+    private static final int CREATE_EXCEPTION_REQUEST = 0;
     public static final String USER_ID = "user_id";
 
     TextView fullname;
     TextView numberView;
     TextView emailView;
     Button scheduleButton;
-    User u;
+    User mUser;
     private UserManager mUserManager;
 
     @Override
@@ -66,7 +68,7 @@ public class PersonDetailActivity extends AppCompatActivity{
 
         if (userId != -1) {
             try {
-                u = mUserManager.user(userId);
+                mUser = mUserManager.user(userId);
             } catch (Exception e) {
                 System.err.println("Nepodarilo se nacist ID uzivatele pro detail.");
                 this.finish();
@@ -76,20 +78,20 @@ public class PersonDetailActivity extends AppCompatActivity{
             this.finish();
         }
 
-        fullname.setText(u.getFullNameWithNick());
-        if (u.getEmail() == null || u.getEmail().isEmpty()) {
+        fullname.setText(mUser.getFullNameWithNick());
+        if (mUser.getEmail() == null || mUser.getEmail().isEmpty()) {
             emailView.setText("...nevyplněno");
         }
         else
-            emailView.setText(u.getEmail().toString());
+            emailView.setText(mUser.getEmail().toString());
 
 
 
-        if (u.getPhoneNumber() == null || u.getPhoneNumber().isEmpty()) {
+        if (mUser.getPhoneNumber() == null || mUser.getPhoneNumber().isEmpty()) {
             numberView.setText("...nevyplněno");
         }
         else
-            numberView.setText(u.getPhoneNumber().toString());
+            numberView.setText(mUser.getPhoneNumber().toString());
     }
 
     @Override
@@ -111,23 +113,29 @@ public class PersonDetailActivity extends AppCompatActivity{
                 break;
             case R.id.person_edit:
                 intent = new Intent(this, PersonEditActivity.class);
-                intent.putExtra("userId", u.getId());
+                intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);
                 break;
 
             case R.id.person_delete:
                 showDialog();
-
                 break;
+
+            case R.id.shift_add_exception:
+                intent = new Intent(this, ExceptionEditActivity.class);
+                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
+                startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
+                break;
+
             case R.id.exception_list:
                 intent = new Intent(this, ExceptionListActivity.class);
-                intent.putExtra(USER_ID, u.getId());
+                intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);
                 break;
 
             case R.id.schedule_list:
                 intent = new Intent(this, ScheduleListActivity.class);
-                intent.putExtra(USER_ID, u.getId());
+                intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);
                 break;
 
@@ -137,7 +145,7 @@ public class PersonDetailActivity extends AppCompatActivity{
 
     public void showDialog() {
 
-        DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(u.getId());
+        DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(mUser.getId());
         newFragment.show(getFragmentManager(), "dialog");
 
     }
@@ -156,9 +164,9 @@ public class PersonDetailActivity extends AppCompatActivity{
 
     public void sendSMS(View view) {
 
-        String phoneNumber = u.getPhoneNumber();
+        String phoneNumber = mUser.getPhoneNumber();
 
-        if (phoneNumber == null || phoneNumber == "") {
+        if (phoneNumber == null || phoneNumber.equals("")) {
 
             showDataNotSetWarning(view);
             return;
@@ -172,9 +180,9 @@ public class PersonDetailActivity extends AppCompatActivity{
 
     public void callPerson(View view) {
 
-        String phoneNumber = u.getPhoneNumber();
+        String phoneNumber = mUser.getPhoneNumber();
 
-        if (phoneNumber == null || phoneNumber == "") {
+        if (phoneNumber == null || phoneNumber.equals("")) {
 
             showDataNotSetWarning(view);
             return;
@@ -188,9 +196,9 @@ public class PersonDetailActivity extends AppCompatActivity{
 
     public void sendEmail(View view) {
 
-        String emailAddress = u.getEmail();
+        String emailAddress = mUser.getEmail();
 
-        if (emailAddress == null || emailAddress == "") {
+        if (emailAddress == null || emailAddress.equals("")) {
 
             showDataNotSetWarning(view);
             return;
@@ -206,21 +214,21 @@ public class PersonDetailActivity extends AppCompatActivity{
     public void showScheduleShifts(View view) {
 
         Intent intent = new Intent(this, PersonShiftsActivity.class);
-        intent.putExtra("userId", u.getId());
+        intent.putExtra("userId", mUser.getId());
         startActivity(intent);
     }
 
     public void showExceptionList(View view) {
 
         Intent intent = new Intent(this, ExceptionListActivity.class);
-        intent.putExtra(USER_ID, u.getId());
+        intent.putExtra(USER_ID, mUser.getId());
         startActivity(intent);
     }
 
     public void showScheduleTypeList(View view) {
 
         Intent intent = new Intent(this, ScheduleListActivity.class);
-        intent.putExtra(USER_ID, u.getId());
+        intent.putExtra(USER_ID, mUser.getId());
         startActivity(intent);
     }
 
@@ -228,7 +236,7 @@ public class PersonDetailActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-       loadUser(u.getId());
+       loadUser(mUser.getId());
 
     }
 }

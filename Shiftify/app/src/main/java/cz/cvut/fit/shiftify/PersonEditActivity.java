@@ -117,11 +117,11 @@ public class PersonEditActivity extends AppCompatActivity {
     private  boolean dataChanged(){
 
 
-        if(        u.getFirstName()   != firstname.getText().toString()
-                || u.getSurname()     != surname.getText().toString()
-                || u.getNickname()    != nickname.getText().toString()
-                || u.getPhoneNumber() != phone.getText().toString()
-                || u.getEmail()       != email.getText().toString() ){
+        if(        !u.getFirstName().equals(firstname.getText().toString())
+                || !u.getSurname().equals(surname.getText().toString())
+                || !u.getNickname().equals(nickname.getText().toString())
+                || !u.getPhoneNumber().equals(phone.getText().toString())
+                || !u.getEmail().equals(email.getText().toString())){
 
             return true;
         }
