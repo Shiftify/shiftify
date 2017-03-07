@@ -14,17 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.joda.time.LocalDate;
-
-import java.util.Calendar;
 
 
 import cz.cvut.fit.shiftify.PersonsListFragment;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.ShiftListFragment;
-import cz.cvut.fit.shiftify.ShiftPlanDateDialog;
+import cz.cvut.fit.shiftify.DatePickDialog;
 
 
 /**
@@ -32,7 +29,7 @@ import cz.cvut.fit.shiftify.ShiftPlanDateDialog;
  * In this class is implemented navigation drawer logic
  * You can switch fragment by navigation drawer
  */
-public class MainActivity extends AppCompatActivity implements ShiftPlanDateDialog.ShiftPlanDialogCallback {
+public class MainActivity extends AppCompatActivity implements DatePickDialog.DatePickDialogCallback {
 
 
     private static final String SELECTED_ITEM_ID = "selected_item";
@@ -194,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements ShiftPlanDateDial
 
 
     @Override
-    public void setSelectedDay(LocalDate date) {
+    public void onDateSet(LocalDate date) {
 
         ShiftListFragment shiftListFragment = (ShiftListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
         if (shiftListFragment != null) {

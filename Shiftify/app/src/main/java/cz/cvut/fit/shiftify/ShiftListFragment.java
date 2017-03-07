@@ -161,15 +161,15 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
         switch (v.getId()) {
             case R.id.btn_cal:
                 //creating the new dialog fragment
-                DialogFragment newFragment = new ShiftPlanDateDialog();
+                DialogFragment newFragment = new DatePickDialog();
                 Bundle selectedDateBundle = new Bundle();
                 //preparing the bundle for creating datePicker with selected date
-                selectedDateBundle.putString("selected_date", cal.toString(CalendarUtils.JODA_DATE_FORMATTER));
+                selectedDateBundle.putString(DatePickDialog.SELECTED_DATE, cal.toString(CalendarUtils.JODA_DATE_FORMATTER));
 
                 //passing the bundle to the fragment
                 newFragment.setArguments(selectedDateBundle);
                 //showing the datePicker
-                newFragment.show(getActivity().getFragmentManager(), "datePicker");
+                newFragment.show(getActivity().getFragmentManager(), DatePickDialog.DATE_PICKER_TAG);
                 break;
             case R.id.date_arrow_left:
                 // date --
@@ -189,7 +189,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
     public void setSelectedDate(LocalDate date) {
         String newDate = date.toString(CalendarUtils.JODA_DATE_FORMATTER);
 
-        cal = date;
+        cal = new LocalDate(date);
         headerDate.setText(newDate);
 
         loadWorkersAndShifts();

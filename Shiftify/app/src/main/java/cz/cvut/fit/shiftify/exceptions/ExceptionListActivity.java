@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,31 +33,80 @@ import cz.cvut.fit.shiftify.utils.ToolbarUtils;
  * Created by petr on 12/3/16.
  */
 
-public class ExceptionListActivity extends AppCompatActivity {
+public class ExceptionListActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     public static final String USER_ID = "user_id";
     public static final String EXCEPTION_ID = "exception_id";
-    public static final String TAG = "EXCEPTION_LIST_ACTIVITY";
     public static final String DELETE_DIALOG = "exception_delete_dialog";
-    private User mUser;
-    private UserManager mUserManager;
+    public static final int CREATE_EXCEPTION_REQUEST = 0;
+    public static final int EDIT_EXCEPTION_REQUEST = 1;
+    public static final String IS_WORKING = "is_working";
+    public static final String DESCRIPTION = "description";
+    public static final String FROM = "from";
+    public static final String TIME_FROM = "time_from";
+    public static final String TIME_TO = "time_to";
 
+    /*private static final String S_EXCEPTION_ADAPTER = "exception_adapter";
+    private static final String S_FLOATING_ACTION_BUTTON = "floating_action_button";
+    private static final String S_USER_ID = "user_id";
+    private static final String S_USER_MANAGER  = "user_manager";*/
+
+    private ExceptionAdapter mExceptionAdapter;
+    private FloatingActionButton mAddExceptionButton;
+    private ListView mExceptionListView;
+    private Long mUserId;
+    private UserManager mUserManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exceptions_list);
+        setContentView(R.layout.activity_exception_list);
         ToolbarUtils.setToolbar(this);
-        UserManager userManager = new UserManager();
 
-        Intent intent = getIntent();
-        long userId = intent.getLongExtra(PersonDetailActivity.USER_ID, 0);
-        mUser = userManager.user(userId);
+        final Intent intent = getIntent();
+        if (intent!=null){
+            mUserId = intent.getLongExtra(ExceptionListActivity.USER_ID, 0);
+        }
+        else{
+            Log.w("ExceptionListActivity: ", "No user_id was not provided by intent (intent==null)");
+            finish();
+        }
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_exception_container, new ExceptionListFragment())
-                    .commit();
+
+        mAddExceptionButton = (FloatingActionButton) findViewById(R.id.float_add_button);
+        mAddExceptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ExceptionListActivity.this, ExceptionEditActivity.class);
+                intent.putExtra(USER_ID, mUserId);
+                startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
+            }
+        });
+
+        mExceptionListView = (ListView) findViewById(R.id.user_exception_list);
+        mExceptionListView.setOnItemClickListener(this);
+
+        mExceptionAdapter = new ExceptionAdapter(this, R.layout.list_item_exception);
+        mExceptionListView.setAdapter(mExceptionAdapter);
+
+        mUserManager = new UserManager();
+
+        updateExceptionList();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+
+            if (requestCode == CREATE_EXCEPTION_REQUEST) {
+                //TODO create exception via UserManager
+            } else if (requestCode == EDIT_EXCEPTION_REQUEST) {
+                //TODO edit existing exception
+            } else {
+                throw new RuntimeException("Unexpected result code recieved from ExceptionEditActivity!");
+            }
         }
     }
 
@@ -70,113 +120,54 @@ public class ExceptionListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class ExceptionListFragment extends ListFragment {
-
-        public static final int CREATE_EXCEPTION_REQUEST = 0;
-        public static final int EDIT_EXCEPTION_REQUEST = 1;
-        public static final String PASSED_EXCEPTION = "passed_exception";
-        private ExceptionAdapter mExceptionAdapter;
-        private User mUser;
-        private UserManager mUserManager;
-        private FloatingActionButton mAddFloatingButton;
-
-
-        public ExceptionListFragment() {
-            mUserManager = new UserManager();
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == android.R.id.list) {
+            menu.setHeaderTitle(R.string.choose_action);
+            menu.add(Menu.NONE, R.string.edit, Menu.NONE, getString(R.string.edit));
+            menu.add(Menu.NONE, R.string.delete, Menu.NONE, getString(R.string.delete));
         }
+    }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_default_list, container, false);
-            mAddFloatingButton = (FloatingActionButton) view.findViewById(R.id.float_add_button);
-            mAddFloatingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
-                    intent.putExtra(USER_ID, mUser.getId());
-                    startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
-                }
-            });
-            return view;
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.string.edit: // Edit
+                startEditActivity(mExceptionAdapter.getItem(info.position));
+                return true;
+            case R.string.delete: // Delete
+                showDeleteDialog(mExceptionAdapter.getItem(info.position));
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
+    }
 
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == Activity.RESULT_OK) {
-                ExceptionShift recievedException = data.getParcelableExtra(PASSED_EXCEPTION);
-                if (requestCode == CREATE_EXCEPTION_REQUEST) {
-                    //TODO create exception via UserManager
-                } else if (requestCode == EDIT_EXCEPTION_REQUEST) {
-                    //TODO edit existing exception
-                } else {
-                    throw new RuntimeException("Unexpected result code recieved from ExceptionEditActivity!");
-                }
-            }
-        }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ExceptionShift exception = mExceptionAdapter.getItem(position);
+        startEditActivity(exception);
+    }
 
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-            mUser = ((ExceptionListActivity) getActivity()).mUser;
-            mExceptionAdapter = new ExceptionAdapter(getActivity(), R.layout.list_item_exception);
-            setListAdapter(mExceptionAdapter);
-            updateExceptionList();
-        }
+    private void showDeleteDialog(ExceptionShift exceptionShift) {
+        DialogFragment newFragment = ExceptionDeleteDialog.newInstance();
+        Bundle userBundle = new Bundle();
+        userBundle.putLong(EXCEPTION_ID, exceptionShift.getId());
+        newFragment.setArguments(userBundle);
+        newFragment.show(getFragmentManager(), DELETE_DIALOG);
+    }
 
-        @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-            ExceptionShift exception = mExceptionAdapter.getItem(position);
-            Intent intent = new Intent(getActivity(), ExceptionEditActivity.class);
-            intent.putExtra(EXCEPTION_ID, exception.getId());
-            intent.putExtra(USER_ID, mUser.getId());
-            startActivityForResult(intent, EDIT_EXCEPTION_REQUEST);
-        }
+    private void startEditActivity(ExceptionShift exceptionShift) {
+        Intent intent = new Intent(this, ScheduleEditActivity.class);
+        intent.putExtra(EXCEPTION_ID, exceptionShift.getId());
+        intent.putExtra(USER_ID, mUserId);
+        startActivityForResult(intent, EDIT_EXCEPTION_REQUEST);
+    }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            if (v.getId() == android.R.id.list) {
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                menu.setHeaderTitle(R.string.choose_action);
-                menu.add(Menu.NONE, R.string.edit, Menu.NONE, getString(R.string.edit));
-                menu.add(Menu.NONE, R.string.delete, Menu.NONE, getString(R.string.delete));
-            }
-        }
-
-        @Override
-        public boolean onContextItemSelected(MenuItem item) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            switch (item.getItemId()) {
-                case R.string.edit: // Edit
-                    startEditActivity(mExceptionAdapter.getItem(info.position));
-                    return true;
-                case R.string.delete: // Delete
-                    showDeleteDialog(mExceptionAdapter.getItem(info.position));
-                    return true;
-                default:
-                    return super.onContextItemSelected(item);
-            }
-        }
-
-        private void startEditActivity(ExceptionShift exceptionShift) {
-            Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-            intent.putExtra(EXCEPTION_ID, exceptionShift.getId());
-            intent.putExtra(USER_ID, mUser.getId());
-            startActivityForResult(intent, EDIT_EXCEPTION_REQUEST);
-        }
-
-        void showDeleteDialog(ExceptionShift exceptionShift) {
-            DialogFragment newFragment = ExceptionDeleteDialog.newInstance();
-            Bundle userBundle = new Bundle();
-            userBundle.putLong(EXCEPTION_ID, exceptionShift.getId());
-            newFragment.setArguments(userBundle);
-            newFragment.show(getFragmentManager(), DELETE_DIALOG);
-        }
-
-
-        public void updateExceptionList() {
-            List<ExceptionShift> exceptionNewList = new ArrayList<>(mUserManager.getAllExceptionShifts(mUser.getId()));
-            mExceptionAdapter.setExceptionShifts(exceptionNewList);
-        }
+    public void updateExceptionList() {
+        List<ExceptionShift> exceptionNewList = new ArrayList<>(mUserManager.getAllExceptionShifts(mUserId));
+        mExceptionAdapter.setExceptionShifts(exceptionNewList);
     }
 }

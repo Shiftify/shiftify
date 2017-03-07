@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.TimePicker;
 
@@ -31,12 +32,12 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mCallback = (TimeDialogCallback) activity;
+            mCallback = (TimeDialogCallback) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement " + TimeDialogCallback.class.getName());
+            throw new ClassCastException(context.toString() + " must implement " + TimeDialogCallback.class.getName());
         }
     }
 
@@ -62,6 +63,6 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
     }
 
     public interface TimeDialogCallback {
-        public void onTimeSet(int minutes, String timeType);
+        void onTimeSet(int minutes, String timeType);
     }
 }

@@ -27,7 +27,7 @@ import cz.cvut.fit.shiftify.data.DaoConverters.PeriodToStringConverter;
         generateConstructors = false,
         generateGettersSetters = false,
         indexes = { @Index(name = "Unique_ExceptionShift_FromSchedule", unique = true, value = "from,exceptionInScheduleId") })
-public class ExceptionShift extends Shift implements Parcelable{
+public class ExceptionShift extends Shift {
     // Columns
     @Id
     @Property(nameInDb = "Id")
@@ -210,48 +210,6 @@ public class ExceptionShift extends Shift implements Parcelable{
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getExceptionShiftDao() : null;
-    }
-
-    public static final Parcelable.Creator<ExceptionShift> CREATOR
-            = new Parcelable.Creator<ExceptionShift>(){
-
-        @Override
-        public ExceptionShift createFromParcel(Parcel source) {
-            return new ExceptionShift(source);
-        }
-
-        @Override
-        public ExceptionShift[] newArray(int size) {
-            return new ExceptionShift[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        //note that you should put and pull the values from Parcel in the same order
-        dest.writeValue(id);
-        dest.writeValue(from);
-        dest.writeValue(duration);
-        dest.writeValue(exceptionInScheduleId);
-        dest.writeValue(isWorking);
-        dest.writeValue(description);
-        dest.writeValue(exceptionInSchedule);
-    }
-
-    private ExceptionShift(Parcel source){
-        //note that you should put and pull the values from Parcel in the same order
-        id=(Long)source.readValue(null);
-        from=(LocalTime)source.readValue(null);
-        duration=(Period)source.readValue(null);
-        exceptionInScheduleId=(Long)source.readValue(null);
-        isWorking=(Boolean)source.readValue(null);
-        description=(String)source.readValue(null);
-        exceptionInSchedule=(ExceptionInSchedule)source.readValue(null);
     }
 
 }

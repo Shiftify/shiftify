@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 
 import org.joda.time.LocalDate;
 
-import java.text.ParseException;
 import java.util.Calendar;
 
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
@@ -20,9 +19,12 @@ import cz.cvut.fit.shiftify.utils.CalendarUtils;
  * Created by Vojta on 19.11.2016.
  */
 
-public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    private ShiftPlanDialogCallback mCallback;
+    public static final String DATE_PICKER_TAG = "datePicker";
+    public static final String SELECTED_DATE = "selected_date";
+
+    private DatePickDialogCallback mCallback;
     private Calendar selectedDate;
 
     @Override
@@ -31,7 +33,7 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
         Bundle selectedDateBundle = getArguments();
 
         if (selectedDateBundle != null) {
-            String dateString = selectedDateBundle.getString("selected_date");
+            String dateString = selectedDateBundle.getString(SELECTED_DATE);
             selectedDate = CalendarUtils.getCalendarFromDateString(dateString);
         } else {
             selectedDate = null;
@@ -57,12 +59,16 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity activity=null;
+        if (context instanceof Activity){
+            activity = (Activity) context;
+        }
         try {
-            mCallback = (ShiftPlanDialogCallback) activity;
+            mCallback = (DatePickDialogCallback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement ShiftPlanDialogCallback");
+            throw new ClassCastException(activity.toString() + " must implement DatePickDialogCallback");
         }
     }
 
@@ -76,7 +82,7 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
         Calendar tmpCal = Calendar.getInstance();
         tmpCal.set(y, m, d);
         LocalDate date = LocalDate.fromCalendarFields(tmpCal);
-        mCallback.setSelectedDay(date);
+        mCallback.onDateSet(date);
     }
 
     @Override
@@ -84,8 +90,8 @@ public class ShiftPlanDateDialog extends DialogFragment implements DatePickerDia
         super.onDismiss(dialog);
     }
 
-    public interface ShiftPlanDialogCallback {
-        public void setSelectedDay(LocalDate calendar);
+    public interface DatePickDialogCallback {
+        void onDateSet(LocalDate calendar);
     }
 
 }

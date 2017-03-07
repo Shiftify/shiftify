@@ -38,4 +38,5 @@ dependencies {
     //    Navigation Drawer as Fragment
     compile 'com.android.support:design:25.2.0'
     compile project(':shiftify.data')
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
 }
