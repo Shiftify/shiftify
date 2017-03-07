@@ -223,7 +223,7 @@ public class UserManager {
     /**
      * Gets an ExceptionInSchedule of a schedule that has a date set to the date in parameter.
      */
-    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, LocalDate date) throws Exception {
+    public ExceptionInSchedule exceptionInScheduleForDate(Long scheduleId, LocalDate date) throws Exception {
         List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
             exceptionInScheduleDao.queryBuilder().and(
                 ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId),

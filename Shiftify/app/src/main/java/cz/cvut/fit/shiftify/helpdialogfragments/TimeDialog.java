@@ -1,6 +1,5 @@
 package cz.cvut.fit.shiftify.helpdialogfragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -8,9 +7,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.TimePicker;
 
+import org.joda.time.LocalTime;
+
+import java.sql.Time;
 import java.util.Calendar;
 
-import cz.cvut.fit.shiftify.utils.MyTimeUtils;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 
 /**
  * Created by petr on 12/11/16.
@@ -19,7 +21,7 @@ import cz.cvut.fit.shiftify.utils.MyTimeUtils;
 public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     public static final String TIME_TYPE_ARG = "time_type_fragment";
-    public static final String TIME_ARG = "time_minutes";
+    public static final String TIME_ARG = "local_time";
 
     private TimeDialogCallback mCallback;
     private String mType;
@@ -49,20 +51,22 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Calendar calendar = Calendar.getInstance();
+        LocalTime now = LocalTime.now();
         Bundle args = getArguments();
-        int minutes = args.getInt(TIME_ARG, calendar.get(Calendar.MINUTE));
+        String localTimeString = args.getString(TIME_ARG, now.toString(TimeUtils.JODA_TIME_FORMATTER));
+        LocalTime localTime = LocalTime.parse(localTimeString, TimeUtils.JODA_TIME_FORMATTER);
         mType = args.getString(TIME_TYPE_ARG);
         return new TimePickerDialog(getActivity(), this,
-                MyTimeUtils.getHour(minutes), MyTimeUtils.getMinutes(minutes), true);
+                localTime.getHourOfDay(), localTime.getMinuteOfHour(), true);
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-        mCallback.onTimeSet(minute + hourOfDay * 60, mType);
+        LocalTime localTime = new LocalTime(hourOfDay, minute);
+        mCallback.onTimeSet(localTime, mType);
     }
 
     public interface TimeDialogCallback {
-        void onTimeSet(int minutes, String timeType);
+        void onTimeSet(LocalTime localTime, String timeType);
     }
 }

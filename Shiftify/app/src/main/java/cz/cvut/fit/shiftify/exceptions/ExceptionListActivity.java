@@ -18,15 +18,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.PersonDetailActivity;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
+import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
+import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.schedules.ScheduleEditActivity;
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 /**
@@ -92,7 +100,6 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
         mUserManager = new UserManager();
 
         updateExceptionList();
-
     }
 
     @Override
@@ -101,13 +108,53 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == CREATE_EXCEPTION_REQUEST) {
-                //TODO create exception via UserManager
+                try {
+                    Schedule schedule = mUserManager.currentSchedule(mUserId);
+                    LocalDate selectedDate = LocalDate.parse(data.getStringExtra(FROM), CalendarUtils.JODA_DATE_FORMATTER);
+                    ExceptionInSchedule exceptionInSchedule =  mUserManager.exceptionInScheduleForDate(schedule.getId(),selectedDate);
+
+                    if (exceptionInSchedule==null){
+                        exceptionInSchedule = new ExceptionInSchedule(selectedDate, mUserId, schedule.getId());
+                        mUserManager.addExceptionInSchedule(exceptionInSchedule);
+                        exceptionInSchedule = mUserManager.exceptionInScheduleForDate(schedule.getId(), selectedDate);
+                        ExceptionShift exceptionShift = constructResultExceptionShift(data, exceptionInSchedule.getId());
+                        //TODO add exceptionShift to the database
+                    }
+                    else{
+                        ExceptionShift exceptionShift = constructResultExceptionShift(data, exceptionInSchedule.getId());
+                        //TODO add exceptionShift to the database
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (requestCode == EDIT_EXCEPTION_REQUEST) {
-                //TODO edit existing exception
+
             } else {
                 throw new RuntimeException("Unexpected result code recieved from ExceptionEditActivity!");
             }
+            updateExceptionList();
         }
+    }
+
+    ExceptionShift constructResultExceptionShift(Intent data, Long exceptionInScheduleId){
+        Boolean isWorking = data.getBooleanExtra(IS_WORKING, false);
+        String description = data.getStringExtra(DESCRIPTION);
+        String stringTimeFrom = data.getStringExtra(TIME_FROM);
+        String stringTimeTo = data.getStringExtra(TIME_TO);
+
+        LocalTime timeFrom = LocalTime.parse(stringTimeFrom, TimeUtils.JODA_TIME_FORMATTER);
+        LocalTime timeTo = LocalTime.parse(stringTimeTo, TimeUtils.JODA_TIME_FORMATTER);
+
+        Period duration = new Period(timeFrom, timeTo);
+
+        ExceptionShift exceptionShift = new ExceptionShift();
+        exceptionShift.setFrom(timeFrom);
+        exceptionShift.setDuration(duration);
+        exceptionShift.setExceptionInScheduleId(exceptionInScheduleId);
+        exceptionShift.setIsWorking(isWorking);
+        exceptionShift.setDescription(description);
+
+        return  exceptionShift;
     }
 
     @Override

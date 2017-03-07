@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,7 +28,7 @@ import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.helpdialogfragments.TimeDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
-import cz.cvut.fit.shiftify.utils.MyTimeUtils;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 /**
@@ -53,8 +52,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
 
     private Boolean isWorking;
     private LocalDate from;
-    private int timeFrom;
-    private int timeTo;
+    private LocalTime timeFrom;
+    private LocalTime timeTo;
 
     private Long userId;
     private Long exceptionId;
@@ -136,11 +135,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
     }
 
     private void initFields() {
-        Calendar calendar = Calendar.getInstance();
-        timeFrom = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-        timeFrom = timeTo;
 
         if (exceptionId == -1) {
+            timeFrom = LocalTime.now();
+            timeTo = LocalTime.now();
             isWorking = true;
             from = LocalDate.now();
 
@@ -157,6 +155,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
                 }
                 mDescriptionEditText.setText(exceptionShift.getDescription());
                 mDateTextView.setText(exceptionShift.getFrom().toString(CalendarUtils.JODA_DATE_FORMATTER));
+                timeFrom = exceptionShift.getFrom();
+                timeTo = exceptionShift.getFrom().plus(exceptionShift.getDuration());
                 setTimeFromText(timeFrom);
                 setTimeToText(timeTo);
             } catch (Exception e) {
@@ -182,10 +182,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         timeFrom = timeTo;
     }*/
 
-    private void showTimeDialog(String type, int seconds) {
+    private void showTimeDialog(String type, LocalTime localTime) {
         DialogFragment dialogFragment = TimeDialog.newInstance();
         Bundle args = new Bundle();
-        args.putInt(TimeDialog.TIME_ARG, seconds);
+        args.putString(TimeDialog.TIME_ARG, localTime.toString(TimeUtils.JODA_TIME_FORMATTER));
         args.putString(TimeDialog.TIME_TYPE_ARG, type);
         dialogFragment.setArguments(args);
         dialogFragment.show(getFragmentManager(), type);
@@ -196,12 +196,12 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
 
     }*/
 
-    private void setTimeFromText(int minutes) {
-        mTimeFromTextView.setText(MyTimeUtils.timeToString(minutes));
+    private void setTimeFromText(LocalTime timeFrom) {
+        mTimeFromTextView.setText(timeFrom.toString(TimeUtils.JODA_TIME_FORMATTER));
     }
 
-    private void setTimeToText(int minutes) {
-        mTimeToTextView.setText(MyTimeUtils.timeToString(minutes));
+    private void setTimeToText(LocalTime timeTo) {
+        mTimeToTextView.setText(timeTo.toString(TimeUtils.JODA_TIME_FORMATTER));
     }
 
     /*private void initFields() {
@@ -227,7 +227,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             mToast = Toast.makeText(this, R.string.exception_edit_wrong_desctription, Toast.LENGTH_LONG);
             mToast.show();
             return false;
-        } else if (timeTo < timeFrom) {
+        } else if (timeTo.getMillisOfDay() < timeFrom.getMillisOfDay()) {
             if (mToast != null) {
                 mToast.cancel();
             }
@@ -244,8 +244,8 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         resultBundle.putBoolean(ExceptionListActivity.IS_WORKING, isWorking);
         resultBundle.putString(ExceptionListActivity.DESCRIPTION, mDescriptionEditText.getText().toString());
         resultBundle.putString(ExceptionListActivity.FROM, from.toString(CalendarUtils.JODA_DATE_FORMATTER));
-        resultBundle.putInt(ExceptionListActivity.TIME_FROM, timeFrom);
-        resultBundle.putInt(ExceptionListActivity.TIME_TO, timeTo);
+        resultBundle.putString(ExceptionListActivity.TIME_FROM, timeFrom.toString(TimeUtils.JODA_TIME_FORMATTER));
+        resultBundle.putString(ExceptionListActivity.TIME_TO, timeTo.toString(TimeUtils.JODA_TIME_FORMATTER));
         return resultBundle;
     }
 
@@ -279,14 +279,14 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
     }
 
     @Override
-    public void onTimeSet(int minutes, String timeType) {
+    public void onTimeSet(LocalTime localTime, String timeType) {
         switch (timeType) {
             case TIME_FROM_FRAGMENT:
-                timeFrom = minutes;
+                timeFrom = new LocalTime(localTime);
                 setTimeFromText(timeFrom);
                 break;
             case TIME_TO_FRAGMENT:
-                timeTo = minutes;
+                timeTo = new LocalTime(localTime);
                 setTimeToText(timeTo);
                 break;
         }
