@@ -214,6 +214,28 @@ public class UserManager {
     }
 
     /**
+     * Adds an ExceptionShift. You need to pass an appropriate exceptionInScheduleId.
+     */
+    public void addExceptionShift(Long exceptionInScheduleId, ExceptionShift exceptionShift){
+        exceptionShift.setExceptionInScheduleId(exceptionInScheduleId);
+        exceptionShiftDao.insert(exceptionShift);
+    }
+
+    /**
+     * Edits an ExceptionShift. The instance need to have an id.
+     */
+    public void editExceptionShift(ExceptionShift exceptionShift){
+        exceptionShiftDao.update(exceptionShift);
+    }
+
+    /**
+     * Deletes an ExceptionShift with and id equal to exceptionShiftId.
+     */
+    public void deleteExceptionShift(Long exceptionShiftId){
+        exceptionShiftDao.delete(exceptionShiftDao.load(exceptionShiftId));
+    }
+
+    /**
      * Gets an ExceptionInSchedule that has an id equal to exceptionInScheduleId.
      */
     public ExceptionInSchedule exceptionInSchedule(long exceptionInScheduleId) throws Exception {

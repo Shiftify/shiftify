@@ -117,11 +117,13 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
                         exceptionInSchedule = new ExceptionInSchedule(selectedDate, mUserId, schedule.getId());
                         mUserManager.addExceptionInSchedule(exceptionInSchedule);
                         exceptionInSchedule = mUserManager.exceptionInScheduleForDate(schedule.getId(), selectedDate);
-                        ExceptionShift exceptionShift = constructResultExceptionShift(data, exceptionInSchedule.getId());
+                        ExceptionShift exceptionShift = constructResultExceptionShift(data);
+                        mUserManager.addExceptionShift(exceptionInSchedule.getId(), exceptionShift);
                         //TODO add exceptionShift to the database
                     }
                     else{
-                        ExceptionShift exceptionShift = constructResultExceptionShift(data, exceptionInSchedule.getId());
+                        ExceptionShift exceptionShift = constructResultExceptionShift(data);
+                        mUserManager.addExceptionShift(exceptionInSchedule.getId(), exceptionShift);
                         //TODO add exceptionShift to the database
                     }
                 } catch (Exception e) {
@@ -136,7 +138,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
         }
     }
 
-    ExceptionShift constructResultExceptionShift(Intent data, Long exceptionInScheduleId){
+    ExceptionShift constructResultExceptionShift(Intent data){
         Boolean isWorking = data.getBooleanExtra(IS_WORKING, false);
         String description = data.getStringExtra(DESCRIPTION);
         String stringTimeFrom = data.getStringExtra(TIME_FROM);
@@ -150,7 +152,6 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
         ExceptionShift exceptionShift = new ExceptionShift();
         exceptionShift.setFrom(timeFrom);
         exceptionShift.setDuration(duration);
-        exceptionShift.setExceptionInScheduleId(exceptionInScheduleId);
         exceptionShift.setIsWorking(isWorking);
         exceptionShift.setDescription(description);
 
