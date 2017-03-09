@@ -2,16 +2,22 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minHeight="50dp"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
 
     <TextView
-        android:id="@+id/exception_title"
-        android:layout_width="0dp"
+        android:id="@+id/exception_description"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_gravity="top"
+        android:layout_weight="1"
+        android:text="@string/exception" />
+
+    <TextView
+        android:id="@+id/exception_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/exception" />
 

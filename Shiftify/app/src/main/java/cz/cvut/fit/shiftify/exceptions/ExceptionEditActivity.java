@@ -20,8 +20,6 @@ import android.widget.Toast;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import java.util.Calendar;
-
 import cz.cvut.fit.shiftify.DatePickDialog;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
@@ -37,7 +35,6 @@ import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
 public class ExceptionEditActivity extends AppCompatActivity implements TimeDialog.TimeDialogCallback, DatePickDialog.DatePickDialogCallback {
 
-    private static final String DATE_FRAGMENT = "date_fragment";
     private static final String TIME_TO_FRAGMENT = "time_to_fragment";
     private static final String TIME_FROM_FRAGMENT = "time_from_fragment";
 
@@ -51,11 +48,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
     private Toast mToast;
 
     private Boolean isWorking;
-    private LocalDate from;
+    private LocalDate exceptionShiftDate;
     private LocalTime timeFrom;
     private LocalTime timeTo;
-
-    private Long userId;
     private Long exceptionId;
 
     @Override
@@ -73,10 +68,12 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
 
         final Intent intent = getIntent();
         if (intent != null) {
-            exceptionId = intent.getLongExtra(ExceptionListActivity.EXCEPTION_ID, -1);
-            userId = intent.getLongExtra(ExceptionListActivity.USER_ID, 0);
+            exceptionId = intent.getLongExtra(ExceptionListActivity.EXCEPTION_SHIFT_ID, -1);
+            if (exceptionId!=-1){
+                exceptionShiftDate = LocalDate.parse(intent.getStringExtra(ExceptionListActivity.EXCEPTION_SHIFT_DATE), CalendarUtils.JODA_DATE_FORMATTER);
+            }
         } else {
-            Log.w("ExceptionEditActivity: ", "No user_id/exceptionId was not provided by intent (intent==null)");
+            Log.w("ExceptionEditActivity: ", "No date/exceptionId was not provided by intent (intent==null)");
             finish();
         }
 
@@ -91,7 +88,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             public void onClick(View view) {
                 DialogFragment newDialogFragment = new DatePickDialog();
                 Bundle selectedDataBundle = new Bundle();
-                selectedDataBundle.putString(DatePickDialog.SELECTED_DATE, from.toString(CalendarUtils.JODA_DATE_FORMATTER));
+                selectedDataBundle.putString(DatePickDialog.SELECTED_DATE, exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
                 newDialogFragment.setArguments(selectedDataBundle);
                 newDialogFragment.show(getFragmentManager(), DatePickDialog.DATE_PICKER_TAG);
             }
@@ -140,10 +137,10 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             timeFrom = LocalTime.now();
             timeTo = LocalTime.now();
             isWorking = true;
-            from = LocalDate.now();
+            exceptionShiftDate = LocalDate.now();
 
             mWorkRadioBtn.toggle();
-            mDateTextView.setText(from.toString(CalendarUtils.JODA_DATE_FORMATTER));
+            mDateTextView.setText(exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
             setTimeFromText(timeFrom);
             setTimeToText(timeTo);
         } else {
@@ -154,7 +151,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
                     mWorkRadioBtn.toggle();
                 }
                 mDescriptionEditText.setText(exceptionShift.getDescription());
-                mDateTextView.setText(exceptionShift.getFrom().toString(CalendarUtils.JODA_DATE_FORMATTER));
+                mDateTextView.setText(exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
                 timeFrom = exceptionShift.getFrom();
                 timeTo = exceptionShift.getFrom().plus(exceptionShift.getDuration());
                 setTimeFromText(timeFrom);
@@ -165,23 +162,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         }
     }
 
-    /*private void initException(long exceptionId, long userId) {
-        if (exceptionId == -1) {
-            mException = new ExceptionShift();
-            mException.setFrom(LocalTime.now());
-            mException.setIsWorking(true);
-        } else {
-            try {
-                mException = mUserManager.getExceptionShift(exceptionId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        Calendar calendar = Calendar.getInstance();
-        timeFrom = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-        timeFrom = timeTo;
-    }*/
-
     private void showTimeDialog(String type, LocalTime localTime) {
         DialogFragment dialogFragment = TimeDialog.newInstance();
         Bundle args = new Bundle();
@@ -191,11 +171,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         dialogFragment.show(getFragmentManager(), type);
     }
 
-    /*private void setDateText(LocalTime time) {
-        mDateTextView.setText(time.toString(CalendarUtils.JODA_DATE_FORMATTER));
-
-    }*/
-
     private void setTimeFromText(LocalTime timeFrom) {
         mTimeFromTextView.setText(timeFrom.toString(TimeUtils.JODA_TIME_FORMATTER));
     }
@@ -203,21 +178,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
     private void setTimeToText(LocalTime timeTo) {
         mTimeToTextView.setText(timeTo.toString(TimeUtils.JODA_TIME_FORMATTER));
     }
-
-    /*private void initFields() {
-        setDateText(mException.getFrom());
-        setTimeFromText(timeFrom);
-        setTimeToText(timeTo);
-        setRadioButtons(mException.getIsWorking());
-    }*/
-
-    /*private void setRadioButtons(boolean isWorkingException) {
-        if (isWorkingException) {
-            mWorkRadioBtn.setChecked(true);
-        } else {
-            mFreeRadioBtn.setChecked(true);
-        }
-    }*/
 
     private boolean checkConstraints() {
         if (mDescriptionEditText.getText().toString().equals("")) {
@@ -243,7 +203,7 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         Bundle resultBundle = new Bundle();
         resultBundle.putBoolean(ExceptionListActivity.IS_WORKING, isWorking);
         resultBundle.putString(ExceptionListActivity.DESCRIPTION, mDescriptionEditText.getText().toString());
-        resultBundle.putString(ExceptionListActivity.FROM, from.toString(CalendarUtils.JODA_DATE_FORMATTER));
+        resultBundle.putString(ExceptionListActivity.EXCEPTION_SHIFT_DATE, exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
         resultBundle.putString(ExceptionListActivity.TIME_FROM, timeFrom.toString(TimeUtils.JODA_TIME_FORMATTER));
         resultBundle.putString(ExceptionListActivity.TIME_TO, timeTo.toString(TimeUtils.JODA_TIME_FORMATTER));
         return resultBundle;
@@ -296,6 +256,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
     public void onDateSet(LocalDate date) {
         String newDate = date.toString(CalendarUtils.JODA_DATE_FORMATTER);
         mDateTextView.setText(newDate);
-        from= new LocalDate(date);
+        exceptionShiftDate = new LocalDate(date);
     }
 }

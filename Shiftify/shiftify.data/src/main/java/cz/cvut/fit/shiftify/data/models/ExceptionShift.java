@@ -30,7 +30,7 @@ import cz.cvut.fit.shiftify.data.DaoConverters.PeriodToStringConverter;
 public class ExceptionShift extends Shift {
     // Columns
     @Id
-    @Property(nameInDb = "Id")
+    @Property(nameInDb = "ExceptionShiftId")
     protected Long id;
     @NotNull
     @Property(nameInDb = "From")
@@ -55,6 +55,15 @@ public class ExceptionShift extends Shift {
 
     // Constructors
     public ExceptionShift() {
+    }
+
+    public ExceptionShift(ExceptionShift exceptionShift){
+        id = exceptionShift.getId();
+        from = exceptionShift.getFrom();
+        duration = exceptionShift.getDuration();
+        exceptionInScheduleId = exceptionShift.getExceptionInScheduleId();
+        isWorking = exceptionShift.getIsWorking();
+        description = exceptionShift.getDescription();
     }
 
     public ExceptionShift(@NotNull LocalTime from, @NotNull Period duration,

@@ -288,6 +288,22 @@ public class UserManager {
         ).orderAsc(ExceptionShiftDao.Properties.From).list();
     }
 
+    public List<ExceptionShift> getUserExceptionShiftsForDate(Long userId, LocalDate date){
+        List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
+                ExceptionInScheduleDao.Properties.UserId.eq(userId),
+                ExceptionInScheduleDao.Properties.Date.eq(date)
+        ).list();
+
+        if (exceptionInSchedules.isEmpty()){
+            return new ArrayList<>();
+        }
+        else {
+            return exceptionShiftDao.queryBuilder().where(
+                    ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(exceptionInSchedules.get(0).getId())
+            ).orderAsc(ExceptionShiftDao.Properties.From).list();
+        }
+    }
+
     public ExceptionShift getExceptionShift(long exceptionShiftId) throws Exception {
         return exceptionShiftDao.load(exceptionShiftId);
     }

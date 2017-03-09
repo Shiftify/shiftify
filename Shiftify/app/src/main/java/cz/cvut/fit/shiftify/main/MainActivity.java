@@ -191,11 +191,11 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
 
 
     @Override
-    public void onDateSet(LocalDate date) {
+    public void onDateSet(LocalDate pickedDate) {
 
         ShiftListFragment shiftListFragment = (ShiftListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
         if (shiftListFragment != null) {
-            shiftListFragment.setSelectedDate(date);
+            shiftListFragment.setSelectedDate(pickedDate);
         }
     }
 }

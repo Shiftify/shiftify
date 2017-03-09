@@ -8,10 +8,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.joda.time.LocalDate;
+
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
-import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 /**
  * Created by petr on 2/7/17.
@@ -36,11 +37,11 @@ public class ExceptionDeleteDialog extends DialogFragment {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                long scheduleId = getArguments().getLong(ExceptionListActivity.EXCEPTION_ID);
+                Long exceptionShiftId = getArguments().getLong(ExceptionListActivity.EXCEPTION_SHIFT_ID);
                 try {
-                    new UserManager().deleteSchedule(scheduleId);
-                    Log.d("TAG", "ExceptionShift id: " + String.valueOf(scheduleId) + " was deleted.");
-                    updateList();
+                    new UserManager().deleteExceptionShift(exceptionShiftId);
+                    Log.d("TAG", "ExceptionShift id: " + String.valueOf(exceptionShiftId) + " was deleted.");
+                    //updateList();
                     new CustomSnackbar(getActivity(), R.string.exception_after_delete).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -64,8 +65,8 @@ public class ExceptionDeleteDialog extends DialogFragment {
         super.onAttach(context);
     }
 
-    private void updateList() {
+    /*private void updateList(LocalDate selectedDate) {
         ExceptionListActivity activity = (ExceptionListActivity) getActivity();
-        activity.updateExceptionList();
-    }
+        activity.updateExceptionList(selectedDate);
+    }*/
 }

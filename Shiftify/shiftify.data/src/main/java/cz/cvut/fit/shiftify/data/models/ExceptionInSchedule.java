@@ -13,6 +13,7 @@ import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
@@ -28,7 +29,7 @@ import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
 public class ExceptionInSchedule {
     // Columns
     @Id(autoincrement = true)
-    @Property(nameInDb = "Id")
+    @Property(nameInDb = "ExceptionInScheduleId")
     protected Long id;
     @NotNull
     @Property(nameInDb = "UserId")
@@ -53,6 +54,7 @@ public class ExceptionInSchedule {
 
     // Constructors
     public ExceptionInSchedule() {
+        shifts = new ArrayList<>();
     }
 
     public ExceptionInSchedule(LocalDate date, Long userId) {
@@ -73,6 +75,7 @@ public class ExceptionInSchedule {
         this.userId = userId;
         this.scheduleId = scheduleId;
         this.description = description;
+        shifts = new ArrayList<>();
     }
 
     // Getters and setters
@@ -114,6 +117,10 @@ public class ExceptionInSchedule {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void addExceptionShift(ExceptionShift exceptionShift){
+        shifts.add(exceptionShift);
     }
 
     // GreenDAO generated attributes

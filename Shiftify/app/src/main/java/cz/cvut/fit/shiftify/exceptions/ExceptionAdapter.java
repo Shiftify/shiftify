@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 
 /**
  * Created by petr on 11/14/16.
@@ -27,6 +30,7 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionShift> {
     private Context mContext;
     private List<ExceptionShift> dataset;
     private int mResource;
+
 
     public ExceptionAdapter(Context context, int resource) {
         super(context, resource);
@@ -41,7 +45,11 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionShift> {
         ExceptionShift exception = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(mResource, parent, false);
-        ((TextView) view.findViewById(R.id.exception_title)).setText(getExceptionTitle(exception));
+        String startTime = exception.getFrom().toString(TimeUtils.JODA_TIME_FORMATTER);
+        String endTime = new LocalTime(exception.getFrom().plus(exception.getDuration())).toString(TimeUtils.JODA_TIME_FORMATTER);
+        ((TextView) view.findViewById(R.id.exception_description)).setText(exception.getDescription());
+
+        ((TextView) view.findViewById(R.id.exception_time)).setText("From: " + startTime + "   To: " + endTime);
         return view;
     }
 

@@ -91,7 +91,7 @@ public class DatePickDialog extends DialogFragment implements DatePickerDialog.O
     }
 
     public interface DatePickDialogCallback {
-        void onDateSet(LocalDate calendar);
+        void onDateSet(LocalDate pickedDate);
     }
 
 }
