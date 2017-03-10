@@ -94,10 +94,10 @@ public class WorkdayTests {
         List<WorkDay> workDays = userManager.shiftsForPeriod(users.get(0).getId(), new LocalDate(2017, 3, 1), new LocalDate(2017, 3, 15));
         Assert.assertEquals(15, workDays.size());
         Assert.assertEquals(1, workDays.get(0).getShifts().size());
-        Assert.assertEquals(new Period(4, 0, 0, 0), workDays.get(0).getShifts().get(0).getDuration());
+        Assert.assertEquals(new Period(6, 0, 0, 0), workDays.get(0).getShifts().get(0).getDuration());
         Assert.assertEquals("2. noční", workDays.get(0).getShifts().get(0).getName());
-        Assert.assertEquals(1, workDays.get(15).getShifts().size());
-        Assert.assertEquals("2. ranní", workDays.get(15).getShifts().get(0).getName());
+        Assert.assertEquals(1, workDays.get(14).getShifts().size());
+        Assert.assertEquals("2. ranní", workDays.get(14).getShifts().get(0).getName());
 
         // TODO: make more detailed test of this instance above
     }
