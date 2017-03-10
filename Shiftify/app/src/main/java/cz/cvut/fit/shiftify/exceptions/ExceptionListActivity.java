@@ -23,6 +23,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
     public static final String EXCEPTION_SHIFT_DATE = "exception_shift_date";
     public static final String TIME_FROM = "time_from";
     public static final String TIME_TO = "time_to";
+    public static final String SELECTED_DATE = "selected_date";
 
     private static final String SAVED_USER_ID = "saved_user_id";
     private static final String SAVED_SELECTED_DATE = "saved_selected_date";
@@ -302,6 +304,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
 
     private void startCreateActivity(){
         Intent intent = new Intent(ExceptionListActivity.this, ExceptionEditActivity.class);
+        intent.putExtra(SELECTED_DATE, selectedDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
         startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
     }
 

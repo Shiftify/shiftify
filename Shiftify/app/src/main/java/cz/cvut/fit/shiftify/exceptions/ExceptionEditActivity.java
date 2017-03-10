@@ -72,6 +72,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             if (exceptionId!=-1){
                 exceptionShiftDate = LocalDate.parse(intent.getStringExtra(ExceptionListActivity.EXCEPTION_SHIFT_DATE), CalendarUtils.JODA_DATE_FORMATTER);
             }
+            else{
+                exceptionShiftDate = LocalDate.parse(intent.getStringExtra(ExceptionListActivity.SELECTED_DATE), CalendarUtils.JODA_DATE_FORMATTER);
+            }
         } else {
             Log.w("ExceptionEditActivity: ", "No date/exceptionId was not provided by intent (intent==null)");
             finish();
@@ -137,7 +140,6 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             timeFrom = LocalTime.now();
             timeTo = LocalTime.now();
             isWorking = true;
-            exceptionShiftDate = LocalDate.now();
 
             mWorkRadioBtn.toggle();
             mDateTextView.setText(exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));
