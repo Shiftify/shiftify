@@ -30,7 +30,7 @@ import cz.cvut.fit.shiftify.data.DaoConverters.PeriodToStringConverter;
 public class ExceptionShift extends Shift {
     // Columns
     @Id
-    @Property(nameInDb = "ExceptionShiftId")
+    @Property(nameInDb = "Id")
     protected Long id;
     @NotNull
     @Property(nameInDb = "From")

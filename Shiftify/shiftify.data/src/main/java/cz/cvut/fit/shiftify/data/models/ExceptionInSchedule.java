@@ -29,7 +29,7 @@ import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
 public class ExceptionInSchedule {
     // Columns
     @Id(autoincrement = true)
-    @Property(nameInDb = "ExceptionInScheduleId")
+    @Property(nameInDb = "Id")
     protected Long id;
     @NotNull
     @Property(nameInDb = "UserId")
