@@ -9,6 +9,11 @@ Aplikace má za cíl zlepšít svolávání týmu dobrovolných hasičů k akci.
 ## Autoři
 
 - Lukáš Komárek
+- Ilia Liferov
+- Ondřej Marek
+- Jiří Borský
+
+### Bývalí autoři
 - Vojtěch Mach
 - Petr Panský
 
