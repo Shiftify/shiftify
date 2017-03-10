@@ -1,12 +1,17 @@
 package cz.cvut.fit.shiftify.utils;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Calendar;
 
 /**
  * Created by petr on 12/11/16.
  */
 
-public class MyTimeUtils {
+public class TimeUtils {
+
+    public static DateTimeFormatter JODA_TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
 
     private static final String TAG = "MY_TIME_UTILS";
 

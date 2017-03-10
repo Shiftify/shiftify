@@ -214,6 +214,28 @@ public class UserManager {
     }
 
     /**
+     * Adds an ExceptionShift. You need to pass an appropriate exceptionInScheduleId.
+     */
+    public void addExceptionShift(Long exceptionInScheduleId, ExceptionShift exceptionShift){
+        exceptionShift.setExceptionInScheduleId(exceptionInScheduleId);
+        exceptionShiftDao.insert(exceptionShift);
+    }
+
+    /**
+     * Edits an ExceptionShift. The instance need to have an id.
+     */
+    public void editExceptionShift(ExceptionShift exceptionShift){
+        exceptionShiftDao.update(exceptionShift);
+    }
+
+    /**
+     * Deletes an ExceptionShift with and id equal to exceptionShiftId.
+     */
+    public void deleteExceptionShift(Long exceptionShiftId){
+        exceptionShiftDao.delete(exceptionShiftDao.load(exceptionShiftId));
+    }
+
+    /**
      * Gets an ExceptionInSchedule that has an id equal to exceptionInScheduleId.
      */
     public ExceptionInSchedule exceptionInSchedule(long exceptionInScheduleId) throws Exception {
@@ -223,7 +245,7 @@ public class UserManager {
     /**
      * Gets an ExceptionInSchedule of a schedule that has a date set to the date in parameter.
      */
-    public ExceptionInSchedule exceptionInScheduleForDate(int scheduleId, LocalDate date) throws Exception {
+    public ExceptionInSchedule exceptionInScheduleForDate(Long scheduleId, LocalDate date) throws Exception {
         List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
             exceptionInScheduleDao.queryBuilder().and(
                 ExceptionInScheduleDao.Properties.ScheduleId.eq(scheduleId),
@@ -264,6 +286,22 @@ public class UserManager {
                 ).orderDesc(ExceptionInScheduleDao.Properties.Date)
             )
         ).orderAsc(ExceptionShiftDao.Properties.From).list();
+    }
+
+    public List<ExceptionShift> getUserExceptionShiftsForDate(Long userId, LocalDate date){
+        List<ExceptionInSchedule> exceptionInSchedules = exceptionInScheduleDao.queryBuilder().where(
+                ExceptionInScheduleDao.Properties.UserId.eq(userId),
+                ExceptionInScheduleDao.Properties.Date.eq(date)
+        ).list();
+
+        if (exceptionInSchedules.isEmpty()){
+            return new ArrayList<>();
+        }
+        else {
+            return exceptionShiftDao.queryBuilder().where(
+                    ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(exceptionInSchedules.get(0).getId())
+            ).orderAsc(ExceptionShiftDao.Properties.From).list();
+        }
     }
 
     public ExceptionShift getExceptionShift(long exceptionShiftId) throws Exception {

@@ -3,14 +3,16 @@ package cz.cvut.fit.shiftify.exceptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.joda.time.LocalDate;
+
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
-import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
 
 /**
  * Created by petr on 2/7/17.
@@ -35,11 +37,11 @@ public class ExceptionDeleteDialog extends DialogFragment {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                long scheduleId = getArguments().getLong(ExceptionListActivity.EXCEPTION_ID);
+                Long exceptionShiftId = getArguments().getLong(ExceptionListActivity.EXCEPTION_SHIFT_ID);
                 try {
-                    new UserManager().deleteSchedule(scheduleId);
-                    Log.d("TAG", "ExceptionShift id: " + String.valueOf(scheduleId) + " was deleted.");
-                    updateList();
+                    new UserManager().deleteExceptionShift(exceptionShiftId);
+                    Log.d("TAG", "ExceptionShift id: " + String.valueOf(exceptionShiftId) + " was deleted.");
+                    //updateList();
                     new CustomSnackbar(getActivity(), R.string.exception_after_delete).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -58,8 +60,13 @@ public class ExceptionDeleteDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void updateList() {
-        ExceptionListActivity.ExceptionListFragment list = (ExceptionListActivity.ExceptionListFragment) getFragmentManager().findFragmentById(R.id.fragment_exception_container);
-        list.updateExceptionList();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
+
+    /*private void updateList(LocalDate selectedDate) {
+        ExceptionListActivity activity = (ExceptionListActivity) getActivity();
+        activity.updateExceptionList(selectedDate);
+    }*/
 }

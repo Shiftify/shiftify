@@ -80,6 +80,8 @@
     <string name="shift_exception_button_text">Výjimky</string>
     <string name="shift_schedule_button_text">Rozpis směn</string>
     <string name="shift_types_button_text">Druhy směn</string>
+    <string name="exception_edit_wrong_desctription">Zadejte název vyjímky</string>
+    <string name="exception_edit_wrong_period">Cas konce nemuze byt drive nez cas zacatku</string>
 
     <string name="days_count">Počet dní</string>
     <string name="schedule_type_title">Název typu plánu šichet</string>

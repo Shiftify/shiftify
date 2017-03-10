@@ -107,7 +107,6 @@ public class PersonDetailActivity extends AppCompatActivity{
         int id = item.getItemId();
         Intent intent;
         switch (id) {
-
             case android.R.id.home:
                 this.finish();
                 break;
@@ -127,7 +126,7 @@ public class PersonDetailActivity extends AppCompatActivity{
                 startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
                 break;
 
-            case R.id.exception_list:
+            case R.id.user_exception_list:
                 intent = new Intent(this, ExceptionListActivity.class);
                 intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#5ab1f6</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF008EFF</color>
+    <color name="colorAccent">#008eff</color>
     <color name="colorTimeLineFree">#ffffff</color>
     <color name="colorTimeLineShift">#dc0a11</color>
 </resources>

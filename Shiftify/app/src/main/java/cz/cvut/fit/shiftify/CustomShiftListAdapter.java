@@ -13,6 +13,7 @@ import java.util.List;
 import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.models.Shift;
 import cz.cvut.fit.shiftify.helpers.UserWorkdayWrapper;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 import cz.cvut.fit.shiftify.views.TimeLineView;
 
 
@@ -55,7 +56,7 @@ public class CustomShiftListAdapter extends ArrayAdapter<UserWorkdayWrapper> {
 
         for (Shift s: userWorkdayList.get(position).getWorkday().getShifts()
              ) {
-            shiftDescr.setText(s.getName() + " " + s.getFrom().toString(Utilities.TIME_FORMATTER));
+            shiftDescr.setText(s.getName() + " " + s.getFrom().toString(TimeUtils.JODA_TIME_FORMATTER) + " - " + s.getTo().toString(TimeUtils.JODA_TIME_FORMATTER));
         }
 
         return rowView;
