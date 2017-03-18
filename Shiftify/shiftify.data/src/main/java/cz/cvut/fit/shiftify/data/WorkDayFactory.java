@@ -47,8 +47,6 @@ public class WorkDayFactory {
 
         ExceptionInSchedule exSchedule = findExceptionInSchedule(date);
         List<ExceptionShift> exceptionShifts = (exSchedule == null ? new ArrayList<ExceptionShift>() : exSchedule.getShifts());
-        Collections.sort(scheduleShifts);
-        Collections.sort(exceptionShifts);
         List<Shift> shifts = overlayExceptionShiftsAndScheduleShifts(scheduleShifts, exceptionShifts);
         return new WorkDay(date, shifts);
     }
@@ -136,22 +134,22 @@ public class WorkDayFactory {
         for (ScheduleShift schShift : scheduleShifts) {
             LocalTime current = schShift.getFrom();
             for (ExceptionShift excShift : offWorkExceptions) {
-                if (!excShift.getFrom().isAfter(schShift.getFrom())
-                        && !excShift.getTo().isBefore(schShift.getTo())) {
+                if ((schShift.getTo().getMillisOfDay() == new LocalTime(0, 0).getMillisOfDay() || !excShift.getFrom().isAfter(schShift.getTo()))
+                        && (excShift.getTo().getMillisOfDay() == new LocalTime(0, 0).getMillisOfDay() || !schShift.getFrom().isAfter(excShift.getTo()))) {
                     Period duration = new Period(excShift.getFrom().getMillisOfDay()).minus(new Period(current.getMillisOfDay()));
-                    if (duration.toStandardDuration().isLongerThan(new Duration(0))) {
+                    if (duration.toStandardDuration().getMillis() > 0) {
                         ScheduleShift newShift = new ScheduleShift(schShift);
                         newShift.setFrom(current);
                         newShift.setDuration(duration);
                         shifts.add(newShift);
                     }
                     current = excShift.getTo();
+                    if (current.getMillisOfDay() == new LocalTime(0, 0).getMillisOfDay())
+                        break;
                 }
             }
-            if (current.getMillisOfDay()
-                    < schShift.getFrom().getMillisOfDay() + schShift.getDuration().toStandardDuration().getMillis()) {
-                Period duration = new Period(schShift.getTo().minus(new Period(current.getMillisOfDay())).getMillisOfDay());
-
+            Period duration = new Period(schShift.getTo().minus(new Period(current.getMillisOfDay())).getMillisOfDay());
+            if (duration.toStandardDuration().getMillis() > 0) {
                 ScheduleShift newShift = new ScheduleShift(schShift);
                 newShift.setFrom(current);
                 newShift.setDuration(duration);

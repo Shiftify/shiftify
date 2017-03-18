@@ -54,7 +54,6 @@ public class ExceptionInSchedule {
 
     // Constructors
     public ExceptionInSchedule() {
-        shifts = new ArrayList<>();
     }
 
     public ExceptionInSchedule(LocalDate date, Long userId) {
@@ -75,7 +74,6 @@ public class ExceptionInSchedule {
         this.userId = userId;
         this.scheduleId = scheduleId;
         this.description = description;
-        shifts = new ArrayList<>();
     }
 
     // Getters and setters
@@ -99,7 +97,7 @@ public class ExceptionInSchedule {
         return scheduleId;
     }
 
-    public void setScheduleId(long scheduleId) {
+    public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -120,6 +118,8 @@ public class ExceptionInSchedule {
     }
 
     public void addExceptionShift(ExceptionShift exceptionShift){
+        if (shifts == null)
+            shifts = new ArrayList<>();
         shifts.add(exceptionShift);
     }
 

@@ -197,12 +197,15 @@ public class UserManager {
      */
     public void addExceptionInSchedule(ExceptionInSchedule exceptionInSchedule) throws Exception {
         exceptionInScheduleDao.insert(exceptionInSchedule);
+        for (ExceptionShift exShift : exceptionInSchedule.getShifts())
+            addExceptionShift(exceptionInSchedule.getId(), exShift);
     }
 
     /**
      * Edits an exceptionInSchedule. This instance needs to have an id.
      */
     public void editExceptionInSchedule(ExceptionInSchedule exceptionInSchedule) throws Exception {
+        // TODO: update all it's exceptionShifts
         exceptionInScheduleDao.update(exceptionInSchedule);
     }
 
@@ -212,6 +215,14 @@ public class UserManager {
     public void deleteExceptionInSchedule(long exceptionInScheduleId) throws Exception {
         exceptionInScheduleDao.delete(exceptionInScheduleDao.load(exceptionInScheduleId));
     }
+
+    /**
+     * Deletes all exceptionInSchedules.
+     */
+    public void deleteExceptionInScheduleAll() throws Exception {
+        exceptionInScheduleDao.deleteAll();
+    }
+
 
     /**
      * Adds an ExceptionShift. You need to pass an appropriate exceptionInScheduleId.
@@ -360,6 +371,7 @@ public class UserManager {
                         ExceptionInScheduleDao.Properties.Date.le(to),
                         ExceptionInScheduleDao.Properties.Date.ge(from)
                 )
-        ).orderDesc(ExceptionInScheduleDao.Properties.Date).list();
+        ).orderDesc(ExceptionInScheduleDao.Properties.Date)
+                .list();
     }
 }

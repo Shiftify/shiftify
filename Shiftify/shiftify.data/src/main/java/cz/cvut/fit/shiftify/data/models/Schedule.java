@@ -12,6 +12,8 @@ import org.greenrobot.greendao.annotation.ToOne;
 import org.joda.time.LocalDate;
 
 import cz.cvut.fit.shiftify.data.DaoConverters.LocalDateToStringConverter;
+import cz.cvut.fit.shiftify.data.validator.PropertyType;
+import cz.cvut.fit.shiftify.data.validator.ValidateProperty;
 
 /**
  * Created by lukas on 11.11.2016.
@@ -134,7 +136,6 @@ public class Schedule {
     private transient Long scheduleType__resolvedKey;
 
     // GreenDAO generated methods
-
     /**
      * To-one relationship, resolved on first access.
      */
