@@ -18,6 +18,7 @@ public class EntityValidator {
     static {
         validators.put(PropertyType.MAIL, EmailValidator.INSTANCE);
         validators.put(PropertyType.NONE, IPropertyValidator.OK_VALIDATOR);
+        validators.put(PropertyType.PHONE, PhoneValidator.INSTANCE);
     }
 
     /**

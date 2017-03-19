@@ -7,5 +7,5 @@ package cz.cvut.fit.shiftify.data.validator;
  */
 
 public enum PropertyType {
-    MAIL, NONE;
+    MAIL, PHONE, NONE;
 }

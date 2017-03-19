@@ -13,6 +13,9 @@ import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
 
+import cz.cvut.fit.shiftify.data.validator.PropertyType;
+import cz.cvut.fit.shiftify.data.validator.ValidateProperty;
+
 /**
  * Created by lukas on 11.11.2016.
  */
@@ -124,6 +127,7 @@ public class User {
         this.nickname = (nickname == null ? "" : nickname);
     }
 
+    @ValidateProperty(propertyType = PropertyType.PHONE)
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -132,6 +136,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    @ValidateProperty(propertyType = PropertyType.MAIL)
     public String getEmail() {
         return this.email;
     }
