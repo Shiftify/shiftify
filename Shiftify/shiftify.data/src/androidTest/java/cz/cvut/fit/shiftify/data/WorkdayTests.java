@@ -1,14 +1,9 @@
 package cz.cvut.fit.shiftify.data;
 
-
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ApplicationTestCase;
 
 import junit.framework.Assert;
 
-import org.greenrobot.greendao.database.Database;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
@@ -17,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
@@ -28,9 +22,6 @@ import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.models.ScheduleShift;
 import cz.cvut.fit.shiftify.data.models.ScheduleType;
 import cz.cvut.fit.shiftify.data.models.User;
-import cz.cvut.fit.shiftify.data.models.UserDao;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by lukas on 16.11.2016.
