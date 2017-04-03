@@ -15,11 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+
 import cz.cvut.fit.shiftify.data.models.User;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.exceptions.ExceptionEditActivity;
 import cz.cvut.fit.shiftify.exceptions.ExceptionListActivity;
 import cz.cvut.fit.shiftify.schedules.ScheduleListActivity;
+import cz.cvut.fit.shiftify.utils.CalendarUtils;
 
 
 public class PersonDetailActivity extends AppCompatActivity{
@@ -123,12 +126,13 @@ public class PersonDetailActivity extends AppCompatActivity{
             case R.id.shift_add_exception:
                 intent = new Intent(this, ExceptionEditActivity.class);
                 intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
+                intent.putExtra(ExceptionListActivity.SELECTED_DATE, LocalDate.now().toString(CalendarUtils.JODA_DATE_FORMATTER));
                 startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
                 break;
 
             case R.id.person_detail_exceptions_button:
                 intent = new Intent(this, ExceptionListActivity.class);
-                intent.putExtra(USER_ID, mUser.getId());
+                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
                 startActivity(intent);
                 break;
 
@@ -137,7 +141,11 @@ public class PersonDetailActivity extends AppCompatActivity{
                 intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);
                 break;
-
+            case R.id.exception_list:
+                intent = new Intent(this, ExceptionListActivity.class);
+                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
