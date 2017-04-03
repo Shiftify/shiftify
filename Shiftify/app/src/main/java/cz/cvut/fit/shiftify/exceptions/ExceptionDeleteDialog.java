@@ -20,6 +20,8 @@ import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
 
 public class ExceptionDeleteDialog extends DialogFragment {
 
+    onPositiveButtonDeleteDialogListener listener;
+
     public static ExceptionDeleteDialog newInstance() {
         ExceptionDeleteDialog fragment = new ExceptionDeleteDialog();
         Bundle args = new Bundle();
@@ -41,8 +43,7 @@ public class ExceptionDeleteDialog extends DialogFragment {
                 try {
                     new UserManager().deleteExceptionShift(exceptionShiftId);
                     Log.d("TAG", "ExceptionShift id: " + String.valueOf(exceptionShiftId) + " was deleted.");
-                    //updateList();
-                    new CustomSnackbar(getActivity(), R.string.exception_after_delete).show();
+                    listener.onClickPositiveButton();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,6 +64,11 @@ public class ExceptionDeleteDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        listener = (ExceptionListActivity) context;
+    }
+
+    public interface onPositiveButtonDeleteDialogListener{
+        void onClickPositiveButton();
     }
 
     /*private void updateList(LocalDate selectedDate) {

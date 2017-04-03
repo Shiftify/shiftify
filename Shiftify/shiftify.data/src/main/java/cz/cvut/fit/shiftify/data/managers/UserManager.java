@@ -3,6 +3,8 @@ package cz.cvut.fit.shiftify.data.managers;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.App;
@@ -289,14 +291,24 @@ public class UserManager {
         ).orderAsc(ExceptionInScheduleDao.Properties.Date).list();
     }
 
-    public List<ExceptionShift> getAllExceptionShifts(long userId) {
-        return exceptionShiftDao.queryBuilder().where(
-            ExceptionShiftDao.Properties.ExceptionInScheduleId.eq(
-                exceptionInScheduleDao.queryBuilder().where(
-                    ExceptionInScheduleDao.Properties.UserId.eq(userId)
-                ).orderDesc(ExceptionInScheduleDao.Properties.Date)
-            )
-        ).orderAsc(ExceptionShiftDao.Properties.From).list();
+    public List<ExceptionShift> getUserExceptionShifts(Long userId){
+        User user = user(userId);
+        List<ExceptionInSchedule> userExceptionInSchedules = user.getExceptionInSchedules();
+        List<ExceptionShift> userExceptionShifts = new ArrayList<>();
+        for (ExceptionInSchedule ex: userExceptionInSchedules) {
+            userExceptionShifts.addAll(ex.getShifts());
+        }
+        Collections.sort(userExceptionShifts, new Comparator<ExceptionShift>() {
+            @Override
+            public int compare(ExceptionShift o1, ExceptionShift o2) {
+                LocalDate ld1 = o1.getDate();
+                LocalDate ld2 = o2.getDate();
+                if (ld1.isAfter(ld2)) return 1;
+                if (ld1.isBefore(ld2)) return -1;
+                return 0;
+            }
+        });
+        return userExceptionShifts;
     }
 
     public List<ExceptionShift> getUserExceptionShiftsForDate(Long userId, LocalDate date){

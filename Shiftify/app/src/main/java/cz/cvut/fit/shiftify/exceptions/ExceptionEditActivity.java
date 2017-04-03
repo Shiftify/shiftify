@@ -114,17 +114,9 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
         mWorkRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isWorking = true;
+                isWorking = isChecked;
             }
         });
-
-        mFreeRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isWorking = false;
-            }
-        });
-
 
     }
 
@@ -150,7 +142,12 @@ public class ExceptionEditActivity extends AppCompatActivity implements TimeDial
             try {
                 exceptionShift = new UserManager().getExceptionShift(exceptionId);
                 if (exceptionShift.getIsWorking()) {
+                    isWorking = true;
                     mWorkRadioBtn.toggle();
+                }
+                else{
+                    isWorking = false;
+                    mFreeRadioBtn.toggle();
                 }
                 mDescriptionEditText.setText(exceptionShift.getDescription());
                 mDateTextView.setText(exceptionShiftDate.toString(CalendarUtils.JODA_DATE_FORMATTER));

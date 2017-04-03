@@ -126,7 +126,7 @@ public class PersonDetailActivity extends AppCompatActivity{
                 startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
                 break;
 
-            case R.id.user_exception_list:
+            case R.id.person_detail_exceptions_button:
                 intent = new Intent(this, ExceptionListActivity.class);
                 intent.putExtra(USER_ID, mUser.getId());
                 startActivity(intent);

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.LocalTime;
@@ -16,9 +17,10 @@ import java.util.List;
 
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
-import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.TimeUtils;
+
+import static android.R.color.holo_red_light;
 
 /**
  * Created by petr on 11/14/16.
@@ -45,11 +47,18 @@ public class ExceptionAdapter extends ArrayAdapter<ExceptionShift> {
         ExceptionShift exception = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(mResource, parent, false);
+        String date = exception.getDate().toString(CalendarUtils.JODA_DATE_FORMATTER);
         String startTime = exception.getFrom().toString(TimeUtils.JODA_TIME_FORMATTER);
         String endTime = new LocalTime(exception.getFrom().plus(exception.getDuration())).toString(TimeUtils.JODA_TIME_FORMATTER);
+        ((TextView) view.findViewById(R.id.exception_date)).setText(date);
         ((TextView) view.findViewById(R.id.exception_description)).setText(exception.getDescription());
-
         ((TextView) view.findViewById(R.id.exception_time)).setText("From: " + startTime + "   To: " + endTime);
+        if (exception.getIsWorking()){
+            (view.findViewById(R.id.person_exception_single_layout)).setBackgroundColor(mContext.getResources().getColor(R.color.colorExceptionShiftWorking));
+        }
+        else{
+            (view.findViewById(R.id.person_exception_single_layout)).setBackgroundColor(mContext.getResources().getColor(R.color.colorExceptionShiftFree));
+        }
         return view;
     }
 

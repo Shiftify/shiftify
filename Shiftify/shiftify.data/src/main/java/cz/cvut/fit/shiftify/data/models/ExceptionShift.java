@@ -12,6 +12,7 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToOne;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
@@ -80,6 +81,10 @@ public class ExceptionShift extends Shift {
                           @NotNull Boolean isWorking, String description) {
         super(id, from, duration, description);
         this.isWorking = isWorking;
+    }
+
+    public LocalDate getDate(){
+        return getExceptionInSchedule().getDate();
     }
 
     // Getters and setters

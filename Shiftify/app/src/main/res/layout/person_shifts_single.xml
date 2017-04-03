@@ -16,29 +16,29 @@
             android:text="11.10.2016"/>
 
     <LinearLayout
+        android:id="@+id/linear_layout_shifts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linear_layout_shifts">
+        android:orientation="horizontal">
 
         <TextView
-        android:id="@+id/shift_name"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginLeft="10dp"
-        android:text="Volno"/>
+            android:id="@+id/shift_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="Volno"
+            android:textColor="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/shift_time"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginLeft="10dp"/>
+            android:textColor="@android:color/darker_gray" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <cz.cvut.fit.shiftify.views.TimeLineView
             android:id="@+id/timeline"
