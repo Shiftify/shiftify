@@ -1,6 +1,7 @@
 package cz.cvut.fit.shiftify.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,21 +38,18 @@ public class FireBaseAuthenticator implements AutoCloseable {
             return;
         }
 
-        Task<AuthResult> authResultTask = auth.signInWithEmailAndPassword(mail, password);
-
-        authResultTask.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(mail, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 authStateListener.connected(authResult.getUser());
             }
-        });
-
-        authResultTask.addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 authStateListener.connectionFailed(e);
             }
         });
+
     }
 
     public void disconnect() {
