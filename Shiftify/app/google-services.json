@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "921533966747",
+    "firebase_url": "https://shiftify-f8bb2.firebaseio.com",
+    "project_id": "shiftify-f8bb2",
+    "storage_bucket": "shiftify-f8bb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921533966747:android:19d23294d50e8bb4",
+        "android_client_info": {
+          "package_name": "cz.cvut.fit.shiftify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921533966747-5dn0ccov532cpp789o1rmndnr375btd0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cz.cvut.fit.shiftify",
+            "certificate_hash": "67d95724a9acd165025a9d54e9f45bf47b3a7bc8"
+          }
+        },
+        {
+          "client_id": "921533966747-2k4kcdme30vvbob2tvi6bmt3m5p51ppu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlRQVZwPpR-7--AMv6iBBS2Rdve0FtHFc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921533966747-2k4kcdme30vvbob2tvi6bmt3m5p51ppu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
