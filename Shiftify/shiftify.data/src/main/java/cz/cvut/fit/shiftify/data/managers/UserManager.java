@@ -293,9 +293,11 @@ public class UserManager {
 
     public List<ExceptionShift> getUserExceptionShifts(Long userId){
         User user = user(userId);
+        user.resetExceptionInSchedules();
         List<ExceptionInSchedule> userExceptionInSchedules = user.getExceptionInSchedules();
         List<ExceptionShift> userExceptionShifts = new ArrayList<>();
         for (ExceptionInSchedule ex: userExceptionInSchedules) {
+            ex.resetShifts();
             userExceptionShifts.addAll(ex.getShifts());
         }
         Collections.sort(userExceptionShifts, new Comparator<ExceptionShift>() {

@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.exceptions;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -40,13 +41,9 @@ public class ExceptionDeleteDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Long exceptionShiftId = getArguments().getLong(ExceptionListActivity.EXCEPTION_SHIFT_ID);
-                try {
-                    new UserManager().deleteExceptionShift(exceptionShiftId);
-                    Log.d("TAG", "ExceptionShift id: " + String.valueOf(exceptionShiftId) + " was deleted.");
-                    listener.onClickPositiveButton();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                new UserManager().deleteExceptionShift(exceptionShiftId);
+                Log.d("TAG", "ExceptionShift id: " + String.valueOf(exceptionShiftId) + " was deleted.");
+                listener.onClickPositiveButton();
 
             }
         });
@@ -61,10 +58,11 @@ public class ExceptionDeleteDialog extends DialogFragment {
         return builder.create();
     }
 
+    @SuppressWarnings("deprecation") //for backward compatibility, dont touch ffs. More at: https://code.google.com/p/android/issues/detail?id=183358
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        listener = (ExceptionListActivity) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        listener = (ExceptionListActivity) activity;
     }
 
     public interface onPositiveButtonDeleteDialogListener{

@@ -204,7 +204,6 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
         else if (resultCode == Activity.RESULT_CANCELED){
             editedExceptionShift=null;
         }
-        updateExceptionList();
     }
 
     ExceptionShift constructResultExceptionShift(Intent data){
