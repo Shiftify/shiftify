@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -34,7 +35,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         return fragment;
     }
 
-
+    @SuppressWarnings("deprecation") //for backward compatibility, dont touch ffs. More at: https://code.google.com/p/android/issues/detail?id=183358
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

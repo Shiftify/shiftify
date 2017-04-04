@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.helpdialogfragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -33,13 +34,14 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
         return fragment;
     }
 
+    @SuppressWarnings("deprecation") //for backward compatibility, dont touch ffs. More at: https://code.google.com/p/android/issues/detail?id=183358
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         try {
-            mCallback = (TimeDialogCallback) context;
+            mCallback = (TimeDialogCallback) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement " + TimeDialogCallback.class.getName());
+            throw new ClassCastException(activity.toString() + " must implement " + TimeDialogCallback.class.getName());
         }
     }
 

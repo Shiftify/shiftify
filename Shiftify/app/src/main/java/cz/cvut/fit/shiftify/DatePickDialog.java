@@ -58,13 +58,10 @@ public class DatePickDialog extends DialogFragment implements DatePickerDialog.O
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
+    @SuppressWarnings("deprecation") //for backward compatibility, dont touch ffs. More at: https://code.google.com/p/android/issues/detail?id=183358
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Activity activity=null;
-        if (context instanceof Activity){
-            activity = (Activity) context;
-        }
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         try {
             mCallback = (DatePickDialogCallback) activity;
         } catch (ClassCastException e) {
