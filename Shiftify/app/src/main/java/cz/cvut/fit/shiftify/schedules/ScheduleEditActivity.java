@@ -24,7 +24,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 
+import cz.cvut.fit.shiftify.DatePickDialog;
 import cz.cvut.fit.shiftify.R;
 import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.managers.ScheduleTypeManager;
@@ -36,8 +38,6 @@ import cz.cvut.fit.shiftify.helpdialogfragments.DateDialog;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
 
-import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_MIN_MS_ARGS;
-import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_MS_ARG;
 import static cz.cvut.fit.shiftify.helpdialogfragments.DateDialog.DATE_TYPE_ARG;
 
 /**
@@ -57,9 +57,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
     private ScheduleTypeManager mScheduleTypeManager;
 
     private ScheduleShift mFirstShift;
-
-    private static final String DATE_FROM_FRAGMENT = "date_from_fragment";
-    private static final String DATE_TO_FRAGMENT = "date_to_fragment";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,36 +160,33 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
         mFirstShiftSpinner.setSelection(getScheduleShiftSelection());
     }
 
-    private void showDateDialog(String type, LocalDate date, LocalDate minDate) {
-        DialogFragment dialogFragment = DateDialog.newInstance();
-        Bundle bundle = new Bundle();
-        bundle.putString(DATE_TYPE_ARG, type);
+    private void showDateDialog(String type, LocalDate date) {
+        DialogFragment newDialogFragment = new DateDialog();
+        Bundle selectedDataBundle = new Bundle();
 
-        try {
-            bundle.putLong(DATE_MS_ARG, date.toDate().getTime());
-        } catch (Exception ex) {
-            dialogFragment = DateDialog.newInstance();
+        selectedDataBundle.putString(DateDialog.DATE_PICKER_DIALOG_TYPE, type);
+        if (date==null){
+            selectedDataBundle.putString(DateDialog.SELECTED_DATE, LocalDate.now().toString(CalendarUtils.JODA_DATE_FORMATTER));
         }
-
-        if (minDate != null) {
-            bundle.putLong(DATE_MIN_MS_ARGS, minDate.toDate().getTime());
+        else{
+            selectedDataBundle.putString(DateDialog.SELECTED_DATE, date.toString(CalendarUtils.JODA_DATE_FORMATTER));
         }
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(getFragmentManager(), type);
+        newDialogFragment.setArguments(selectedDataBundle);
+        newDialogFragment.show(getFragmentManager(), type);
     }
 
     private void setDateListeners() {
         mDateFromEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDateDialog(DATE_FROM_FRAGMENT, mSchedule.getFrom(), null);
+                showDateDialog(DateDialog.DATE_FROM_FRAGMENT, mSchedule.getFrom());
             }
         });
 
         mDateToEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDateDialog(DATE_TO_FRAGMENT, mSchedule.getTo(), mSchedule.getFrom());
+                showDateDialog(DateDialog.DATE_TO_FRAGMENT, mSchedule.getTo());
             }
         });
 
@@ -208,7 +202,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
     private int getScheduleTypeSelection() {
         ScheduleType[] types = getScheduleTypes();
         for (int i = 0; i < types.length; i++) {
-            if (types[i].getId() == mSchedule.getScheduleTypeId())
+            if (Objects.equals(types[i].getId(), mSchedule.getScheduleTypeId()))
                 return i;
         }
         return 0;
@@ -217,7 +211,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
     private int getScheduleShiftSelection() {
         ScheduleShift[] types = getScheduleShifts(mSchedule.getScheduleType());
         for (int i = 0; i < types.length; i++) {
-            if (types[i].getDayOfScheduleCycle() == mSchedule.getStartingDayOfScheduleCycle())
+            if (Objects.equals(types[i].getDayOfScheduleCycle(), mSchedule.getStartingDayOfScheduleCycle()))
                 return i;
         }
         return 0;
@@ -302,23 +296,16 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
         }
     }
 
-    private void setDateFrom(DateTime dateFrom) {
-        LocalDate date = new LocalDate(dateFrom);
+    private void setDateFrom(LocalDate dateFrom) {
 
-        mDateFromEditText.setText(date.toString(CalendarUtils.JODA_DATE_FORMATTER));
-        mSchedule.setFrom(date);
+        mDateFromEditText.setText(dateFrom.toString(CalendarUtils.JODA_DATE_FORMATTER));
+        mSchedule.setFrom(dateFrom);
 
-        if (mSchedule.getTo() != null && date.isAfter(mSchedule.getTo())) {
+        if (mSchedule.getTo() != null && dateFrom.isAfter(mSchedule.getTo())) {
             Log.d("TAG", "DateFrom is bigger then DateTo");
 
-            setDateTo(date.plusDays(1));
+            setDateTo(dateFrom.plusDays(1));
         }
-    }
-
-    private void setDateTo(DateTime dateTo) {
-        LocalDate date = new LocalDate(dateTo);
-
-        setDateTo(date);
     }
 
     private void setDateTo(LocalDate dateTo) {
@@ -327,12 +314,12 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
     }
 
     @Override
-    public void onDateSet(DateTime dateTime, String datepickerType) {
+    public void onDateSet(LocalDate dateTime, String datepickerType) {
         switch (datepickerType) {
-            case DATE_FROM_FRAGMENT:
+            case DateDialog.DATE_FROM_FRAGMENT:
                 setDateFrom(dateTime);
                 break;
-            case DATE_TO_FRAGMENT:
+            case DateDialog.DATE_TO_FRAGMENT:
                 setDateTo(dateTime);
                 break;
         }

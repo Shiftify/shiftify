@@ -23,16 +23,28 @@ import cz.cvut.fit.shiftify.utils.CalendarUtils;
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public static final String DATE_TYPE_ARG = "date_type_fragment";
-    public static final String DATE_MS_ARG = "date_seconds";
-    public static final String DATE_MIN_MS_ARGS = "date_minimum_in_seconds";
+    public static final String SELECTED_DATE = "selected_date";
+    public static final String DATE_FROM_FRAGMENT = "date_from_fragment";
+    public static final String DATE_TO_FRAGMENT = "date_to_fragment";
+    public static final String DATE_PICKER_DIALOG_TYPE = "type";
 
+
+    private Calendar selectedDate;
     private DateDialogCallback mCallback;
+    private String type;
 
-    public static DateDialog newInstance() {
-        Bundle args = new Bundle();
-        DateDialog fragment = new DateDialog();
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle selectedDateBundle = getArguments();
+
+        if (selectedDateBundle != null) {
+            String dateString = selectedDateBundle.getString(SELECTED_DATE);
+            selectedDate = CalendarUtils.getCalendarFromDateString(dateString);
+            type = selectedDateBundle.getString(DATE_PICKER_DIALOG_TYPE);
+        } else {
+            selectedDate = null;
+        }
     }
 
     @SuppressWarnings("deprecation") //for backward compatibility, dont touch ffs. More at: https://code.google.com/p/android/issues/detail?id=183358
@@ -54,34 +66,32 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        Calendar calendar = Calendar.getInstance();
-        long milliseconds = args.getLong(DATE_MS_ARG, calendar.getTimeInMillis());
-        long minimumMilliseconds = 0;
-        calendar.setTimeInMillis(milliseconds);
-        if (args.containsKey(DATE_MIN_MS_ARGS)) {
-            minimumMilliseconds = args.getLong(DATE_MIN_MS_ARGS);
-            if (milliseconds < minimumMilliseconds)
-            calendar = CalendarUtils.addDay(minimumMilliseconds);
+        int year, month, day;
+        if (selectedDate != null) {
+            year = selectedDate.get(Calendar.YEAR);
+            month = selectedDate.get(Calendar.MONTH);
+            day = selectedDate.get(Calendar.DAY_OF_MONTH);
+        } else {
+            final Calendar cal = Calendar.getInstance();
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
         }
 
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-        dialog.getDatePicker().setTag(args.getString(DATE_TYPE_ARG));
-        if (args.containsKey(DATE_MIN_MS_ARGS)) {
-            dialog.getDatePicker().setMinDate(minimumMilliseconds);
-        }
-        return dialog;
+        // Create a new instance of DatePickerDialog and return it
+        return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
 
     @Override
     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-        mCallback.onDateSet(new DateTime(y, m, d, 0, 0), (String) datePicker.getTag());
+        Calendar tmpCal = Calendar.getInstance();
+        tmpCal.set(y, m, d);
+        LocalDate date = LocalDate.fromCalendarFields(tmpCal);
+        mCallback.onDateSet(date, type);
     }
 
     public interface DateDialogCallback {
-        public void onDateSet(DateTime dateTime, String datepickerType);
+        void onDateSet(LocalDate pickedDate, String datepickerType);
     }
 }

@@ -79,6 +79,11 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadWorkersAndShifts();
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

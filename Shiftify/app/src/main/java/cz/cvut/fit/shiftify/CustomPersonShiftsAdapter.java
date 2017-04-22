@@ -18,6 +18,7 @@ import cz.cvut.fit.shiftify.data.Utilities;
 import cz.cvut.fit.shiftify.data.WorkDay;
 import cz.cvut.fit.shiftify.data.models.Shift;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
+import cz.cvut.fit.shiftify.utils.TimeUtils;
 import cz.cvut.fit.shiftify.views.TimeLineView;
 
 /**
@@ -49,10 +50,10 @@ public class CustomPersonShiftsAdapter extends ArrayAdapter<WorkDay> {
         TextView shiftName = (TextView) rowView.findViewById(R.id.shift_name);
 
         List<Shift> tmpShiftList = workDayList.get(position).getShifts();
-        String tmpShiftStr = new String();
+        String tmpShiftStr = "";
 
         for (Shift s: tmpShiftList) {
-            tmpShiftStr += s.getName() + "  " + s.getFrom().toString(Utilities.TIME_FORMATTER);
+            tmpShiftStr += s.getName() + "  " + s.getFrom().toString(TimeUtils.JODA_TIME_FORMATTER);
         }
 
         shiftName.setText( tmpShiftStr );
@@ -65,9 +66,5 @@ public class CustomPersonShiftsAdapter extends ArrayAdapter<WorkDay> {
 
         return rowView;
     }
-
-
-
-
 
 }

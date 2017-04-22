@@ -60,16 +60,11 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
     }
 
     private String getScheduleTitle(Schedule schedule) {
-        LocalDate today = LocalDate.now();
-
-
         String name = schedule.getScheduleType().getName();
-        String todayStr = today.toString(CalendarUtils.JODA_DATE_FORMATTER);
+        String fromStr = schedule.getFrom().toString(CalendarUtils.JODA_DATE_FORMATTER);
         String toStr = (schedule.getTo() == null) ? "neurčito" : schedule.getTo().toString(CalendarUtils.JODA_DATE_FORMATTER);
 
-        String title = MessageFormat.format("{0} {1} - {2}", name, todayStr, toStr);
-
-        return title;
+        return MessageFormat.format("{0} {1} - {2}", name, fromStr, toStr);
     }
 
     @Nullable
