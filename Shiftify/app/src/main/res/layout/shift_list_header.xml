@@ -37,7 +37,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/date_arrow_left"
+                    android:id="@+id/week_arrow_left"
                     android:layout_width="40sp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -47,7 +47,7 @@
                 <!--previous line meant for older APIs-->
 
                 <TextView
-                    android:id="@+id/shift_list_header_date"
+                    android:id="@+id/first_week_day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
-                android:layout_alignBottom="@id/shift_list_header_date"
+                android:layout_alignBottom="@id/first_week_day"
                 />
         </TableLayout>>
     </RelativeLayout>

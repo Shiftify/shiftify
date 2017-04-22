@@ -108,7 +108,7 @@ public class DataSeeder {
         UserManager userManager = new UserManager();
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         userManager.deleteScheduleAll();
-        List<ScheduleType> scheduleTypes = new ArrayList<ScheduleType>();
+        List<ScheduleType> scheduleTypes = new ArrayList<>();
 
         try {
             scheduleTypes = scheduleTypeManager.scheduleTypes();

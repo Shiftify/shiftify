@@ -50,7 +50,7 @@ public class ScheduleTypeManager {
         for (ScheduleShift sh : tmp.getShifts()) {
             found = false;
             for (ScheduleShift shift : scheduleType.getShifts())
-                if (sh.getId() == shift.getId()) {
+                if (sh.getId().equals(shift.getId())) {
                     found = true;
                     break;
                 }

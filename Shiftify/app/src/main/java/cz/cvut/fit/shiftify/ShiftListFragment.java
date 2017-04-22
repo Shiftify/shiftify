@@ -69,7 +69,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
         View view = inflater.inflate(R.layout.fragment_shifts, container, false);
 
         btnCal = (ImageButton) view.findViewById(R.id.btn_cal);
-        btnArrLeft = (ImageButton) view.findViewById(R.id.date_arrow_left);
+        btnArrLeft = (ImageButton) view.findViewById(R.id.week_arrow_left);
         btnArrRight = (ImageButton) view.findViewById(R.id.date_arrow_right);
 
         btnCal.setOnClickListener(this);
@@ -93,7 +93,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
         userManager = new UserManager();
 
         // why does this work??
-        headerDate = (TextView) getActivity().findViewById(R.id.shift_list_header_date);
+        headerDate = (TextView) getActivity().findViewById(R.id.first_week_day);
         initHeaderDate();
 
         loadWorkersAndShifts();
@@ -109,8 +109,8 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
 
     private void loadWorkersAndShifts() {
 
-        List<User> allWorkers = new ArrayList<User>();
-        userShiftsList = new ArrayList<UserWorkdayWrapper>();
+        List<User> allWorkers = new ArrayList<>();
+        userShiftsList = new ArrayList<>();
         WorkDay dayShifts;
 
         try {
@@ -176,7 +176,7 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
                 //showing the datePicker
                 newFragment.show(getActivity().getFragmentManager(), DatePickDialog.DATE_PICKER_TAG);
                 break;
-            case R.id.date_arrow_left:
+            case R.id.week_arrow_left:
                 // date --
                 cal = cal.minusDays(1);
                 setHeaderDate();
