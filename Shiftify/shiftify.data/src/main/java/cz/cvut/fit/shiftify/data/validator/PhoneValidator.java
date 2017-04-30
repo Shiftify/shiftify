@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class PhoneValidator implements IPropertyValidator {
     public static final IPropertyValidator INSTANCE = new PhoneValidator();
 
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+(?:[0-9]●?){6,14}[0-9]$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+?(?:[0-9] ?){6,14}[0-9]$");
 
     @Override
     public ValidatorMessage validate(String name, Object value) {
