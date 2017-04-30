@@ -17,7 +17,7 @@ public class PhoneValidatorTest {
     private static final String NAME = "phone";
 
     private static final List<String> VALID_PHONES = Arrays.asList("+420123456789", "+71234567890", "712654811");
-    private static final List<String> INVALID_PHONES = Arrays.asList("123", "123456789123456789", "+158abc1569", "420123456789", "+420123");
+    private static final List<String> INVALID_PHONES = Arrays.asList("123", "123456789123456789", "+158abc1569", "+420123");
 
     @Test
     public void testEmptyPhones() {
