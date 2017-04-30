@@ -78,7 +78,11 @@ public class ScheduleTypeManager {
      * Deletes all scheduleTypes in the database.
      */
     public void deleteAll() throws Exception {
-        scheduleTypeDao.deleteInTx(scheduleTypeDao.loadAll());
+        //GreenDAO doesnt support delete cascade :(
+        //So we have to delete corresponding shifts by hands
+        for (ScheduleType type: scheduleTypeDao.loadAll()) {
+            delete(type.getId());
+        }
     }
 
     /**
