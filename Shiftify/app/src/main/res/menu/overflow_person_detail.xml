@@ -6,22 +6,7 @@
             android:icon="@drawable/icon_bar_example"
             android:title="@string/person_edit" />
         <item
-            android:id="@+id/shift_add_exception"
-            android:title="@string/shift_add_exception" />
-        <item
-            android:id="@+id/shift_new_plan"
-            android:title="@string/shift_new_plan" />
-        <item
-            android:id="@+id/shift_cancel_plan"
-            android:title="@string/shift_cancel_plan" />
-        <item
             android:id="@+id/person_delete"
             android:title="@string/person_delete" />
-        <item
-            android:id="@+id/schedule_list"
-            android:title="@string/schedules_list" />
-        <item
-            android:id="@+id/exception_list"
-            android:title="@string/exception_list" />
     </group>
 </menu>
