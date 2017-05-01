@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="cz.cvut.fit.shiftify.schedules.ScheduleTypeEditFragment"/>
+        <import type="cz.cvut.fit.shiftify.model.ScheduleShiftViewModel" />
+
+        <import type="cz.cvut.fit.shiftify.utils.TimeUtils" />
+
+        <variable
+            name="listener"
+            type="ScheduleTypeEditFragment"/>
+
+        <variable
+            name="shift"
+            type="ScheduleShiftViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(v) -> listener.onShiftClick((int)v.getTag())}">
+
+        <TextView
+            android:id="@+id/shift_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="36sp"
+            android:text="@{shift.dayOfCycle.get()}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/shift_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{shift.name.get()}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
+
+        <TextView
+            android:id="@+id/shift_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{shift.description.get()}"
+            app:layout_constraintLeft_toLeftOf="@+id/shift_name"
+            app:layout_constraintTop_toBottomOf="@+id/shift_name"
+            tools:text="Description" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/from"
+            app:layout_constraintLeft_toLeftOf="@+id/shift_description"
+            app:layout_constraintTop_toBottomOf="@+id/shift_description" />
+
+        <TextView
+            android:id="@+id/shift_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{shift.from.get().toString(TimeUtils.JODA_TIME_FORMATTER)}"
+            app:layout_constraintLeft_toRightOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="@+id/textView11"
+            android:layout_marginLeft="4dp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/to"
+            app:layout_constraintLeft_toRightOf="@+id/shift_from"
+            app:layout_constraintTop_toTopOf="@+id/shift_from" />
+
+        <TextView
+            android:id="@+id/shift_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{shift.to.get().toString(TimeUtils.JODA_TIME_FORMATTER)}"
+            app:layout_constraintLeft_toRightOf="@+id/textView12"
+            app:layout_constraintTop_toTopOf="@+id/textView12"
+            android:layout_marginLeft="4dp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

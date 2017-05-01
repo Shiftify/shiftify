@@ -43,12 +43,12 @@ public class ScheduleTypeManager {
      * Beware of the list of scheduleShifts. U edit them here the same way as well.
      */
     public void edit(ScheduleType scheduleType) throws Exception {
-        if (scheduleType.getId() != null)
+        if (scheduleType.getId() == null)
             throw new DaoException("Trying to update a scheduleType that has no id.");
-        ScheduleType tmp = scheduleTypeDao.load(scheduleType.getId());
-        boolean found;
-        for (ScheduleShift sh : tmp.getShifts()) {
-            found = false;
+            ScheduleType tmp = scheduleTypeDao.load(scheduleType.getId());
+            boolean found;
+            for (ScheduleShift sh : tmp.getShifts()) {
+                found = false;
             for (ScheduleShift shift : scheduleType.getShifts())
                 if (sh.getId().equals(shift.getId())) {
                     found = true;
