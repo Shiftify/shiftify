@@ -3,6 +3,7 @@
     <string name="shift_person_schedule">Rozpis směn pracovníků</string>
     <string name="persons_list">Seznam pracovníků</string>
     <string name="project_about">O projektu</string>
+    <string name="export_import">Export/Import dat</string>
     <string name="feedback">Zpětná vazba</string>
     <string name="drawer_open">Otevřít menu</string>
     <string name="drawer_close">Zavřít menu</string>
@@ -114,5 +115,29 @@
     <string name="exception_after_cancel">Změny neuloženy.</string>
     <string name="feature_in_dev">Tato funkcionalita je zatím ve fázi vývoje.</string>
 
+    <string name="export_sdcard_header">Export dat sd card</string>
+    <string name="export_sdcard_description">Export sdcard description</string>
+    <string name="export_sdcard_button">Export na SD kartu</string>
+    <string name="export_email_header">Export dat email</string>
+    <string name="export_email_description">Export email description</string>
+    <string name="export_email_button">Export dat email</string>
+    <string name="import_sdcard_header">Import dat</string>
+    <string name="import_sdcard_description">Import description</string>
+    <string name="import_sdcard_button">Import</string>
 
+
+    <string name="email_was_sent">Email was sent</string>
+    <string name="email_was_not_sent">Email wasn`t sent</string>
+    <string name="cant_write_external_storage">Cant write to the external storage!</string>
+    <string name="cant_read_external_storage">Cant read from external storage!</string>
+    <string name="export_failed">Error while exporting</string>
+    <string name="import_failed">Error while importing</string>
+    <string name="export_success_to">Exported successfully to \nsdcard%1$s/%2$s</string>
+    <string name="import_success">Imported successfully</string>
+    <string name="import_alert_dialog_title">Import</string>
+    <string name="import_alert_dialog_message_from">Are you sure you want to import data from \"%1$s\"?</string>
+    <string name="import_alert_dialog_message">Are you sure you want to import data?</string>
+    <string name="import_dialog_positive_button">yes</string>
+    <string name="import_dialog_negative_button">no</string>
+    <string name="file_was_not_found">File \"%1$s/%2$s\" was not found</string>
 </resources>

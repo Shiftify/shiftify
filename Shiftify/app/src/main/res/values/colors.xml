@@ -7,4 +7,5 @@
     <color name="colorTimeLineShift">#dc0a11</color>
     <color name="colorExceptionShiftWorking">#deffd6</color>
     <color name="colorExceptionShiftFree">#ffdcd6</color>
+    <color name="grey_label">#e2e2e2</color>
 </resources>

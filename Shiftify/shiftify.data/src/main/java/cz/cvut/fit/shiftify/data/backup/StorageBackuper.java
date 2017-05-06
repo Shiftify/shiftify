@@ -3,12 +3,15 @@ package cz.cvut.fit.shiftify.data.backup;
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.FileBackupHelper;
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOError;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import cz.cvut.fit.shiftify.data.App;
@@ -23,27 +26,50 @@ public class StorageBackuper {
     public static void backup(File out) throws IOException {
         File dbFile = App.getsContext().getDatabasePath(DB_NAME);
 
-        transfer(dbFile, out);
+        try (InputStream dbStream = new FileInputStream(dbFile);
+             OutputStream fileStream = new FileOutputStream(out)) {
+            transfer(dbStream, fileStream);
+        }
     }
 
     public static void restore(File in) throws IOException {
         File dbFile = App.getsContext().getDatabasePath(DB_NAME);
 
-        transfer(in, dbFile);
+        try (InputStream fileStream = new FileInputStream(in);
+             OutputStream dbStream = new FileOutputStream(dbFile)) {
+            transfer(fileStream, dbStream);
+        }
     }
 
-    private static void transfer(File in, File out) throws IOException {
-        try (FileInputStream fis = new FileInputStream(in);
-             OutputStream output = new FileOutputStream(out);
-        ) {
-            byte[] buffer = new byte[1024];
-            int length;
+    public static void restore(InputStream is) throws IOException {
+        File dbFile = App.getsContext().getDatabasePath(DB_NAME);
 
-            while ((length = fis.read(buffer)) > 0){
-                output.write(buffer, 0, length);
-            }
-
-            output.flush();
+        try(OutputStream dbStream = new FileOutputStream(dbFile)){
+            transfer(is, dbStream);
         }
+    }
+
+    private static void transfer(InputStream is, OutputStream os) throws IOException {
+        byte[] buffer = new byte[1024];
+        int length;
+
+        while ((length = is.read(buffer)) > 0) {
+            os.write(buffer, 0, length);
+        }
+
+        os.flush();
+    }
+
+    /* Checks if external storage is available for read and write */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
+
+    /* Checks if external storage is available to at least read */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 }

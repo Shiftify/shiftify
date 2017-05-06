@@ -28,6 +28,11 @@ public class CustomSnackbar{
         this.view = activity.findViewById(android.R.id.content);
     }
 
+    public CustomSnackbar(Activity activity, String text) {
+        this.text = text;
+        this.view = activity.findViewById(android.R.id.content);
+    }
+
     public void show(){
         snack = Snackbar.make(view, text , Snackbar.LENGTH_SHORT);
         View snackBarView = snack.getView();
