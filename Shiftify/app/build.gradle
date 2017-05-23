@@ -3,10 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
-    dataBinding {
-        enabled = true
-    }
+    android.dataBinding.enabled = true
 
     lintOptions {
         abortOnError false
@@ -39,6 +36,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
+
     //    Navigation Drawer as Fragment
     compile 'com.android.support:design:25.3.1'
     compile project(':shiftify.data')

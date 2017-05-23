@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
     private int selectedItemId;
 
     private static final int DEFAULT_ITEM = R.id.nav_item_shifts_list;
-    private static final int PERSON_LIST_ITEM = R.id.nav_item_persons_list;
-
+    public static final int CREATE_SCHEDULE_TYPE_REQUEST = 1;
+    public static final int EDIT_SCHEDULE_TYPE_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +189,10 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void onDateSet(LocalDate pickedDate) {
