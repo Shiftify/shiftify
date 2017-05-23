@@ -122,36 +122,11 @@ public class PersonDetailActivity extends AppCompatActivity{
             case R.id.person_delete:
                 showDialog();
                 break;
-
-            case R.id.shift_add_exception:
-                intent = new Intent(this, ExceptionEditActivity.class);
-                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
-                intent.putExtra(ExceptionListActivity.SELECTED_DATE, LocalDate.now().toString(CalendarUtils.JODA_DATE_FORMATTER));
-                startActivityForResult(intent, CREATE_EXCEPTION_REQUEST);
-                break;
-
-            case R.id.person_detail_exceptions_button:
-                intent = new Intent(this, ExceptionListActivity.class);
-                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
-                startActivity(intent);
-                break;
-
-            case R.id.schedule_list:
-                intent = new Intent(this, ScheduleListActivity.class);
-                intent.putExtra(USER_ID, mUser.getId());
-                startActivity(intent);
-                break;
-            case R.id.exception_list:
-                intent = new Intent(this, ExceptionListActivity.class);
-                intent.putExtra(ExceptionListActivity.USER_ID, mUser.getId());
-                startActivity(intent);
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void showDialog() {
-
         DialogFragment newFragment = PersonDeleteDialogFragment.newInstance(mUser.getId());
         newFragment.show(getFragmentManager(), "dialog");
 

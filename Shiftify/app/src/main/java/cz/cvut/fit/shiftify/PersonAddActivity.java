@@ -107,31 +107,27 @@ public class PersonAddActivity extends AppCompatActivity {
     }
 
     public boolean validateUserData(){
-
-        if(!Validator.phoneValid(phone.getText().toString())){
-
-            phone.setError("Nevalidní adresa.");
+        String phoneNumber = phone.getText().toString();
+        if(!phoneNumber.isEmpty() && !Validator.phoneValid(phoneNumber)){
+            phone.setError("Nevalidní telefonní číslo.");
             phone.requestFocus();
             return false;
         }
 
-        if(!Validator.emailValid(email.getText().toString())){
-
-            email.setError("Nevalidní číslo.");
+        String emailAddress = email.getText().toString();
+        if(!emailAddress.isEmpty() && !Validator.emailValid(emailAddress)){
+            email.setError("Nevalidní emailová adresa.");
             email.requestFocus();
             return false;
         }
 
 
         if(firstname.getText().toString().isEmpty()) {
-
             firstname.setError("Pole je povinné");
             firstname.requestFocus();
-
             return false;
         }
         if(surname.getText().toString().isEmpty()) {
-
             surname.setError("Pole je povinné");
             surname.requestFocus();
             return false;
