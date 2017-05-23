@@ -16,6 +16,11 @@
             android:title="@string/schedule_types_manage" />
 
         <item
+            android:id="@+id/nav_item_export_import"
+            android:icon="@drawable/icon_bar_example"
+            android:title="@string/export_import" />
+
+        <item
             android:id="@+id/nav_item_about_project"
             android:icon="@drawable/icon_bar_example"
             android:title="@string/project_about" />

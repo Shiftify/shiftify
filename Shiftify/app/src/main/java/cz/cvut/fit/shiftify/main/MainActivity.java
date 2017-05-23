@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.main;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -42,10 +43,32 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
     private static final int DEFAULT_ITEM = R.id.nav_item_shifts_list;
     public static final int CREATE_SCHEDULE_TYPE_REQUEST = 1;
     public static final int EDIT_SCHEDULE_TYPE_REQUEST = 2;
+    private static final int PERSON_LIST_ITEM = R.id.nav_item_persons_list;
+    private static final int IMPORT_REQUESTED_ITEM = R.id.nav_item_export_import;
+    private static final String PERSON_LIST_FRAGMENT_TAG = "person_list_fragment_tag";
+    private static final String SHIFT_LIST_FRAGMENT_TAG = "shift_list_fragment_tag";
+    private static final String ABOUT_FRAGMENT_TAG = "about_fragment_tag";
+    private static final String SCHEDULE_TYPE_LIST_FRAGMENT_TAG = "schedule_type_list_fragment_tag";
+    private static final String EXPORT_IMPORT_FRAGMENT_TAG = "export_import_fragment_tag";
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_VIEW.equals(action) && type != null){
+            selectedItemId = IMPORT_REQUESTED_ITEM;
+            MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
+            setNewFragmentContent(newSelectedMenuItem);
+            onImportIntent(intent);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
         mDrawerToggle = setupDrawToggle();
         mDrawer.addDrawerListener(mDrawerToggle);
 
-
 /*        If savedInstanceState == null - set default selected item in navigation drawer
           Else savedInstanceState != null - get date Bundle id of selected item */
         if (savedInstanceState != null) {
@@ -67,9 +89,21 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
         } else {
             selectedItemId = DEFAULT_ITEM;
         }
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_VIEW.equals(action) && type != null){
+            selectedItemId = IMPORT_REQUESTED_ITEM;
+            MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
+            setNewFragmentContent(newSelectedMenuItem);
+            onImportIntent(intent);
+            return;
+        }
+
         MenuItem newSelectedMenuItem = mNavViewDrawer.getMenu().findItem(selectedItemId);
         setNewFragmentContent(newSelectedMenuItem);
-
     }
 
 
@@ -121,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
      */
     private void setNewFragmentContent(MenuItem menuItem) {
         Class fragmentClass = null;
+        String fragmentTag = null;
         selectedItemId = menuItem.getItemId();
 
         if (selectedItemId == R.id.nav_item_feedback) {
@@ -129,19 +164,27 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
             switch (selectedItemId) {
                 case R.id.nav_item_persons_list:
                     fragmentClass = PersonsListFragment.class;
+                    fragmentTag = PERSON_LIST_FRAGMENT_TAG;
                     break;
                 case R.id.nav_item_shifts_list:
                     fragmentClass = ShiftListFragment.class;
+                    fragmentTag = SHIFT_LIST_FRAGMENT_TAG;
                     break;
                 case R.id.nav_item_about_project:
                     fragmentClass = AboutFragment.class;
+                    fragmentTag = ABOUT_FRAGMENT_TAG;
                     break;
                 case R.id.nav_item_schedule_types_list:
                     fragmentClass = ScheduleTypeListFragment.class;
+                    fragmentTag = SCHEDULE_TYPE_LIST_FRAGMENT_TAG;
+                    break;
+                case R.id.nav_item_export_import:
+                    fragmentClass = ExportImportFragment.class;
+                    fragmentTag = EXPORT_IMPORT_FRAGMENT_TAG;
                     break;
             }
 
-            switchFragment(fragmentClass);
+            switchFragment(fragmentClass, fragmentTag);
 
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
@@ -154,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
      *
      * @param fragmentClass Class of new fragment
      */
-    private void switchFragment(Class fragmentClass) {
+    private void switchFragment(Class fragmentClass, String fragmentTag) {
         Fragment fragment = null;
         if (fragmentClass != null) {
             try {
@@ -164,7 +207,8 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment, fragmentTag).commit();
+            fragmentManager.executePendingTransactions();
         }
     }
 
@@ -201,5 +245,15 @@ public class MainActivity extends AppCompatActivity implements DatePickDialog.Da
         if (shiftListFragment != null) {
             shiftListFragment.setSelectedDate(pickedDate);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void onImportIntent(Intent intent){
+        ExportImportFragment fragment = (ExportImportFragment) getSupportFragmentManager().findFragmentByTag(EXPORT_IMPORT_FRAGMENT_TAG);
+        fragment.onImportRequested(intent.getData());
     }
 }
