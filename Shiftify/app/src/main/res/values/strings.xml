@@ -110,7 +110,7 @@
     <string name="exception_delete_message">Opravdu chcete smazat tuto vyjímku?</string>
     <string name="exception_delete_title">Smazat vyjímku</string>
     <string name="exception_after_delete">Vyjímka byla smazána.</string>
-    <string name="exception_after_edit">Změny byly uloženy.</string>
+    <string name="exception_after_edit">Změny vyjímky byly uloženy.</string>
     <string name="exception_after_create">Nová vyjímka byla přidána.</string>
     <string name="exception_after_cancel">Změny neuloženy.</string>
     <string name="feature_in_dev">Tato funkcionalita je zatím ve fázi vývoje.</string>
@@ -140,4 +140,20 @@
     <string name="import_dialog_positive_button">yes</string>
     <string name="import_dialog_negative_button">no</string>
     <string name="file_was_not_found">File \"%1$s/%2$s\" was not found</string>
+    <string name="schedule_type_edit">Upravit plán</string>
+    <string name="schedule_type_was_created">Plán byl vytvořen</string>
+    <string name="schedule_type_was_edited">"Změny byly uloženy"</string>
+    <string name="wrong_day_of_cycle">Den musí být od 1 do 99</string>
+    <string name="schedule_shift">šichta</string>
+    <string name="add_schedule_shift">Přidat šichtu</string>
+    <string name="schedule_type_edit_error">Chyba při editaci plánu</string>
+    <string name="schedule_type_create_error">Chyba pri uložení plánu</string>
+    <string name="error_while_fetching_schedule_types">Nepodařilo se načíst plány</string>
+    <string name="day">Den</string>
+    <string name="from">Od:</string>
+    <string name="to">Do:</string>
+    <string name="schedule_shift_name">Název šichty</string>
+    <string name="schedule_shift_description">Popis šichty</string>
+    <string name="schedule_type_name">Název plánu</string>
+    <string name="schedule_type_description">Popis plánu</string>
 </resources>

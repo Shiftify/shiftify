@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cz.cvut.fit.shiftify.schedules.ScheduleTypeEditActivity">
+
+    <data>
+        <import type="cz.cvut.fit.shiftify.model.ScheduleTypeViewModel"/>
+        <import type="cz.cvut.fit.shiftify.schedules.ScheduleTypeEditFragment"/>
+        <variable
+            name="type" type="ScheduleTypeViewModel"/>
+        <variable
+            name="fragment"
+            type="ScheduleTypeEditFragment"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/type_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addTextChangedListener="@{type.nameWatcher}"
+                android:hint="@string/schedule_type_name"
+                android:text="@{type.name.get()}" />
+        </android.support.design.widget.TextInputLayout>
+
+        <View
+            android:id="@+id/delim"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_description" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/shift_list"
+            android:layout_width="0dp"
+
+            android:layout_height="0dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/schedule_shift_row"
+            android:layout_marginTop="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/delim"
+            android:layout_marginRight="0dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="0dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_shift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true"
+            android:onClick="@{fragment::onAddShiftClick}"
+            android:src="@drawable/ic_add"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/type_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/type_name"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addTextChangedListener="@{type.descriptionWatcher}"
+                android:hint="@string/schedule_type_description"
+                android:text="@{type.description.get()}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

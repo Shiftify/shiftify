@@ -32,6 +32,7 @@ import cz.cvut.fit.shiftify.data.models.ExceptionInSchedule;
 import cz.cvut.fit.shiftify.data.models.ExceptionShift;
 import cz.cvut.fit.shiftify.data.models.Schedule;
 import cz.cvut.fit.shiftify.data.models.User;
+import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
 import cz.cvut.fit.shiftify.utils.CalendarUtils;
 import cz.cvut.fit.shiftify.utils.TimeUtils;
 import cz.cvut.fit.shiftify.utils.ToolbarUtils;
@@ -155,8 +156,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast toast = Toast.makeText(this, "Vyjimka byla pridana", Toast.LENGTH_SHORT);
-                toast.show();
+                new CustomSnackbar(this, R.string.exception_after_create).show();
             } else if (requestCode == EDIT_EXCEPTION_REQUEST) {
                 try {
                     ExceptionInSchedule exceptionInSchedule = mUserManager.exceptionInSchedule(editedExceptionShift.getExceptionInScheduleId());
@@ -195,8 +195,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast toast = Toast.makeText(this, "Zmeny vyjimky byly ulozeny", Toast.LENGTH_SHORT);
-                toast.show();
+                new CustomSnackbar(this, R.string.exception_after_edit).show();
             } else {
                 throw new RuntimeException("Unexpected result code recieved from ExceptionEditActivity!");
             }
@@ -302,8 +301,7 @@ public class ExceptionListActivity extends AppCompatActivity implements ListView
 
     @Override
     public void onClickPositiveButton() {
-        Toast toast = Toast.makeText(this, "Vyjimka byla zmazana", Toast.LENGTH_SHORT);
-        toast.show();
+        new CustomSnackbar(this, R.string.exception_after_delete).show();
         updateExceptionList();
     }
 }
