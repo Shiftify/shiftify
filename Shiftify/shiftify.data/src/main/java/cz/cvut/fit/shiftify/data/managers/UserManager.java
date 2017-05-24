@@ -3,6 +3,7 @@ package cz.cvut.fit.shiftify.data.managers;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -84,7 +85,7 @@ public class UserManager {
      * Gets all all users.
      */
     public List<User> allUsers() {
-        return userDao.loadAll();
+        return userDao.queryBuilder().orderAsc(UserDao.Properties.Surname).list();
     }
 
     /**
