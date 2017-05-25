@@ -1,5 +1,6 @@
 package cz.cvut.fit.shiftify.data.managers;
 
+import org.greenrobot.greendao.query.WhereCondition;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -86,6 +87,13 @@ public class UserManager {
      */
     public List<User> allUsers() {
         return userDao.queryBuilder().orderAsc(UserDao.Properties.Surname).list();
+    }
+
+    /**
+     * Find user by given name
+     */
+    public User getUser(String name, String nick, String surName) {
+        return userDao.queryBuilder().where(UserDao.Properties.FirstName.eq(name), UserDao.Properties.Nickname.eq(nick), UserDao.Properties.Surname.eq(surName)).unique();
     }
 
     /**

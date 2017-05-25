@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +24,14 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
-import cz.cvut.fit.shiftify.helpers.CustomSnackbar;
 import cz.cvut.fit.shiftify.helpers.Validator;
 
 public class PersonEditActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "shiftify.personEditAct";
 
     private EditText firstname;
     private EditText surname;
@@ -73,14 +75,14 @@ public class PersonEditActivity extends AppCompatActivity {
         long userId = getIntent().getLongExtra(PersonDetailActivity.USER_ID,-1);
 
         if(userId == -1){
-            System.err.println("Nepodarilo se nacist UserId v PersonEditActivity.");
+            Log.e(LOG_TAG, "Nepodarilo se nacist UserId v PersonEditActivity.");
             this.finish();
         }
 
         try {
             u = userManager.user(userId);
         } catch (Exception e) {
-            System.err.println("Nepodarilo se nacist UserId v PersonEditActivity.");
+            Log.e(LOG_TAG, "Nepodarilo se nacist UserId v PersonEditActivity.");
             this.finish();
         }
 
@@ -115,33 +117,24 @@ public class PersonEditActivity extends AppCompatActivity {
 
     // checks whether user changed any data, if not, no write is performed
     private  boolean dataChanged(){
-
-
-        if(        !u.getFirstName().equals(firstname.getText().toString())
-                || !u.getSurname().equals(surname.getText().toString())
-                || !u.getNickname().equals(nickname.getText().toString())
-                || !u.getPhoneNumber().equals(phone.getText().toString())
-                || !u.getEmail().equals(email.getText().toString())){
-
-            return true;
-        }
-        return false;
+        return  !Objects.equals(u.getFirstName(), firstname.getText()) ||
+                !Objects.equals(u.getSurname(), surname.getText()) ||
+                !Objects.equals(u.getNickname(), nickname.getText()) ||
+                !Objects.equals(u.getPhoneNumber(), phone.getText()) ||
+                !Objects.equals(u.getEmail(), email.getText());
     }
 
     public void personEditSave(View view){
 
         // save data to DB
 
-        if(!dataChanged()){
+        if (!dataChanged()){
             this.finish();
         }
 
-        if(!validateUserData())
-            return;
-
-        u. setFirstName( firstname.getText().toString() );
-        u. setSurname( surname.getText().toString() );
-        u. setNickname( nickname.getText().toString() );
+        u.setFirstName( firstname.getText().toString() );
+        u.setSurname( surname.getText().toString() );
+        u.setNickname( nickname.getText().toString() );
 
         if(phone.getText().toString().isEmpty())
             u.setPhoneNumber(null);
@@ -153,6 +146,12 @@ public class PersonEditActivity extends AppCompatActivity {
         else
             u. setEmail( email.getText().toString() );
 
+        if (!Validator.validateUserData(u, view, LOG_TAG, email, phone)) {
+            return;
+        }
+
+
+
 
         try {
             userManager.edit(u);
@@ -161,58 +160,6 @@ public class PersonEditActivity extends AppCompatActivity {
         }
 
         this.finish();
-    }
-
-    public boolean validateUserData(){
-
-        if(!Validator.phoneValid(phone.getText().toString())){
-
-            phone.setError("Nevalidní číslo.");
-            phone.requestFocus();
-            return false;
-        }
-
-        if(!Validator.emailValid(email.getText().toString())){
-
-            email.setError("Nevalidní adresa.");
-            email.requestFocus();
-            return false;
-        }
-
-
-        if(firstname.getText().toString().isEmpty()) {
-
-            firstname.setError("Pole je povinné");
-            firstname.requestFocus();
-
-            return false;
-        }
-        if(surname.getText().toString().isEmpty()) {
-
-            surname.setError("Pole je povinné");
-            surname.requestFocus();
-            return false;
-        }
-
-        if( !u.getFirstName().equals(firstname.getText().toString())
-                || !u.getSurname().equals(surname.getText().toString())
-                || !u.getNickname().equals(nickname.getText().toString())){
-            // zmenila se dulezita identifikacni data - overeni  duplicity
-
-            if (Validator.duplicitUser(new User(firstname.getText().toString(),
-                    surname.getText().toString(),
-                    phone.getText().toString(),
-                    email.getText().toString(),
-                    nickname.getText().toString() )) ){
-                View v = this.findViewById(android.R.id.content);
-                CustomSnackbar c = new CustomSnackbar(v,"Duplicita - změnte Jméno/Příjmení, či přidejte přezdívku.");
-                c.show();
-                return false;
-            }
-
-        }
-
-        return true;
     }
 
     public void personImageSelect(View view){
