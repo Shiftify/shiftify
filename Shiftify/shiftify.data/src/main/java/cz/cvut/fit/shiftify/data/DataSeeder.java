@@ -67,6 +67,8 @@ public class DataSeeder {
     private static void initScheduleTypesAndScheduleShifts() {
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         try {
+            if (scheduleTypeManager.scheduleTypes().size() > 0)
+                return;
             scheduleTypeManager.deleteAll();
         } catch (Exception e) {
             e.printStackTrace();
