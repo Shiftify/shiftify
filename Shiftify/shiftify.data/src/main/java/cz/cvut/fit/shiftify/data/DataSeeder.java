@@ -28,9 +28,9 @@ public class DataSeeder {
     private static final int SCHEDULE_TYPES_COUNT = 2;
 
     public static void initAll() {
-        initUsers();
+        //initUsers();
         initScheduleTypesAndScheduleShifts();
-        initSchedules();
+        //initSchedules();
     }
 
     private static void initUsers() {
