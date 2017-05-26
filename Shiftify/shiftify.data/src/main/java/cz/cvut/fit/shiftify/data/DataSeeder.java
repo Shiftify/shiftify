@@ -28,9 +28,9 @@ public class DataSeeder {
     private static final int SCHEDULE_TYPES_COUNT = 2;
 
     public static void initAll() {
-        initUsers();
+        //initUsers();
         initScheduleTypesAndScheduleShifts();
-        initSchedules();
+        //initSchedules();
     }
 
     private static void initUsers() {
@@ -67,17 +67,37 @@ public class DataSeeder {
     private static void initScheduleTypesAndScheduleShifts() {
         ScheduleTypeManager scheduleTypeManager = new ScheduleTypeManager();
         try {
+            if (scheduleTypeManager.scheduleTypes().size() > 0)
+                return;
             scheduleTypeManager.deleteAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         List<ScheduleShift> shifts = new ArrayList<>();
-        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 3));
-        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 5, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0),  6));
-        ScheduleType scheduleType = new ScheduleType("Železárny", 6, "Slouží jako rozpis pro vrátnýho.");
+        ScheduleType scheduleType;
+
+        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 1, "To se bude blbě vstávat."));
+        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2));
+        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 3));
+        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 4, "Já jsem poznámka."));
+        shifts.add(new ScheduleShift("1. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 5));
+        shifts.add(new ScheduleShift("2. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 6, "komentář"));
+        scheduleType = new ScheduleType("Železárny", 8);
+        scheduleType.setShifts(shifts);
+        try {
+            // shifts are added as in the add method as well
+            scheduleTypeManager.add(scheduleType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        shifts.clear();
+
+        shifts.add(new ScheduleShift("pondělí", new LocalTime(8, 0), new Period(8, 30, 0, 0), 1));
+        shifts.add(new ScheduleShift("úterý", new LocalTime(8, 0), new Period(8, 30, 0, 0), 2));
+        shifts.add(new ScheduleShift("středa", new LocalTime(8, 0), new Period(8, 30, 0, 0), 3));
+        shifts.add(new ScheduleShift("čtvrtek", new LocalTime(8, 0), new Period(8, 30, 0, 0), 4));
+        shifts.add(new ScheduleShift("pátek", new LocalTime(8, 0), new Period(8, 30, 0, 0), 5));
+        scheduleType = new ScheduleType("Po-Pá od osmi", 7);
         scheduleType.setShifts(shifts);
 
         try {
@@ -88,14 +108,14 @@ public class DataSeeder {
         }
         shifts.clear();
 
-        shifts.add(new ScheduleShift("1. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 1, "To se bude blbě vstávat."));
-        shifts.add(new ScheduleShift("2. ranní", new LocalTime(6, 0), new Period(8, 0, 0, 0), 2));
-        shifts.add(new ScheduleShift("1. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 3));
-        shifts.add(new ScheduleShift("2. odpolední", new LocalTime(14, 0), new Period(8, 0, 0, 0), 4, "Já jsem poznámka."));
-        shifts.add(new ScheduleShift("1. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 5));
-        shifts.add(new ScheduleShift("2. noční", new LocalTime(22, 0), new Period(8, 0, 0, 0), 6, "komentář"));
-        scheduleType = new ScheduleType("Železárny hasič", 8);
+        shifts.add(new ScheduleShift("pondělí", new LocalTime(9, 0), new Period(8, 30, 0, 0), 1));
+        shifts.add(new ScheduleShift("úterý", new LocalTime(9, 0), new Period(8, 30, 0, 0), 2));
+        shifts.add(new ScheduleShift("středa", new LocalTime(9, 0), new Period(8, 30, 0, 0), 3));
+        shifts.add(new ScheduleShift("čtvrtek", new LocalTime(9, 0), new Period(8, 30, 0, 0), 4));
+        shifts.add(new ScheduleShift("pátek", new LocalTime(9, 0), new Period(8, 30, 0, 0), 5));
+        scheduleType = new ScheduleType("Po-Pá od devíti", 7);
         scheduleType.setShifts(shifts);
+
         try {
             // shifts are added as in the add method as well
             scheduleTypeManager.add(scheduleType);

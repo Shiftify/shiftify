@@ -1,58 +1,61 @@
 package cz.cvut.fit.shiftify.helpers;
 
-import java.util.ArrayList;
-import java.util.regex.Pattern;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
+import java.util.Map;
+
+import cz.cvut.fit.shiftify.data.App;
 import cz.cvut.fit.shiftify.data.managers.UserManager;
 import cz.cvut.fit.shiftify.data.models.User;
-
-/**
- * Created by Vojta on 09.02.2017.
- */
+import cz.cvut.fit.shiftify.data.validator.EntityValidator;
+import cz.cvut.fit.shiftify.data.validator.ValidatorMessage;
+import cz.cvut.fit.shiftify.data.validator.ValidatorResult;
+import cz.cvut.fit.shiftify.data.validator.ValidatorState;
 
 public class Validator {
 
-    public static boolean emailValid(String email){
+    public static boolean validateUserData(User user, View view, String logTag, EditText email, EditText phone) {
+        ValidatorResult validatorResult;
 
-        if( email != null && !email.isEmpty()){
-            Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-            return pattern.matcher(email).matches();
-        }
-        else{
+        try {
+            validatorResult = EntityValidator.validateWithAllMessages(user);
+        } catch (ReflectiveOperationException e) {
+            Log.e(logTag, "Fatal exception during validation", e);
+
+            CustomSnackbar snackbar = new CustomSnackbar(view, "Chyba při validaci.");
+            snackbar.show();
+
             return false;
         }
-    }
 
-    public static boolean phoneValid(String phone){
+        Map<String, ValidatorMessage> msg = validatorResult.getMessages();
 
-        if( phone != null && !phone.isEmpty()){
-            Pattern pattern=Pattern.compile("^\\+(?:[0-9]●?){6,14}[0-9]$");
-            return pattern.matcher(phone).matches();
+        ValidatorMessage mailRes = msg.get("email");
+        if (mailRes != null) {
+            int iconId = (mailRes.getState() == ValidatorState.WARNING) ? android.R.drawable.stat_sys_warning : android.R.drawable.stat_notify_error;
+            Drawable d = App.getsContext().getDrawable(iconId);
+            email.setError(mailRes.getExplanation(), d);
         }
-        else{
-            return false;
+
+        ValidatorMessage phoneRes = msg.get("phoneNumber");
+        if (phoneRes != null) {
+            int iconId = (phoneRes.getState() == ValidatorState.WARNING) ? android.R.drawable.stat_sys_warning : android.R.drawable.stat_notify_error;
+            Drawable d = App.getsContext().getDrawable(iconId);
+            phone.setError(phoneRes.getExplanation(), d);
         }
-    }
 
-    public static boolean duplicitUser(User user){
-
-        String nick;
         UserManager userManager = new UserManager();
-        ArrayList<User> users = (ArrayList<User>) userManager.allUsers();
+        User duplicit = userManager.getUser(user.getFirstName(), user.getNickname(), user.getSurname());
 
-        for (User u: users) {
-
-                if(u.getId() == user.getId())   //  kvuli PersonEdit - hazelo to duplicitu pri editaci protoze nacital zrovna editovaneho mezi ostatnimi z db
-                    continue;
-                nick = (user.getNickname().isEmpty() ? " " : " \"" + user.getNickname().trim() + "\" ");
-                if( u.getFullNameWithNick().equals(user.getFirstName().trim() + nick + user.getSurname().trim()) ){
-                    return true;
-                }
+        if (duplicit != null && !duplicit.getId().equals(user.getId())) {
+            CustomSnackbar c = new CustomSnackbar(view, "Duplicita - změnte Jméno/Příjmení, či přidejte přezdívku.");
+            c.show();
+            return false;
         }
 
-        return false;
+        return validatorResult.getFinalState().compareTo(ValidatorState.WARNING) <= 0;
     }
-
-
-
 }

@@ -57,9 +57,9 @@ public class WorkDay implements Comparator<WorkDay>, Comparable<WorkDay> {
     @Override
     public int compare(WorkDay workDay1, WorkDay workDay2) {
         if (workDay1.shifts.isEmpty())
-            return workDay2.shifts.isEmpty() ? 0 : 1;
+            return workDay2.shifts.isEmpty() ? 0 : -1;
         if (workDay2.shifts.isEmpty())
-            return -1;
+            return 1;
         return  workDay1.shifts.get(0).compareTo(workDay2.shifts.get(0));
     }
 }

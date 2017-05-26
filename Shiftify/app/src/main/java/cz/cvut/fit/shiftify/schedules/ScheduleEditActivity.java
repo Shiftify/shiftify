@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -241,6 +243,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
                     return o1.getDayOfScheduleCycle().compareTo(o2.getDayOfScheduleCycle());
                 }
             });
+            int cnt = 1;
             for(int i = 1 ; i <= scheduleType.getDaysOfScheduleCycle(); i++){
                 if (i - 1 < scheduleShiftsList.size() &&
                         scheduleShiftsList.get(i - 1).getDayOfScheduleCycle().compareTo(i) != 0){
@@ -248,13 +251,13 @@ public class ScheduleEditActivity extends AppCompatActivity implements DateDialo
                     // free shift doesn't even make any sence .. if there is no shift,
                     // there shouldn't be a shift or there should be null
 
-                    //scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                    scheduleShiftsList.add(i - 1, new ScheduleShift(Integer.toString(cnt++) + ". volno", new LocalTime(0, 0), new Period(0, 0, 0, 0), i));
                 } else if (i - 1 >= scheduleShiftsList.size()){
                     // FIXME: 01.03.2017
                     // free shift doesn't even make any sence .. if there is no shift,
                     // there shouldn't be a shift or there should be null
 
-                    //scheduleShiftsList.add(i - 1, ScheduleShift.getFreeShift(i));
+                    scheduleShiftsList.add(i - 1, new ScheduleShift(Integer.toString(cnt++) + ". volno", new LocalTime(0, 0), new Period(0, 0, 0, 0), i));
                 }
             }
         } catch (Exception e) {

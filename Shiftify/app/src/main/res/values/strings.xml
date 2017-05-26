@@ -3,6 +3,7 @@
     <string name="shift_person_schedule">Rozpis směn pracovníků</string>
     <string name="persons_list">Seznam pracovníků</string>
     <string name="project_about">O projektu</string>
+    <string name="export_import">Export/Import dat</string>
     <string name="feedback">Zpětná vazba</string>
     <string name="drawer_open">Otevřít menu</string>
     <string name="drawer_close">Zavřít menu</string>
@@ -114,5 +115,45 @@
     <string name="exception_after_cancel">Změny neuloženy.</string>
     <string name="feature_in_dev">Tato funkcionalita je zatím ve fázi vývoje.</string>
 
+    <string name="export_sdcard_header">Export databáze do souboru</string>
+    <string name="export_sdcard_description">Databázi naleznete ve složce /Shiftify/data.shiftify</string>
+    <string name="export_sdcard_button">Exportovat databázi</string>
+    <string name="export_email_header">Export databáze do emailu</string>
+    <string name="export_email_description">Databáze bude připojena k emailu jako příloha</string>
+    <string name="export_email_button">Poslat databázi emailem</string>
+    <string name="import_sdcard_header">Import databáze ze souboru</string>
+    <string name="import_sdcard_description">Databáze se načte ze složky /Shiftify/data.shiftify</string>
+    <string name="import_sdcard_button">Importovat databázi</string>
 
+
+    <string name="email_was_sent">Email byl odeslán</string>
+    <string name="email_was_not_sent">Email nebyl odeslán</string>
+    <string name="cant_write_external_storage">Nelze zapisovat do paměti!</string>
+    <string name="cant_read_external_storage">Nelze číst z paměti!</string>
+    <string name="export_failed">Při exportu nastala chyba</string>
+    <string name="import_failed">Při importu nastala chyba</string>
+    <string name="export_success_to">Úspěšně exportováno</string>
+    <string name="import_success">Úspěšně importováno</string>
+    <string name="import_alert_dialog_title">Import</string>
+    <string name="import_alert_dialog_message_from">Určitě chcete importovat data z \"%1$s\"?</string>
+    <string name="import_alert_dialog_message">Určitě chcete importovat data?</string>
+    <string name="import_dialog_positive_button">ano</string>
+    <string name="import_dialog_negative_button">ne</string>
+    <string name="file_was_not_found">Soubor \"%1$s/%2$s\" nebyl nalezen</string>
+    <string name="schedule_type_edit">Upravit plán</string>
+    <string name="schedule_type_was_created">Plán byl vytvořen</string>
+    <string name="schedule_type_was_edited">"Změny byly uloženy"</string>
+    <string name="wrong_day_of_cycle">Den musí být od 1 do 99</string>
+    <string name="schedule_shift">šichta</string>
+    <string name="add_schedule_shift">Přidat šichtu</string>
+    <string name="schedule_type_edit_error">Chyba při editaci plánu</string>
+    <string name="schedule_type_create_error">Chyba pri uložení plánu</string>
+    <string name="error_while_fetching_schedule_types">Nepodařilo se načíst plány</string>
+    <string name="day">Den</string>
+    <string name="from">Od:</string>
+    <string name="to">Do:</string>
+    <string name="schedule_shift_name">Název šichty</string>
+    <string name="schedule_shift_description">Popis šichty</string>
+    <string name="schedule_type_name">Název plánu</string>
+    <string name="schedule_type_description">Popis plánu</string>
 </resources>

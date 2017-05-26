@@ -15,6 +15,9 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cz.cvut.fit.shiftify.data.WorkDay;
@@ -134,6 +137,14 @@ public class ShiftListFragment extends ListFragment implements AdapterView.OnIte
             }
 
         }
+
+        Collections.sort(userShiftsList, new Comparator<UserWorkdayWrapper>() {
+            @Override
+            public int compare(UserWorkdayWrapper t1, UserWorkdayWrapper t2) {
+                return t1.getWorkday().compareTo(t2.getWorkday());
+            }
+        });
+
         adapter = new CustomShiftListAdapter(getActivity(), userShiftsList, imageId);
         setListAdapter(adapter);
     }
