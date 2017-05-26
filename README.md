@@ -22,7 +22,7 @@ Aplikace má za cíl zlepšít svolávání týmu dobrovolných hasičů k akci.
 
 ## Chcete vyzkoušet demo verzi?
 
-Pokud si chcete u sebe na mobilu vyzkoušet demo naší aplikace, neváhejte. Vše ohledně instalace najdete na naší wiki v sekci [Instalace demo verze](https://github.com/thepetas/shiftify/wiki/Instalace-demo-verze).
+Pokud si chcete u sebe na mobilu vyzkoušet demo naší aplikace, neváhejte. Vše ohledně instalace najdete na naší wiki v sekci [Instalace demo verze](https://github.com/Shiftify/shiftify/releases).
 
 
 ## Zprovoznění projektu
